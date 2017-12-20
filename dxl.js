@@ -119,7 +119,9 @@ module.exports = function (RED) {
     }
 
     this.removeEventCallback = function (topic, callback) {
-      node.client.removeEventCallback(topic, callback)
+      if (!node.closing) {
+        node.client.removeEventCallback(topic, callback)
+      }
     }
 
     this.asyncRequest = function (request, responseCallback) {
@@ -127,20 +129,16 @@ module.exports = function (RED) {
     }
 
     this.sendEvent = function (event) {
-      if (node.connected) {
-        node.client.sendEvent(event)
-      }
+      node.client.sendEvent(event)
     }
 
     this.on('close', function (done) {
       node.closing = true
       if (this.connected) {
         node.client.once('close', function () { done() })
-        node.client.disconnect()
-      } else if (node.connecting || node.client.reconnecting) {
-        node.client.disconnect()
-        done()
-      } else {
+      }
+      node.client.destroy()
+      if (!this.connected) {
         done()
       }
     })
@@ -164,10 +162,15 @@ module.exports = function (RED) {
       })
       if (this.topic) {
         this.client.register(this)
-        this.client.addEventCallback(this.topic, function (event) {
+        var eventCallback = function (event) {
           var payload = convertPayloadToReturnType(node, event.payload)
           var msg = {topic: event.topic, payload: payload}
           node.send(msg)
+        }
+        this.client.addEventCallback(this.topic, eventCallback)
+        this.on('close', function(done) {
+          node.client.removeEventCallback(node.topic, eventCallback)
+          node.client.deregister(node, done)
         })
         if (this.client.connected) {
           this.status({
@@ -205,8 +208,15 @@ module.exports = function (RED) {
           if (msg.hasOwnProperty('payload')) {
             var event = new dxl.Event(node.topic)
             event.payload = convertPayloadToString(msg.payload)
-            this.client.sendEvent(event)
+            if (this.client.connected) {
+              this.client.sendEvent(event)
+            } else {
+              this.error('Unable to send event, not connected')
+            }
           }
+        })
+        this.on('close', function(done) {
+          node.client.deregister(node, done)
         })
         if (this.client.connected) {
           this.status({
@@ -245,14 +255,21 @@ module.exports = function (RED) {
           if (msg.hasOwnProperty('payload')) {
             var request = new dxl.Request(node.topic)
             request.payload = convertPayloadToString(msg.payload)
-            this.client.asyncRequest(request,
-                function (response) {
-                  msg.payload = convertPayloadToReturnType(node,
-                      response.payload)
-                  node.send(msg)
-                }
-            )
+            if (node.client.connected) {
+              this.client.asyncRequest(request,
+                  function (response) {
+                    msg.payload = convertPayloadToReturnType(node,
+                        response.payload)
+                    node.send(msg)
+                  }
+              )
+            } else {
+              this.error('Unable to send request, not connected')
+            }
           }
+        })
+        this.on('close', function(done) {
+          node.client.deregister(node, done)
         })
         if (this.client.connected) {
           this.status({
