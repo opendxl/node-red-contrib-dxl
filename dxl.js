@@ -168,7 +168,7 @@ module.exports = function (RED) {
           node.send(msg)
         }
         this.client.addEventCallback(this.topic, eventCallback)
-        this.on('close', function(done) {
+        this.on('close', function (done) {
           node.client.removeEventCallback(node.topic, eventCallback)
           node.client.deregister(node, done)
         })
@@ -215,7 +215,7 @@ module.exports = function (RED) {
             }
           }
         })
-        this.on('close', function(done) {
+        this.on('close', function (done) {
           node.client.deregister(node, done)
         })
         if (this.client.connected) {
@@ -258,8 +258,15 @@ module.exports = function (RED) {
             if (node.client.connected) {
               this.client.asyncRequest(request,
                   function (response) {
-                    msg.payload = convertPayloadToReturnType(node,
-                        response.payload)
+                    if (response.messageType ===
+                        dxl.Message.MESSAGE_TYPE_ERROR) {
+                      msg.payload = ''
+                      msg.error = response.errorMessage
+                      msg.errorCode = response.errorCode
+                    } else {
+                      msg.payload = convertPayloadToReturnType(node,
+                          response.payload)
+                    }
                     node.send(msg)
                   }
               )
@@ -268,7 +275,7 @@ module.exports = function (RED) {
             }
           }
         })
-        this.on('close', function(done) {
+        this.on('close', function (done) {
           node.client.deregister(node, done)
         })
         if (this.client.connected) {
