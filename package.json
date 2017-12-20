@@ -6,8 +6,7 @@
     "node": ">=4.0.0"
   },
   "dependencies": {
-    "dxl-client": "",
-    "is-utf8": "^0.2.1"
+    "dxl-client": ""
   },
   "devDependencies": {
     "jshint": "^2.9.5",

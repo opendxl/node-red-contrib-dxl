@@ -2,7 +2,6 @@
 
 module.exports = function (RED) {
   var dxl = require('dxl-client')
-  var isUtf8 = require('is-utf8')
 
   function convertPayloadToString (payload) {
     if (!Buffer.isBuffer(payload)) {
@@ -10,6 +9,20 @@ module.exports = function (RED) {
         payload = JSON.stringify(payload)
       } else if (typeof payload !== 'string') {
         payload = '' + payload
+      }
+    }
+    return payload
+  }
+
+  function convertPayloadToReturnType (node, payload) {
+    if (node.ret !== 'bin') {
+      payload = payload.toString('utf8')
+      if (node.ret === 'obj') {
+        try {
+          payload = JSON.parse(payload)
+        } catch (e) {
+          node.warn('Error converting dxl payload to json')
+        }
       }
     }
     return payload
@@ -137,6 +150,7 @@ module.exports = function (RED) {
 
   function DxlInNode (config) {
     RED.nodes.createNode(this, config)
+    this.ret = config.ret || 'txt'
     this.topic = config.topic
     this.client = RED.nodes.getNode(config.client)
 
@@ -151,10 +165,7 @@ module.exports = function (RED) {
       if (this.topic) {
         this.client.register(this)
         this.client.addEventCallback(this.topic, function (event) {
-          var payload = event.payload
-          if (isUtf8(payload)) {
-            payload = payload.toString()
-          }
+          var payload = convertPayloadToReturnType(node, event.payload)
           var msg = {topic: event.topic, payload: payload}
           node.send(msg)
         })
@@ -216,9 +227,9 @@ module.exports = function (RED) {
 
   function DxlRequestNode (config) {
     RED.nodes.createNode(this, config)
+    this.ret = config.ret || 'txt'
     this.topic = config.topic
     this.client = RED.nodes.getNode(config.client)
-    this.ret = config.ret || 'txt'
 
     var node = this
 
@@ -236,17 +247,8 @@ module.exports = function (RED) {
             request.payload = convertPayloadToString(msg.payload)
             this.client.asyncRequest(request,
                 function (response) {
-                  msg.payload = response.payload
-                  if (node.ret !== 'bin') {
-                    msg.payload = msg.payload.toString('utf8')
-                    if (node.ret === 'obj') {
-                      try {
-                        msg.payload = JSON.parse(msg.payload)
-                      } catch (e) {
-                        node.warn('Error converting dxl response to json')
-                      }
-                    }
-                  }
+                  msg.payload = convertPayloadToReturnType(node,
+                      response.payload)
                   node.send(msg)
                 }
             )
