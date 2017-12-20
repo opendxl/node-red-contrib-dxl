@@ -1,0 +1,27 @@
+{
+  "name": "node-red-contrib-dxl",
+  "version": "0.0.1",
+  "description": "DXL nodes for Node-RED",
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "dependencies": {
+    "dxl-client": "",
+    "is-utf8": "^0.2.1"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.5",
+    "standard": "^10.0.3"
+  },
+  "eslintConfig": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jbarlow-mcafee/node-red-contrib-dxl.git"
+  },
+  "author": "Jeremy Barlow",
+  "node-red": {
+    "nodes": {
+      "dxl": "dxl.js"
+    }
+  }
+}
