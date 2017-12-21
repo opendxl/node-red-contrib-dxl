@@ -257,12 +257,13 @@ module.exports = function (RED) {
             request.payload = convertPayloadToString(msg.payload)
             if (node.client.connected) {
               this.client.asyncRequest(request,
-                  function (response) {
-                    if (response.messageType ===
-                        dxl.Message.MESSAGE_TYPE_ERROR) {
+                  function (error, response) {
+                    if (error) {
                       msg.payload = ''
-                      msg.error = response.errorMessage
-                      msg.errorCode = response.errorCode
+                      msg.error = error.message
+                      if (error instanceof dxl.MessageError) {
+                        msg.errorCode = error.code
+                      }
                     } else {
                       msg.payload = convertPayloadToReturnType(node,
                           response.payload)
