@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = function (RED) {
-  var dxl = require('dxl-client')
+  var dxl = require('@opendxl/dxl-client')
 
   function convertPayloadToString (payload) {
     if (!Buffer.isBuffer(payload)) {
