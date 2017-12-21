@@ -30,7 +30,7 @@
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType('dxl in',{
+  RED.nodes.registerType('dxl-event in',{
     category: 'input',
     defaults: {
       name: {value:""},
@@ -51,7 +51,7 @@
   });
 </script>
 
-<script type="text/x-red" data-template-name="dxl in">
+<script type="text/x-red" data-template-name="dxl-event in">
     <div class="form-row">
         <label for="node-input-client"><i class="icon-tag"></i> Client</label>
         <input type="text" id="node-input-client" placeholder="Client">
@@ -74,12 +74,12 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="dxl in">
+<script type="text/x-red" data-help-name="dxl-event in">
     <p>Connects to a DXL broker and subscribes to event messages from the specific topic.</p>
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType('dxl out',{
+  RED.nodes.registerType('dxl-event out',{
     category: 'output',
     defaults: {
       name: {value:""},
@@ -100,7 +100,7 @@
   });
 </script>
 
-<script type="text/x-red" data-template-name="dxl out">
+<script type="text/x-red" data-template-name="dxl-event out">
     <div class="form-row">
         <label for="node-input-client"><i class="icon-tag"></i> Client</label>
         <input type="text" id="node-input-client" placeholder="Client">
@@ -115,7 +115,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="dxl out">
+<script type="text/x-red" data-help-name="dxl-event out">
     <p>Connects to a DXL broker and publishes the msg.payload from the input message to a specific topic.</p>
 </script>
 

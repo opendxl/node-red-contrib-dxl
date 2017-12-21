@@ -146,7 +146,7 @@ module.exports = function (RED) {
 
   RED.nodes.registerType('dxl-client', DxlClientNode)
 
-  function DxlInNode (config) {
+  function DxlEventInNode (config) {
     RED.nodes.createNode(this, config)
     this.ret = config.ret || 'txt'
     this.topic = config.topic
@@ -187,9 +187,9 @@ module.exports = function (RED) {
     }
   }
 
-  RED.nodes.registerType('dxl in', DxlInNode)
+  RED.nodes.registerType('dxl-event in', DxlEventInNode)
 
-  function DxlOutNode (config) {
+  function DxlEventOutNode (config) {
     RED.nodes.createNode(this, config)
     this.topic = config.topic
     this.client = RED.nodes.getNode(config.client)
@@ -233,7 +233,7 @@ module.exports = function (RED) {
     }
   }
 
-  RED.nodes.registerType('dxl out', DxlOutNode)
+  RED.nodes.registerType('dxl-event out', DxlEventOutNode)
 
   function DxlRequestNode (config) {
     RED.nodes.createNode(this, config)
