@@ -116,7 +116,7 @@
 </script>
 
 <script type="text/x-red" data-help-name="dxl-event out">
-    <p>Connects to a DXL broker and publishes the msg.payload from the input message to a specific topic.</p>
+    <p>Connects to a DXL broker and sends an event with the msg.payload from the input message to a specific topic.</p>
 </script>
 
 <script type="text/javascript">
@@ -166,4 +166,89 @@
 
 <script type="text/x-red" data-help-name="dxl request">
     <p>Connects to a DXL broker, sends a request containing the msg.payload from the input message to a specific topic, and writes the response received from the request to the payload property in the output message.</p>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('dxl-service in',{
+    category: 'input',
+    defaults: {
+      name: {value:""},
+      topic: {value:"", required:true},
+      client: {type:"dxl-client", required:true},
+      ret: {value:"txt"}
+    },
+    color: "#d8bfd8",
+    inputs: 0,
+    outputs: 1,
+    icon: "bridge.png",
+    label: function() {
+      return this.name||this.topic||"dxl";
+    },
+    labelStyle: function() {
+      return this.name?"node_label_italic":"";
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="dxl-service in">
+    <div class="form-row">
+        <label for="node-input-client"><i class="icon-tag"></i> Client</label>
+        <input type="text" id="node-input-client" placeholder="Client">
+    </div>
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+        <input type="text" id="node-input-topic" placeholder="Topic">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-ret"><i class="fa fa-arrow-left"></i> Return</span></label>
+        <select type="text" id="node-input-ret" style="width:70%;">
+            <option value="txt">a UTF-8 string</option>
+            <option value="bin">a binary buffer</option>
+            <option value="obj">a parsed JSON object</option>
+       </select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="dxl-service in">
+    <p>Registers a service with a DXL broker and injects requests received into the message output.</p>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('dxl-response out',{
+    category: 'output',
+    defaults: {
+      name: {value:""},
+      client: {type:"dxl-client", required:true}
+    },
+    color: "#d8bfd8",
+    inputs: 1,
+    outputs: 0,
+    icon: "bridge.png",
+    align: "right",
+    label: function() {
+      return this.name||this.topic||"dxl";
+    },
+    labelStyle: function() {
+      return this.name?"node_label_italic":"";
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="dxl-response out">
+    <div class="form-row">
+        <label for="node-input-client"><i class="icon-tag"></i> Client</label>
+        <input type="text" id="node-input-client" placeholder="Client">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="dxl-response out">
+    <p>Connects to a DXL broker and sends an response with the msg.payload and msg.dxlRequest from the input message to a specific topic.</p>
 </script>

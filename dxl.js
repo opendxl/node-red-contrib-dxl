@@ -132,6 +132,18 @@ module.exports = function (RED) {
       node.client.sendEvent(event)
     }
 
+    this.sendResponse = function (response) {
+      node.client.sendResponse(response)
+    }
+
+    this.registerService = function (serviceRequestInfo) {
+      node.client.registerServiceAsync(serviceRequestInfo)
+    }
+
+    this.unregisterService = function (serviceRequestInfo) {
+      node.client.unregisterServiceAsync(serviceRequestInfo)
+    }
+
     this.on('close', function (done) {
       node.closing = true
       if (this.connected) {
@@ -295,4 +307,95 @@ module.exports = function (RED) {
   }
 
   RED.nodes.registerType('dxl request', DxlRequestNode)
+
+  function DxlServiceNode (config) {
+    RED.nodes.createNode(this, config)
+    this.name = config.name
+    this.ret = config.ret || 'txt'
+    this.topic = config.topic
+    this.client = RED.nodes.getNode(config.client)
+
+    var node = this
+
+    if (this.client) {
+      this.status({
+        fill: 'red',
+        shape: 'ring',
+        text: 'node-red:common.status.disconnected'
+      })
+      if (this.topic && this.name) {
+        this.client.register(this)
+        var requestCallback = function (request) {
+          var payload = convertPayloadToReturnType(node, request.payload)
+          var msg = {
+            topic: request.topic,
+            payload: payload,
+            dxlRequest: request
+          }
+          node.send(msg)
+        }
+        var serviceInfo = new dxl.ServiceRegistrationInfo(this.name)
+        serviceInfo.addTopic(this.topic, requestCallback)
+        this.client.registerService(serviceInfo, requestCallback)
+        this.on('close', function (done) {
+          node.client.unregisterService(serviceInfo)
+          node.client.deregister(node, done)
+        })
+        if (this.client.connected) {
+          this.status({
+            fill: 'green',
+            shape: 'dot',
+            text: 'node-red:common.status.connected'
+          })
+        }
+      } else {
+        this.error('Missing topic and/or name configuration')
+      }
+    } else {
+      this.error('Missing client configuration')
+    }
+  }
+
+  RED.nodes.registerType('dxl-service in', DxlServiceNode)
+
+  function DxlResponseNode (config) {
+    RED.nodes.createNode(this, config)
+    this.client = RED.nodes.getNode(config.client)
+
+    var node = this
+
+    if (this.client) {
+      this.status({
+        fill: 'red',
+        shape: 'ring',
+        text: 'node-red:common.status.disconnected'
+      })
+      this.client.register(this)
+      this.on('input', function (msg) {
+        if (msg.hasOwnProperty('payload') && msg.hasOwnProperty('dxlRequest')) {
+          var response = new dxl.Response(msg.dxlRequest)
+          response.payload = convertPayloadToString(msg.payload)
+          if (this.client.connected) {
+            this.client.sendResponse(response)
+          } else {
+            this.error('Unable to send event, not connected')
+          }
+        }
+      })
+      this.on('close', function (done) {
+        node.client.deregister(node, done)
+      })
+      if (this.client.connected) {
+        this.status({
+          fill: 'green',
+          shape: 'dot',
+          text: 'node-red:common.status.connected'
+        })
+      }
+    } else {
+      this.error('Missing client configuration')
+    }
+  }
+
+  RED.nodes.registerType('dxl-response out', DxlResponseNode)
 }
