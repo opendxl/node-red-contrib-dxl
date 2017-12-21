@@ -14,15 +14,11 @@ module.exports = function (RED) {
     return payload
   }
 
-  function convertPayloadToReturnType (node, payload) {
-    if (node.ret !== 'bin') {
+  function convertPayloadToReturnType (returnType, payload) {
+    if (returnType !== 'bin') {
       payload = payload.toString('utf8')
-      if (node.ret === 'obj') {
-        try {
-          payload = JSON.parse(payload)
-        } catch (e) {
-          node.warn('Error converting dxl payload to json')
-        }
+      if (returnType === 'obj') {
+        payload = JSON.parse(payload)
       }
     }
     return payload
@@ -175,9 +171,15 @@ module.exports = function (RED) {
       if (this.topic) {
         this.client.register(this)
         var eventCallback = function (event) {
-          var payload = convertPayloadToReturnType(node, event.payload)
-          var msg = {topic: event.topic, payload: payload}
-          node.send(msg)
+          var msg = { topic: event.topic }
+          try {
+            msg.payload = convertPayloadToReturnType(node.ret, event.payload)
+            node.send(msg)
+          } catch (e) {
+            msg.payload = event.payload
+            node.error('Error converting event to ' + node.ret +
+                '. Error: ' + e.message + ', Payload: ' + event.payload, msg)
+          }
         }
         this.client.addEventCallback(this.topic, eventCallback)
         this.on('close', function (done) {
@@ -271,16 +273,27 @@ module.exports = function (RED) {
               this.client.asyncRequest(request,
                   function (error, response) {
                     if (error) {
-                      msg.payload = ''
-                      msg.error = error.message
+                      var errorMessage = error.message
                       if (error instanceof dxl.MessageError) {
-                        msg.errorCode = error.code
+                        if (errorMessage) {
+                          errorMessage = ': ' + errorMessage + ' (' +
+                              error.code + ')'
+                        } else {
+                          errorMessage = ' code: ' + error.code
+                        }
                       }
+                      node.error('Request returned error' + errorMessage)
                     } else {
-                      msg.payload = convertPayloadToReturnType(node,
-                          response.payload)
+                      try {
+                        msg.payload = convertPayloadToReturnType(node.ret,
+                            response.payload)
+                        node.send(msg)
+                      } catch (e) {
+                        node.error('Error converting response to ' + node.ret +
+                            '. Error: ' + e.message +
+                            ', Payload: ' + response.payload, msg)
+                      }
                     }
-                    node.send(msg)
                   }
               )
             } else {
@@ -326,13 +339,16 @@ module.exports = function (RED) {
       if (this.topic && this.name) {
         this.client.register(this)
         var requestCallback = function (request) {
-          var payload = convertPayloadToReturnType(node, request.payload)
-          var msg = {
-            topic: request.topic,
-            payload: payload,
-            dxlRequest: request
+          var msg = { topic: request.topic, dxlRequest: request }
+          try {
+            msg.payload = convertPayloadToReturnType(node.ret, request.payload)
+            node.send(msg)
+          } catch (e) {
+            msg.payload = request.payload
+            node.error('Error converting request to ' + node.ret +
+                '. Error: ' + e.message +
+                ', Payload: ' + request.payload, msg)
           }
-          node.send(msg)
         }
         var serviceInfo = new dxl.ServiceRegistrationInfo(this.name)
         serviceInfo.addTopic(this.topic, requestCallback)
@@ -372,13 +388,14 @@ module.exports = function (RED) {
       })
       this.client.register(this)
       this.on('input', function (msg) {
-        if (msg.hasOwnProperty('payload') && msg.hasOwnProperty('dxlRequest')) {
+        if (msg.hasOwnProperty('payload') &&
+            msg.hasOwnProperty('dxlRequest')) {
           var response = new dxl.Response(msg.dxlRequest)
           response.payload = convertPayloadToString(msg.payload)
           if (this.client.connected) {
             this.client.sendResponse(response)
           } else {
-            this.error('Unable to send event, not connected')
+            this.error('Unable to send response, not connected')
           }
         }
       })
