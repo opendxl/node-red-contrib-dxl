@@ -173,6 +173,7 @@
     category: 'input',
     defaults: {
       name: {value:""},
+      serviceType: {value:"", required:true},
       topic: {value:"", required:true},
       client: {type:"dxl-client", required:true},
       ret: {value:"txt"}
@@ -198,6 +199,10 @@
     <div class="form-row">
         <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
         <input type="text" id="node-input-topic" placeholder="Topic">
+    </div>
+    <div class="form-row">
+        <label for="node-input-serviceType"><i class="fa fa-tag"></i> Service Type</label>
+        <input type="text" id="node-input-serviceType" placeholder="Service Type">
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>

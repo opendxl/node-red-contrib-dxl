@@ -132,8 +132,12 @@ module.exports = function (RED) {
       node.client.sendResponse(response)
     }
 
-    this.registerService = function (serviceRequestInfo) {
-      node.client.registerServiceAsync(serviceRequestInfo)
+    this.registerService = function (topic, serviceType, callback) {
+      var serviceInfo = new dxl.ServiceRegistrationInfo(node.client,
+          serviceType)
+      serviceInfo.addTopic(topic, callback)
+      node.client.registerServiceAsync(serviceInfo)
+      return serviceInfo
     }
 
     this.unregisterService = function (serviceRequestInfo) {
@@ -323,7 +327,7 @@ module.exports = function (RED) {
 
   function DxlServiceNode (config) {
     RED.nodes.createNode(this, config)
-    this.name = config.name
+    this.serviceType = config.serviceType
     this.ret = config.ret || 'txt'
     this.topic = config.topic
     this.client = RED.nodes.getNode(config.client)
@@ -336,7 +340,7 @@ module.exports = function (RED) {
         shape: 'ring',
         text: 'node-red:common.status.disconnected'
       })
-      if (this.topic && this.name) {
+      if (this.topic && this.serviceType) {
         this.client.register(this)
         var requestCallback = function (request) {
           var msg = { topic: request.topic, dxlRequest: request }
@@ -350,9 +354,8 @@ module.exports = function (RED) {
                 ', Payload: ' + request.payload, msg)
           }
         }
-        var serviceInfo = new dxl.ServiceRegistrationInfo(this.name)
-        serviceInfo.addTopic(this.topic, requestCallback)
-        this.client.registerService(serviceInfo, requestCallback)
+        var serviceInfo = this.client.registerService(this.topic,
+            this.serviceType, requestCallback)
         this.on('close', function (done) {
           node.client.unregisterService(serviceInfo)
           node.client.deregister(node, done)
@@ -364,8 +367,10 @@ module.exports = function (RED) {
             text: 'node-red:common.status.connected'
           })
         }
-      } else {
-        this.error('Missing topic and/or name configuration')
+      } else if (!this.topic) {
+        this.error('Missing topic configuration')
+      } else if (!this.serviceType) {
+        this.error('Missing service type configuration')
       }
     } else {
       this.error('Missing client configuration')
