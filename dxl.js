@@ -220,31 +220,32 @@ module.exports = function (RED) {
         shape: 'ring',
         text: 'node-red:common.status.disconnected'
       })
-      if (this.topic) {
-        this.client.register(this)
-        this.on('input', function (msg) {
-          if (msg.hasOwnProperty('payload')) {
-            var event = new dxl.Event(node.topic)
+      this.client.register(this)
+      this.on('input', function (msg) {
+        if (msg.hasOwnProperty('payload')) {
+          var topic = node.topic || msg.dxlTopic
+          if (topic) {
+            var event = new dxl.Event(topic)
             event.payload = convertPayloadToString(msg.payload)
             if (this.client.connected) {
               this.client.sendEvent(event)
             } else {
               this.error('Unable to send event, not connected')
             }
+          } else {
+            this.error('Unable to send event, no topic available')
           }
-        })
-        this.on('close', function (done) {
-          node.client.deregister(node, done)
-        })
-        if (this.client.connected) {
-          this.status({
-            fill: 'green',
-            shape: 'dot',
-            text: 'node-red:common.status.connected'
-          })
         }
-      } else {
-        this.error('Missing topic configuration')
+      })
+      this.on('close', function (done) {
+        node.client.deregister(node, done)
+      })
+      if (this.client.connected) {
+        this.status({
+          fill: 'green',
+          shape: 'dot',
+          text: 'node-red:common.status.connected'
+        })
       }
     } else {
       this.error('Missing client configuration')
@@ -267,11 +268,12 @@ module.exports = function (RED) {
         shape: 'ring',
         text: 'node-red:common.status.disconnected'
       })
-      if (this.topic) {
-        this.client.register(this)
-        this.on('input', function (msg) {
-          if (msg.hasOwnProperty('payload')) {
-            var request = new dxl.Request(node.topic)
+      this.client.register(this)
+      this.on('input', function (msg) {
+        if (msg.hasOwnProperty('payload')) {
+          var topic = node.topic || msg.dxlTopic
+          if (topic) {
+            var request = new dxl.Request(topic)
             request.payload = convertPayloadToString(msg.payload)
             if (node.client.connected) {
               this.client.asyncRequest(request,
@@ -303,20 +305,20 @@ module.exports = function (RED) {
             } else {
               this.error('Unable to send request, not connected')
             }
+          } else {
+            this.error('Unable to send request, no topic available')
           }
-        })
-        this.on('close', function (done) {
-          node.client.deregister(node, done)
-        })
-        if (this.client.connected) {
-          this.status({
-            fill: 'green',
-            shape: 'dot',
-            text: 'node-red:common.status.connected'
-          })
         }
-      } else {
-        this.error('Missing topic configuration')
+      })
+      this.on('close', function (done) {
+        node.client.deregister(node, done)
+      })
+      if (this.client.connected) {
+        this.status({
+          fill: 'green',
+          shape: 'dot',
+          text: 'node-red:common.status.connected'
+        })
       }
     } else {
       this.error('Missing client configuration')
