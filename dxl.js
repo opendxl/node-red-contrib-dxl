@@ -132,10 +132,10 @@ module.exports = function (RED) {
       node.client.sendResponse(response)
     }
 
-    this.registerService = function (topic, serviceType, callback) {
+    this.registerService = function (serviceType, callbacksByTopic) {
       var serviceInfo = new dxl.ServiceRegistrationInfo(node.client,
           serviceType)
-      serviceInfo.addTopic(topic, callback)
+      serviceInfo.addTopics(callbacksByTopic)
       node.client.registerServiceAsync(serviceInfo)
       return serviceInfo
     }
@@ -328,8 +328,7 @@ module.exports = function (RED) {
   function DxlServiceNode (config) {
     RED.nodes.createNode(this, config)
     this.serviceType = config.serviceType
-    this.ret = config.ret || 'txt'
-    this.topic = config.topic
+    this.rules = config.rules || []
     this.client = RED.nodes.getNode(config.client)
 
     var node = this
@@ -340,35 +339,69 @@ module.exports = function (RED) {
         shape: 'ring',
         text: 'node-red:common.status.disconnected'
       })
-      if (this.topic && this.serviceType) {
-        this.client.register(this)
-        var requestCallback = function (request) {
-          var msg = { topic: request.topic, dxlRequest: request }
-          try {
-            msg.payload = convertPayloadToReturnType(node.ret, request.payload)
-            node.send(msg)
-          } catch (e) {
-            msg.payload = request.payload
-            node.error('Error converting request to ' + node.ret +
-                '. Error: ' + e.message +
-                ', Payload: ' + request.payload, msg)
+      if (this.serviceType) {
+        var valid = true
+        for (var i = 0; i < this.rules.length; i += 1) {
+          var rule = this.rules[i]
+          if (!rule.topic) {
+            this.error('Missing topic name for rule ' + (i + 1))
+            valid = false
+          }
+          if (!rule.payloadType) {
+            rule.payloadType = 'txt'
           }
         }
-        var serviceInfo = this.client.registerService(this.topic,
-            this.serviceType, requestCallback)
-        this.on('close', function (done) {
-          node.client.unregisterService(serviceInfo)
-          node.client.deregister(node, done)
-        })
-        if (this.client.connected) {
-          this.status({
-            fill: 'green',
-            shape: 'dot',
-            text: 'node-red:common.status.connected'
+
+        if (valid) {
+          this.client.register(this)
+
+          var requestCallback = function (request) {
+            var msg = {topic: request.destinationTopic, dxlRequest: request}
+            var canConvert = true
+            var outputMessages = []
+            for (var j = 0; j < node.rules.length; j += 1) {
+              if (request.destinationTopic === node.rules[j].topic) {
+                try {
+                  msg.payload = convertPayloadToReturnType(
+                      node.rules[j].payloadType,
+                      request.payload)
+                  outputMessages.push(msg)
+                } catch (e) {
+                  canConvert = false
+                  node.error('Error converting request to ' +
+                      node.rules[j].payloadType +
+                      '. Error: ' + e.message +
+                      ', Payload: ' + request.payload, msg)
+                  break
+                }
+              } else {
+                outputMessages.push(null)
+              }
+            }
+            if (canConvert) {
+              node.send(outputMessages)
+            }
+          }
+
+          var callbacksByTopic = {}
+          for (var j = 0; j < this.rules.length; j += 1) {
+            callbacksByTopic[this.rules[j].topic] = requestCallback
+          }
+
+          var serviceInfo = this.client.registerService(this.serviceType,
+              callbacksByTopic)
+          this.on('close', function (done) {
+            node.client.unregisterService(serviceInfo)
+            node.client.deregister(node, done)
           })
+          if (this.client.connected) {
+            this.status({
+              fill: 'green',
+              shape: 'dot',
+              text: 'node-red:common.status.connected'
+            })
+          }
         }
-      } else if (!this.topic) {
-        this.error('Missing topic configuration')
       } else if (!this.serviceType) {
         this.error('Missing service type configuration')
       }
