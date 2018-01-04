@@ -357,38 +357,36 @@ module.exports = function (RED) {
         if (valid) {
           this.client.register(this)
 
-          var requestCallback = function (request) {
-            var msg = {topic: request.destinationTopic, dxlRequest: request}
-            var canConvert = true
-            var outputMessages = []
-            for (var j = 0; j < node.rules.length; j += 1) {
-              if (request.destinationTopic === node.rules[j].topic) {
-                try {
-                  msg.payload = convertPayloadToReturnType(
-                      node.rules[j].payloadType,
-                      request.payload)
-                  outputMessages.push(msg)
-                } catch (e) {
-                  canConvert = false
-                  node.error('Error converting request to ' +
-                      node.rules[j].payloadType +
-                      '. Error: ' + e.message +
-                      ', Payload: ' + request.payload, msg)
-                  break
+          var callbacksByTopic = {}
+          this.rules.forEach(function (rule, counter) {
+            callbacksByTopic[rule.topic] = function (request) {
+              var msg = {topic: request.destinationTopic, dxlRequest: request}
+              var canConvert = true
+              var outputMessages = []
+              for (var j = 0; j < node.rules.length; j += 1) {
+                if (j === counter) {
+                  try {
+                    msg.payload = convertPayloadToReturnType(
+                        node.rules[j].payloadType,
+                        request.payload)
+                    outputMessages.push(msg)
+                  } catch (e) {
+                    canConvert = false
+                    node.error('Error converting request to ' +
+                        node.rules[j].payloadType +
+                        '. Error: ' + e.message +
+                        ', Payload: ' + request.payload, msg)
+                    break
+                  }
+                } else {
+                  outputMessages.push(null)
                 }
-              } else {
-                outputMessages.push(null)
+              }
+              if (canConvert) {
+                node.send(outputMessages)
               }
             }
-            if (canConvert) {
-              node.send(outputMessages)
-            }
-          }
-
-          var callbacksByTopic = {}
-          for (var j = 0; j < this.rules.length; j += 1) {
-            callbacksByTopic[this.rules[j].topic] = requestCallback
-          }
+          })
 
           var serviceInfo = this.client.registerService(this.serviceType,
               callbacksByTopic)
