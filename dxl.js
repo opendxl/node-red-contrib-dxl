@@ -282,13 +282,12 @@ module.exports = function (RED) {
                       var errorMessage = error.message
                       if (error instanceof dxl.MessageError) {
                         if (errorMessage) {
-                          errorMessage = ': ' + errorMessage + ' (' +
-                              error.code + ')'
-                        } else {
-                          errorMessage = ' code: ' + error.code
+                          errorMessage = errorMessage + ' '
                         }
+                        errorMessage = errorMessage + '(' + error.code + ')'
+                        msg.payload = error.detail.payload
                       }
-                      node.error('Request returned error' + errorMessage)
+                      node.error(errorMessage, msg)
                     } else {
                       try {
                         msg.payload = convertPayloadToReturnType(node.ret,
@@ -428,8 +427,23 @@ module.exports = function (RED) {
       this.on('input', function (msg) {
         if (msg.hasOwnProperty('payload') &&
             msg.hasOwnProperty('dxlRequest')) {
-          var response = new dxl.Response(msg.dxlRequest)
-          response.payload = convertPayloadToString(msg.payload)
+          var response
+          if (msg.hasOwnProperty('error') &&
+              msg.error.hasOwnProperty('message')) {
+            var errorMessage = msg.error.message
+            var errorCode = 0
+            var errorMessageParts = errorMessage.match(/(.*)\((.*)\)/)
+            if (errorMessageParts) {
+              errorMessage = errorMessageParts[1]
+              errorCode = errorMessageParts[2]
+            }
+            response = new dxl.ErrorResponse(msg.dxlRequest, errorCode,
+                errorMessage)
+            response.payload = msg.payload
+          } else {
+            response = new dxl.Response(msg.dxlRequest)
+            response.payload = convertPayloadToString(msg.payload)
+          }
           if (this.client.connected) {
             this.client.sendResponse(response)
           } else {
