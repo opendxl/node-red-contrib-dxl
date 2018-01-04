@@ -175,7 +175,9 @@ module.exports = function (RED) {
       if (this.topic) {
         this.client.register(this)
         var eventCallback = function (event) {
-          var msg = { topic: event.topic }
+          var msg = {topic: event.destinationTopic,
+            dxlEvent: event,
+            dxlMessage: event}
           try {
             msg.payload = convertPayloadToReturnType(node.ret, event.payload)
             node.send(msg)
@@ -286,9 +288,13 @@ module.exports = function (RED) {
                         }
                         errorMessage = errorMessage + '(' + error.code + ')'
                         msg.payload = error.detail.payload
+                        msg.dxlResponse = msg.detail
+                        msg.dxlMessage = msg.dxlResponse
                       }
                       node.error(errorMessage, msg)
                     } else {
+                      msg.dxlResponse = response
+                      msg.dxlMessage = msg.dxlResponse
                       try {
                         msg.payload = convertPayloadToReturnType(node.ret,
                             response.payload)
@@ -359,7 +365,9 @@ module.exports = function (RED) {
           var callbacksByTopic = {}
           this.rules.forEach(function (rule, counter) {
             callbacksByTopic[rule.topic] = function (request) {
-              var msg = {topic: request.destinationTopic, dxlRequest: request}
+              var msg = {topic: request.destinationTopic,
+                dxlRequest: request,
+                dxlMessage: request}
               var canConvert = true
               var outputMessages = []
               for (var j = 0; j < node.rules.length; j += 1) {
