@@ -18,7 +18,7 @@
     "node": ">=4.0.0"
   },
   "dependencies": {
-    "@opendxl/dxl-client": ""
+    "@opendxl/dxl-client": "^0.0.1"
   },
   "devDependencies": {
     "jshint": "^2.9.5",
