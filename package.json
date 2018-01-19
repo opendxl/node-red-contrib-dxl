@@ -37,10 +37,16 @@
     }
   },
   "scripts": {
-    "standard": "node_modules/.bin/standard *.html *.js | node_modules/.bin/snazzy"
+    "snazzy": "npm run standard | node_modules/.bin/snazzy",
+    "standard": "node_modules/.bin/standard *.html *.js"
   },
   "standard": {
-    "globals": [ "RED", "$" ],
-    "plugins": [ "html" ]
+    "globals": [
+      "RED",
+      "$"
+    ],
+    "plugins": [
+      "html"
+    ]
   }
 }
