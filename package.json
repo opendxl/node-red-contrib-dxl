@@ -22,7 +22,9 @@
   },
   "devDependencies": {
     "jshint": "^2.9.5",
-    "standard": "^10.0.3"
+    "eslint-plugin-html": "^3.2.2",
+    "standard": "^10.0.3",
+    "snazzy": "^7.0.0"
   },
   "eslintConfig": {},
   "repository": {
@@ -33,5 +35,12 @@
     "nodes": {
       "dxl": "dxl.js"
     }
+  },
+  "scripts": {
+    "standard": "node_modules/.bin/standard *.html *.js | node_modules/.bin/snazzy"
+  },
+  "standard": {
+    "globals": [ "RED", "$" ],
+    "plugins": [ "html" ]
   }
 }
