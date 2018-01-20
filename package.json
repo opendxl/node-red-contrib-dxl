@@ -33,12 +33,17 @@
   },
   "node-red": {
     "nodes": {
-      "dxl": "dxl.js"
+      "dxl-client": "./nodes/dxl-client.js",
+      "dxl-event-in": "./nodes/dxl-event-in.js",
+      "dxl-event-out": "./nodes/dxl-event-out.js",
+      "dxl-request": "./nodes/dxl-request.js",
+      "dxl-response": "./nodes/dxl-response.js",
+      "dxl-service": "./nodes/dxl-service.js"
     }
   },
   "scripts": {
     "snazzy": "npm run standard | node_modules/.bin/snazzy",
-    "standard": "node_modules/.bin/standard *.html *.js"
+    "standard": "node_modules/.bin/standard \"**/*.html\" \"**/*.js\""
   },
   "standard": {
     "globals": [

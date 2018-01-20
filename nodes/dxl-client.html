@@ -1,0 +1,30 @@
+<script type="text/javascript">
+  RED.nodes.registerType('dxl-client', {
+    category: 'config',
+    defaults: {
+      configfile: {value: '', required: true},
+      name: {value: ''}
+    },
+    inputs: 0,
+    outputs: 1,
+    icon: 'bridge.png',
+    label: function () {
+      return this.name || 'dxl client'
+    }
+  })
+</script>
+
+<script type="text/x-red" data-template-name="dxl-client">
+    <div class="form-row node-input-client">
+        <label for="node-config-input-configfile"><i class="icon-tag"></i> Config file</label>
+        <input type="text" id="node-config-input-configfile" placeholder="Config file">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="dxl-client">
+    <p>DXL client configuration</p>
+</script>

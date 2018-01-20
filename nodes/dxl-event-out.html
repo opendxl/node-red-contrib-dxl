@@ -1,0 +1,56 @@
+<script type="text/javascript">
+  RED.nodes.registerType('dxl-event out', {
+    category: 'output',
+    defaults: {
+      name: {value: ''},
+      topic: {value: ''},
+      client: {type: 'dxl-client', required: true}
+    },
+    color: '#d8bfd8',
+    inputs: 1,
+    outputs: 0,
+    icon: 'bridge.png',
+    align: 'right',
+    label: function () {
+      return this.name || this.topic || 'dxl event'
+    },
+    labelStyle: function () {
+      return this.name ? 'node_label_italic' : ''
+    },
+    onadd: function () {
+      if (!this.client && RED.nodes.hasOwnProperty('eachConfig')) {
+        var clientConfigId = ''
+        var configCount = 0
+        RED.nodes.eachConfig(function (n) {
+          if (n.hasOwnProperty('id') && n.hasOwnProperty('type') &&
+              (n.type === 'dxl-client')) {
+            clientConfigId = n.id
+            configCount++
+          }
+        })
+        if (configCount === 1) {
+          this.client = clientConfigId
+        }
+      }
+    }
+  })
+</script>
+
+<script type="text/x-red" data-template-name="dxl-event out">
+    <div class="form-row">
+        <label for="node-input-client"><i class="icon-tag"></i> Client</label>
+        <input type="text" id="node-input-client" placeholder="Client">
+    </div>
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+        <input type="text" id="node-input-topic" placeholder="Topic">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="dxl-event out">
+    <p>Connects to a DXL broker and sends an event with the msg.payload from the input message to a specific topic.</p>
+</script>

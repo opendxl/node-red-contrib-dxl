@@ -1,0 +1,64 @@
+<script type="text/javascript">
+  RED.nodes.registerType('dxl request', {
+    category: 'function',
+    defaults: {
+      name: {value: ''},
+      topic: {value: ''},
+      client: {type: 'dxl-client', required: true},
+      ret: {value: 'txt'}
+    },
+    color: 'rgb(231, 231, 174)',
+    inputs: 1,
+    outputs: 1,
+    icon: 'white-globe.png',
+    label: function () {
+      return this.name || this.topic || 'dxl request'
+    },
+    labelStyle: function () {
+      return this.name ? 'node_label_italic' : ''
+    },
+    onadd: function () {
+      if (!this.client && RED.nodes.hasOwnProperty('eachConfig')) {
+        var clientConfigId = ''
+        var configCount = 0
+        RED.nodes.eachConfig(function (n) {
+          if (n.hasOwnProperty('id') && n.hasOwnProperty('type') &&
+              (n.type === 'dxl-client')) {
+            clientConfigId = n.id
+            configCount++
+          }
+        })
+        if (configCount === 1) {
+          this.client = clientConfigId
+        }
+      }
+    }
+  })
+</script>
+
+<script type="text/x-red" data-template-name="dxl request">
+    <div class="form-row">
+        <label for="node-input-client"><i class="icon-tag"></i> Client</label>
+        <input type="text" id="node-input-client" placeholder="Client">
+    </div>
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+        <input type="text" id="node-input-topic" placeholder="Topic">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-ret"><i class="fa fa-arrow-left"></i> Return</span></label>
+        <select type="text" id="node-input-ret" style="width:70%;">
+            <option value="txt">a UTF-8 string</option>
+            <option value="bin">a binary buffer</option>
+            <option value="obj">a parsed JSON object</option>
+        </select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="dxl request">
+    <p>Connects to a DXL broker, sends a request containing the msg.payload from the input message to a specific topic, and writes the response received from the request to the payload property in the output message.</p>
+</script>

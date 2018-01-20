@@ -1,0 +1,48 @@
+<script type="text/javascript">
+  RED.nodes.registerType('dxl-event in', {
+    category: 'input',
+    defaults: {
+      name: {value: ''},
+      topic: {value: '', required: true},
+      client: {type: 'dxl-client', required: true},
+      ret: {value: 'txt'}
+    },
+    color: '#d8bfd8',
+    inputs: 0,
+    outputs: 1,
+    icon: 'bridge.png',
+    label: function () {
+      return this.name || this.topic || 'dxl event'
+    },
+    labelStyle: function () {
+      return this.name ? 'node_label_italic' : ''
+    }
+  })
+</script>
+
+<script type="text/x-red" data-template-name="dxl-event in">
+    <div class="form-row">
+        <label for="node-input-client"><i class="icon-tag"></i> Client</label>
+        <input type="text" id="node-input-client" placeholder="Client">
+    </div>
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+        <input type="text" id="node-input-topic" placeholder="Topic">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-ret"><i class="fa fa-arrow-left"></i> Return</span></label>
+        <select type="text" id="node-input-ret" style="width:70%;">
+            <option value="txt">a UTF-8 string</option>
+            <option value="bin">a binary buffer</option>
+            <option value="obj">a parsed JSON object</option>
+       </select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="dxl-event in">
+    <p>Connects to a DXL broker and subscribes to event messages from the specific topic.</p>
+</script>
