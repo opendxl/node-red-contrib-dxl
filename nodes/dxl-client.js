@@ -3,11 +3,24 @@
 var dxl = require('@opendxl/dxl-client')
 
 module.exports = function (RED) {
-  function DxlClientNode (config) {
-    RED.nodes.createNode(this, config)
+  function convertValueToNumber (value, defaultValue) {
+    if (typeof value === 'undefined') {
+      value = defaultValue
+    } else if (typeof value === 'string') {
+      value = Number(value)
+    }
+    return value
+  }
 
-    this.client = new dxl.Client(dxl.Config.createDxlConfigFromFile(
-        config.configfile))
+  function DxlClientNode (nodeConfig) {
+    RED.nodes.createNode(this, nodeConfig)
+
+    var clientConfig = dxl.Config.createDxlConfigFromFile(nodeConfig.configfile)
+    clientConfig.keepAliveInterval = convertValueToNumber(
+      nodeConfig.keepalive, 1800)
+    clientConfig.reconnectDelay = convertValueToNumber(
+      nodeConfig.reconnectdelay, 1)
+    this.client = new dxl.Client(clientConfig)
 
     this.connected = false
     this.connecting = false

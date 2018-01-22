@@ -3,13 +3,25 @@
     category: 'config',
     defaults: {
       configfile: {value: '', required: true},
-      name: {value: ''}
+      name: {value: ''},
+      keepalive: {value: 1800, validate:RED.validators.number()},
+      reconnectdelay: {value: 1, validate:RED.validators.number()}
     },
     inputs: 0,
     outputs: 1,
     icon: 'bridge.png',
     label: function () {
       return this.name || 'dxl client'
+    },
+    oneditprepare: function() {
+      if (typeof this.keepalive === 'undefined') {
+        this.keepalive = 1800
+        $("#node-config-input-keepalive").val(this.keepalive)
+      }
+      if (typeof this.reconnectdelay === 'undefined') {
+        this.reconnectdelay = 1
+        $("#node-config-input-reconnectdelay").val(this.reconnectdelay)
+      }
     }
   })
 </script>
@@ -22,6 +34,14 @@
     <div class="form-row">
         <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-keepalive" style="width: 150px"><i class="fa fa-clock-o"></i> Keep alive</label>
+        <input type="text" id="node-config-input-keepalive" style="width: 100px">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-reconnectdelay" style="width: 150px"><i class="fa fa-clock-o"></i> Reconnect delay</label>
+        <input type="text" id="node-config-input-reconnectdelay" style="width: 100px">
     </div>
 </script>
 
