@@ -49,8 +49,28 @@
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
+    <div class="form-tips">Tip: Leave topic blank if you want to set it via the <code>msg.dxlTopic</code> property</div>
 </script>
 
 <script type="text/x-red" data-help-name="dxl-event out">
-    <p>Connects to a DXL broker and sends an event with the msg.payload from the input message to a specific topic.</p>
+    <p>Delivers an event message with the <code>msg.payload</code> from the input message to the DXL fabric.</p>
+    <p>Event messages are sent by one publisher and received by one or more recipients that are currently subscribed to the topic associated with the event (otherwise known as one-to-many).
+    For more information on message types, how they are delivered to remote clients, etc., see the <a href="https://opendxl.github.io/opendxl-client-python/pydoc/dxlclient.message.html">message documentation</a> in the OpenDXL Python client SDK.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+       <dt>payload <span class="property-type">string | buffer</span></dt>
+       <dd> The application-specific payload of the message.</dd>
+
+       <dt class="optional">dxlTopic <span class="property-type">string</span></dt>
+       <dd> The topic to publish the event message to.</dd>
+    </dl>
+    <h3>Details</h3>
+    <p><code>msg.payload</code> is used as the payload of the published message.
+    If it contains an Object, it will be converted to a JSON string before being sent.
+    If it contains a binary Buffer, the message will be published as-is.</p>
+    <p><i>Client</i> is the configuration node for the DXL client through which the event should be sent.
+    Click on the pencil icon to add or modify a client configuration.</p>
+    <p><i>Topic</i> is the topic to publish the event message to.
+    If the value is empty, the topic will be derived from the input message's <code>msg.dxlTopic</code> property.</p>
+    <p><i>Name</i> is only used for display purposes in the Node-RED user interface.<p>
 </script>
