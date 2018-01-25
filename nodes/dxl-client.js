@@ -30,30 +30,7 @@ module.exports = function (RED) {
 
     var node = this
 
-    this.registerUserNode = function (userNode) {
-      node._users[userNode.id] = userNode
-      if (Object.keys(node._users).length === 1) {
-        node.connect()
-      }
-    }
-
-    this.unregisterUserNode = function (userNode, done) {
-      delete node._users[userNode.id]
-      if (node._closing) {
-        return done()
-      }
-      if (Object.keys(node._users).length === 0) {
-        if (node._client && node._client.connected) {
-          return node._client.disconnect(done)
-        } else {
-          node._client.disconnect()
-          return done()
-        }
-      }
-      done()
-    }
-
-    this.connect = function () {
+    this._connect = function () {
       if (!node.connected && !node._connecting) {
         node._connecting = true
         node._client.connect()
@@ -101,6 +78,29 @@ module.exports = function (RED) {
           }
         })
       }
+    }
+
+    this.registerUserNode = function (userNode) {
+      node._users[userNode.id] = userNode
+      if (Object.keys(node._users).length === 1) {
+        node._connect()
+      }
+    }
+
+    this.unregisterUserNode = function (userNode, done) {
+      delete node._users[userNode.id]
+      if (node._closing) {
+        return done()
+      }
+      if (Object.keys(node._users).length === 0) {
+        if (node._client && node._client.connected) {
+          return node._client.disconnect(done)
+        } else {
+          node._client.disconnect()
+          return done()
+        }
+      }
+      done()
     }
 
     this.addEventCallback = function (topic, callback) {
