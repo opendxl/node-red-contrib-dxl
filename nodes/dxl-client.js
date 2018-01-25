@@ -254,7 +254,7 @@ module.exports = function (RED) {
     /**
      * Registers a DXL service with the fabric asynchronously.
      * @param {String} serviceType - A textual name for the service. For
-     *   example, "/mycompany/myservice".
+     *   example, '/mycompany/myservice'.
      * @param {Object} callbacksByTopic - Object containing a set of topics for
      *   the service to respond to along with their associated request callback
      *   instances. Each key in the object should have a string representation

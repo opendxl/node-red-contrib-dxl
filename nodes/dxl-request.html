@@ -5,7 +5,7 @@
       name: {value: ''},
       topic: {value: ''},
       client: {type: 'dxl-client', required: true},
-      ret: {value: 'txt'}
+      returntype: {value: 'txt'}
     },
     color: 'rgb(231, 231, 174)',
     inputs: 1,
@@ -50,8 +50,8 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-ret"><i class="fa fa-arrow-left"></i> Return</span></label>
-        <select type="text" id="node-input-ret" style="width:70%;">
+        <label for="node-input-returntype"><i class="fa fa-arrow-left"></i> Return</span></label>
+        <select type="text" id="node-input-returntype" style="width:70%;">
             <option value="txt">a UTF-8 string</option>
             <option value="bin">a binary buffer</option>
             <option value="obj">a parsed JSON object</option>
@@ -87,7 +87,7 @@
     <h3>Details</h3>
     <p><i>Client</i> is the configuration node for the DXL client through which the request should be made.
     Click on the pencil icon to add or modify a client configuration.</p>
-    <p><i>Topic</i> is the topic to publish the message to.
+    <p><i>Topic</i> is the topic to send the request to.
     If the value is empty, the topic will be derived from the input message's <code>msg.dxlTopic</code> property.</p>
     <p><i>Name</i> is only used for display purposes in the Node-RED user interface.<p>
     <p><i>Return</i> controls the data type for the <code>msg.payload</code> property in the message injected into a flow.

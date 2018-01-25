@@ -4,19 +4,35 @@ var dxl = require('@opendxl/dxl-client')
 var util = require('../lib/util')
 
 module.exports = function (RED) {
-  function DxlResponseNode (config) {
-    RED.nodes.createNode(this, config)
-    this.client = RED.nodes.getNode(config.client)
+  /**
+   * @classdesc Node which delivers a response message with the msg.payload from
+   * the input message to the DXL fabric. This node should typically be
+   * downstream in the flow from a DXL service node, which receives the original
+   * request from the DXL fabric.
+   * @param {Object} nodeConfig - Configuration data which the node uses.
+   * @param {String} nodeConfig.client - Id of the DXL client configuration node
+   *   that this node should be associated with.
+   * @constructor
+   */
+  function DxlResponseNode (nodeConfig) {
+    RED.nodes.createNode(this, nodeConfig)
+
+    /**
+     * Handle to the DXL client node used to make requests to the DXL fabric.
+     * @type {Client}
+     * @private
+     */
+    this._client = RED.nodes.getNode(nodeConfig.client)
 
     var node = this
 
-    if (this.client) {
+    if (this._client) {
       this.status({
         fill: 'red',
         shape: 'ring',
         text: 'node-red:common.status.disconnected'
       })
-      this.client.registerUserNode(this)
+      this._client.registerUserNode(this)
       this.on('input', function (msg) {
         if (msg.hasOwnProperty('payload') &&
           msg.hasOwnProperty('dxlRequest')) {
@@ -37,17 +53,17 @@ module.exports = function (RED) {
             response = new dxl.Response(msg.dxlRequest)
             response.payload = util._convertNonBufferTextToString(msg.payload)
           }
-          if (this.client.connected) {
-            this.client.sendResponse(response)
+          if (this._client.connected) {
+            this._client.sendResponse(response)
           } else {
             this.error('Unable to send response, not connected')
           }
         }
       })
       this.on('close', function (done) {
-        node.client.unregisterUserNode(node, done)
+        node._client.unregisterUserNode(node, done)
       })
-      if (this.client.connected) {
+      if (this._client.connected) {
         this.status({
           fill: 'green',
           shape: 'dot',

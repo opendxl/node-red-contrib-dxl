@@ -3,24 +3,66 @@
 var util = require('../lib/util')
 
 module.exports = function (RED) {
-  function DxlServiceNode (config) {
-    RED.nodes.createNode(this, config)
-    this.serviceType = config.serviceType
-    this.rules = config.rules || []
-    this.client = RED.nodes.getNode(config.client)
+  /**
+   * @classdesc Node which registers a service with the DXL fabric. When a
+   * request message is received by the service, a corresponding new message is
+   * injected into a flow.
+   * @param {Object} nodeConfig - Configuration data which the node uses.
+   * @param {String} nodeConfig.serviceType - A textual name for the service.
+   *   For example, '/mycompany/myservice'.
+   * @param {Array<Object>} [nodeConfig.rules=[]] - A list of objects containing
+   *   a topic that the service handles requests for and a payloadType which
+   *   describes the type of the request payload.
+   * @param {String} [nodeConfig.rules[].payloadType=txt] - Controls the data
+   *   type for the msg.payload property in the new message injected into a
+   *   flow. If payloadType is 'bin', the raw binary Buffer received in the DXL
+   *   request payload is forwarded along. If payloadType is 'txt', the binary
+   *   Buffer is decoded from UTF-8 octets into a String. If payloadType is
+   *   'obj', the binary Buffer is decoded into a UTF-8 string and parsed as
+   *   JSON text into an Object. If an error occurs when attempting to convert
+   *   the binary Buffer of the payload into the desired data type, the current
+   *   flow is halted with an error.
+   * @param {String} nodeConfig.rules[].topic - Topic to subscribe to for
+   *   request notifications.
+   * @param {String} nodeConfig.client - Id of the DXL client configuration node
+   *   that this node should be associated with.
+   * @constructor
+   */
+  function DxlServiceNode (nodeConfig) {
+    RED.nodes.createNode(this, nodeConfig)
+
+    /**
+     * A textual name for the service.
+     * @type {String}
+     * @private
+     */
+    this._serviceType = nodeConfig.serviceType
+    /**
+     * A list of objects containing a topic that the service handles requests
+     * for and a payloadType which describes the type of the request payload.
+     * @type {Array<Object>}
+     * @private
+     */
+    this._rules = nodeConfig.rules || []
+    /**
+     * Handle to the DXL client node used to make requests to the DXL fabric.
+     * @type {Client}
+     * @private
+     */
+    this._client = RED.nodes.getNode(nodeConfig.client)
 
     var node = this
 
-    if (this.client) {
+    if (this._client) {
       this.status({
         fill: 'red',
         shape: 'ring',
         text: 'node-red:common.status.disconnected'
       })
-      if (this.serviceType) {
+      if (this._serviceType) {
         var valid = true
-        for (var i = 0; i < this.rules.length; i += 1) {
-          var rule = this.rules[i]
+        for (var i = 0; i < this._rules.length; i += 1) {
+          var rule = this._rules[i]
           if (!rule.topic) {
             this.error('Missing topic name for rule ' + (i + 1))
             valid = false
@@ -31,27 +73,27 @@ module.exports = function (RED) {
         }
 
         if (valid) {
-          this.client.registerUserNode(this)
+          this._client.registerUserNode(this)
 
           var callbacksByTopic = {}
-          this.rules.forEach(function (rule, counter) {
+          this._rules.forEach(function (rule, counter) {
             callbacksByTopic[rule.topic] = function (request) {
               var msg = {topic: request.destinationTopic,
                 dxlRequest: request,
                 dxlMessage: request}
               var canConvert = true
               var outputMessages = []
-              for (var j = 0; j < node.rules.length; j += 1) {
+              for (var j = 0; j < node._rules.length; j += 1) {
                 if (j === counter) {
                   try {
                     msg.payload = util._convertBufferToReturnType(
-                      node.rules[j].payloadType,
+                      node._rules[j].payloadType,
                       request.payload)
                     outputMessages.push(msg)
                   } catch (e) {
                     canConvert = false
                     node.error('Error converting request to ' +
-                      node.rules[j].payloadType +
+                      node._rules[j].payloadType +
                       '. Error: ' + e.message +
                       ', Payload: ' + request.payload, msg)
                     break
@@ -66,13 +108,13 @@ module.exports = function (RED) {
             }
           })
 
-          var serviceInfo = this.client.registerServiceAsync(this.serviceType,
+          var serviceInfo = this._client.registerServiceAsync(this._serviceType,
             callbacksByTopic)
           this.on('close', function (done) {
-            node.client.unregisterServiceAsync(serviceInfo)
-            node.client.unregisterUserNode(node, done)
+            node._client.unregisterServiceAsync(serviceInfo)
+            node._client.unregisterUserNode(node, done)
           })
-          if (this.client.connected) {
+          if (this._client.connected) {
             this.status({
               fill: 'green',
               shape: 'dot',
@@ -80,7 +122,7 @@ module.exports = function (RED) {
             })
           }
         }
-      } else if (!this.serviceType) {
+      } else if (!this._serviceType) {
         this.error('Missing service type configuration')
       }
     } else {

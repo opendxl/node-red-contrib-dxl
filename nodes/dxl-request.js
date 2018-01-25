@@ -4,29 +4,67 @@ var dxl = require('@opendxl/dxl-client')
 var util = require('../lib/util')
 
 module.exports = function (RED) {
-  function DxlRequestNode (config) {
-    RED.nodes.createNode(this, config)
-    this.ret = config.ret || 'txt'
-    this.topic = config.topic
-    this.client = RED.nodes.getNode(config.client)
+  /**
+   * @classdesc Node which sends a request message containing the msg.payload
+   * from the input message to a remote DXL service and writes the response
+   * received from the request to the output msg.payload property.
+   * @param {Object} nodeConfig - Configuration data which the node uses.
+   * @param {String} [nodeConfig.returntype=txt] - Controls the data type for
+   *   the msg.payload property in the new message injected into a flow. If
+   *   returntype is 'bin', the raw binary Buffer received in the DXL response
+   *   payload is forwarded along. If returntype is 'txt', the binary Buffer is
+   *   decoded from UTF-8 octets into a String. If returntype is 'obj', the
+   *   binary Buffer is decoded into a UTF-8 string and parsed as JSON text into
+   *   an Object. If an error occurs when attempting to convert the binary
+   *   Buffer of the payload into the desired data type, the current flow is
+   *   halted with an error.
+   * @param {String} nodeConfig.topic - Topic to send the request to. If the
+   *   value is empty, the topic will be derived from the input message's
+   *   msg.dxlTopic property.
+   * @param {String} nodeConfig.client - Id of the DXL client configuration node
+   *   that this node should be associated with.
+   * @constructor
+   */
+  function DxlRequestNode (nodeConfig) {
+    RED.nodes.createNode(this, nodeConfig)
+
+    /**
+     * Controls the data type for the msg.payload property in the new message
+     * injected into a flow.
+     * @type {String}
+     * @private
+     */
+    this._returnType = nodeConfig.returntype || 'txt'
+    /**
+     * Topic to send the request to.
+     * @type {String}
+     * @private
+     */
+    this._topic = nodeConfig.topic
+    /**
+     * Handle to the DXL client node used to make requests to the DXL fabric.
+     * @type {Client}
+     * @private
+     */
+    this._client = RED.nodes.getNode(nodeConfig.client)
 
     var node = this
 
-    if (this.client) {
+    if (this._client) {
       this.status({
         fill: 'red',
         shape: 'ring',
         text: 'node-red:common.status.disconnected'
       })
-      this.client.registerUserNode(this)
+      this._client.registerUserNode(this)
       this.on('input', function (msg) {
         if (msg.hasOwnProperty('payload')) {
-          var topic = node.topic || msg.dxlTopic
+          var topic = node._topic || msg.dxlTopic
           if (topic) {
             var request = new dxl.Request(topic)
             request.payload = util._convertNonBufferTextToString(msg.payload)
-            if (node.client.connected) {
-              this.client.asyncRequest(request,
+            if (node._client.connected) {
+              this._client.asyncRequest(request,
                   function (error, response) {
                     if (error) {
                       var errorMessage = error.message
@@ -44,13 +82,13 @@ module.exports = function (RED) {
                       msg.dxlResponse = response
                       msg.dxlMessage = msg.dxlResponse
                       try {
-                        msg.payload = util._convertBufferToReturnType(node.ret,
-                            response.payload)
+                        msg.payload = util._convertBufferToReturnType(
+                          node._returnType, response.payload)
                         node.send(msg)
                       } catch (e) {
-                        node.error('Error converting response to ' + node.ret +
-                            '. Error: ' + e.message +
-                            ', Payload: ' + response.payload, msg)
+                        node.error('Error converting response to ' +
+                          node._returnType + '. Error: ' + e.message +
+                          ', Payload: ' + response.payload, msg)
                       }
                     }
                   }
@@ -64,9 +102,9 @@ module.exports = function (RED) {
         }
       })
       this.on('close', function (done) {
-        node.client.unregisterUserNode(node, done)
+        node._client.unregisterUserNode(node, done)
       })
-      if (this.client.connected) {
+      if (this._client.connected) {
         this.status({
           fill: 'green',
           shape: 'dot',

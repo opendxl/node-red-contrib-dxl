@@ -5,7 +5,7 @@
       name: {value: ''},
       topic: {value: '', required: true},
       client: {type: 'dxl-client', required: true},
-      ret: {value: 'txt'}
+      returntype: {value: 'txt'}
     },
     color: '#d8bfd8',
     inputs: 0,
@@ -34,8 +34,8 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-ret"><i class="fa fa-arrow-left"></i> Return</span></label>
-        <select type="text" id="node-input-ret" style="width:70%;">
+        <label for="node-input-returntype"><i class="fa fa-arrow-left"></i> Return</span></label>
+        <select type="text" id="node-input-returntype" style="width:70%;">
             <option value="txt">a UTF-8 string</option>
             <option value="bin">a binary buffer</option>
             <option value="obj">a parsed JSON object</option>
