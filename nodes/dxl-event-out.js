@@ -17,7 +17,7 @@ module.exports = function (RED) {
         shape: 'ring',
         text: 'node-red:common.status.disconnected'
       })
-      this.client.register(this)
+      this.client.registerUserNode(this)
       this.on('input', function (msg) {
         if (msg.hasOwnProperty('payload')) {
           var topic = node.topic || msg.dxlTopic
@@ -35,7 +35,7 @@ module.exports = function (RED) {
         }
       })
       this.on('close', function (done) {
-        node.client.deregister(node, done)
+        node.client.unregisterUserNode(node, done)
       })
       if (this.client.connected) {
         this.status({

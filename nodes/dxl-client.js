@@ -30,15 +30,15 @@ module.exports = function (RED) {
 
     var node = this
 
-    this.register = function (dxlNode) {
-      node._users[dxlNode.id] = dxlNode
+    this.registerUserNode = function (userNode) {
+      node._users[userNode.id] = userNode
       if (Object.keys(node._users).length === 1) {
         node.connect()
       }
     }
 
-    this.deregister = function (dxlNode, done) {
-      delete node._users[dxlNode.id]
+    this.unregisterUserNode = function (userNode, done) {
+      delete node._users[userNode.id]
       if (node._closing) {
         return done()
       }

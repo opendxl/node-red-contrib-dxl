@@ -18,7 +18,7 @@ module.exports = function (RED) {
         text: 'node-red:common.status.disconnected'
       })
       if (this.topic) {
-        this.client.register(this)
+        this.client.registerUserNode(this)
         var eventCallback = function (event) {
           var msg = {topic: event.destinationTopic,
             dxlEvent: event,
@@ -36,7 +36,7 @@ module.exports = function (RED) {
         this.client.addEventCallback(this.topic, eventCallback)
         this.on('close', function (done) {
           node.client.removeEventCallback(node.topic, eventCallback)
-          node.client.deregister(node, done)
+          node.client.unregisterUserNode(node, done)
         })
         if (this.client.connected) {
           this.status({

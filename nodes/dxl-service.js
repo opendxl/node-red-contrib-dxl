@@ -31,7 +31,7 @@ module.exports = function (RED) {
         }
 
         if (valid) {
-          this.client.register(this)
+          this.client.registerUserNode(this)
 
           var callbacksByTopic = {}
           this.rules.forEach(function (rule, counter) {
@@ -70,7 +70,7 @@ module.exports = function (RED) {
             callbacksByTopic)
           this.on('close', function (done) {
             node.client.unregisterService(serviceInfo)
-            node.client.deregister(node, done)
+            node.client.unregisterUserNode(node, done)
           })
           if (this.client.connected) {
             this.status({
