@@ -20,32 +20,33 @@ module.exports = function (RED) {
       nodeConfig.keepalive, 1800)
     clientConfig.reconnectDelay = convertValueToNumber(
       nodeConfig.reconnectdelay, 1)
-    this.client = new dxl.Client(clientConfig)
 
     this.connected = false
-    this.connecting = false
-    this.closing = false
+
+    this._client = new dxl.Client(clientConfig)
+    this._connecting = false
+    this._closing = false
+    this._users = {}
 
     var node = this
-    this.users = {}
 
     this.register = function (dxlNode) {
-      node.users[dxlNode.id] = dxlNode
-      if (Object.keys(node.users).length === 1) {
+      node._users[dxlNode.id] = dxlNode
+      if (Object.keys(node._users).length === 1) {
         node.connect()
       }
     }
 
     this.deregister = function (dxlNode, done) {
-      delete node.users[dxlNode.id]
-      if (node.closing) {
+      delete node._users[dxlNode.id]
+      if (node._closing) {
         return done()
       }
-      if (Object.keys(node.users).length === 0) {
-        if (node.client && node.client.connected) {
-          return node.client.disconnect(done)
+      if (Object.keys(node._users).length === 0) {
+        if (node._client && node._client.connected) {
+          return node._client.disconnect(done)
         } else {
-          node.client.disconnect()
+          node._client.disconnect()
           return done()
         }
       }
@@ -53,17 +54,17 @@ module.exports = function (RED) {
     }
 
     this.connect = function () {
-      if (!node.connected && !node.connecting) {
-        node.connecting = true
-        node.client.connect()
-        node.client.setMaxListeners(0)
+      if (!node.connected && !node._connecting) {
+        node._connecting = true
+        node._client.connect()
+        node._client.setMaxListeners(0)
         // Register successful connect or reconnect handler
-        node.client.on('connect', function () {
-          node.connecting = false
+        node._client.on('connect', function () {
+          node._connecting = false
           node.connected = true
-          for (var id in node.users) {
-            if (node.users.hasOwnProperty(id)) {
-              node.users[id].status({
+          for (var id in node._users) {
+            if (node._users.hasOwnProperty(id)) {
+              node._users[id].status({
                 fill: 'green',
                 shape: 'dot',
                 text: 'node-red:common.status.connected'
@@ -71,10 +72,10 @@ module.exports = function (RED) {
             }
           }
         })
-        node.client.on('reconnect', function () {
-          for (var id in node.users) {
-            if (node.users.hasOwnProperty(id)) {
-              node.users[id].status({
+        node._client.on('reconnect', function () {
+          for (var id in node._users) {
+            if (node._users.hasOwnProperty(id)) {
+              node._users[id].status({
                 fill: 'yellow',
                 shape: 'ring',
                 text: 'node-red:common.status.connecting'
@@ -83,19 +84,19 @@ module.exports = function (RED) {
           }
         })
         // Register disconnect handlers
-        node.client.on('close', function () {
+        node._client.on('close', function () {
           if (node.connected) {
             node.connected = false
-            for (var id in node.users) {
-              if (node.users.hasOwnProperty(id)) {
-                node.users[id].status({
+            for (var id in node._users) {
+              if (node._users.hasOwnProperty(id)) {
+                node._users[id].status({
                   fill: 'red',
                   shape: 'ring',
                   text: 'node-red:common.status.disconnected'
                 })
               }
             }
-          } else if (node.connecting) {
+          } else if (node._connecting) {
             node.log('Connect failed')
           }
         })
@@ -103,45 +104,45 @@ module.exports = function (RED) {
     }
 
     this.addEventCallback = function (topic, callback) {
-      node.client.addEventCallback(topic, callback)
+      node._client.addEventCallback(topic, callback)
     }
 
     this.removeEventCallback = function (topic, callback) {
-      if (!node.closing) {
-        node.client.removeEventCallback(topic, callback)
+      if (!node._closing) {
+        node._client.removeEventCallback(topic, callback)
       }
     }
 
     this.asyncRequest = function (request, responseCallback) {
-      node.client.asyncRequest(request, responseCallback)
+      node._client.asyncRequest(request, responseCallback)
     }
 
     this.sendEvent = function (event) {
-      node.client.sendEvent(event)
+      node._client.sendEvent(event)
     }
 
     this.sendResponse = function (response) {
-      node.client.sendResponse(response)
+      node._client.sendResponse(response)
     }
 
     this.registerService = function (serviceType, callbacksByTopic) {
-      var serviceInfo = new dxl.ServiceRegistrationInfo(node.client,
+      var serviceInfo = new dxl.ServiceRegistrationInfo(node._client,
           serviceType)
       serviceInfo.addTopics(callbacksByTopic)
-      node.client.registerServiceAsync(serviceInfo)
+      node._client.registerServiceAsync(serviceInfo)
       return serviceInfo
     }
 
     this.unregisterService = function (serviceRequestInfo) {
-      node.client.unregisterServiceAsync(serviceRequestInfo)
+      node._client.unregisterServiceAsync(serviceRequestInfo)
     }
 
     this.on('close', function (done) {
-      node.closing = true
+      node._closing = true
       if (this.connected) {
-        node.client.once('close', function () { done() })
+        node._client.once('close', function () { done() })
       }
-      node.client.destroy()
+      node._client.destroy()
       if (!this.connected) {
         done()
       }
