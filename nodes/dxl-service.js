@@ -66,10 +66,10 @@ module.exports = function (RED) {
             }
           })
 
-          var serviceInfo = this.client.registerService(this.serviceType,
+          var serviceInfo = this.client.registerServiceAsync(this.serviceType,
             callbacksByTopic)
           this.on('close', function (done) {
-            node.client.unregisterService(serviceInfo)
+            node.client.unregisterServiceAsync(serviceInfo)
             node.client.unregisterUserNode(node, done)
           })
           if (this.client.connected) {
