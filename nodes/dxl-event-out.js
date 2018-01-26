@@ -44,7 +44,7 @@ module.exports = function (RED) {
           var topic = node._topic || msg.dxlTopic
           if (topic) {
             var event = new dxl.Event(topic)
-            event.payload = util._convertNonBufferTextToString(msg.payload)
+            event.payload = util.convertNonBufferTextToString(msg.payload)
             if (this._client.connected) {
               this._client.sendEvent(event)
             } else {

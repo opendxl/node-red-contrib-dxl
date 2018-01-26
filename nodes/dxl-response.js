@@ -51,7 +51,7 @@ module.exports = function (RED) {
             response.payload = msg.payload
           } else {
             response = new dxl.Response(msg.dxlRequest)
-            response.payload = util._convertNonBufferTextToString(msg.payload)
+            response.payload = util.convertNonBufferTextToString(msg.payload)
           }
           if (this._client.connected) {
             this._client.sendResponse(response)

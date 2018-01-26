@@ -60,7 +60,7 @@ module.exports = function (RED) {
             dxlEvent: event,
             dxlMessage: event}
           try {
-            msg.payload = util._convertBufferToReturnType(node._returnType,
+            msg.payload = util.convertBufferToReturnType(node._returnType,
               event.payload)
             node.send(msg)
           } catch (e) {

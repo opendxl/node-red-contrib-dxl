@@ -62,7 +62,7 @@ module.exports = function (RED) {
           var topic = node._topic || msg.dxlTopic
           if (topic) {
             var request = new dxl.Request(topic)
-            request.payload = util._convertNonBufferTextToString(msg.payload)
+            request.payload = util.convertNonBufferTextToString(msg.payload)
             if (node._client.connected) {
               this._client.asyncRequest(request,
                   function (error, response) {
@@ -82,7 +82,7 @@ module.exports = function (RED) {
                       msg.dxlResponse = response
                       msg.dxlMessage = msg.dxlResponse
                       try {
-                        msg.payload = util._convertBufferToReturnType(
+                        msg.payload = util.convertBufferToReturnType(
                           node._returnType, response.payload)
                         node.send(msg)
                       } catch (e) {

@@ -86,7 +86,7 @@ module.exports = function (RED) {
               for (var j = 0; j < node._rules.length; j += 1) {
                 if (j === counter) {
                   try {
-                    msg.payload = util._convertBufferToReturnType(
+                    msg.payload = util.convertBufferToReturnType(
                       node._rules[j].payloadType,
                       request.payload)
                     outputMessages.push(msg)
