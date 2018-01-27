@@ -11,8 +11,11 @@
     "Node-RED"
   ],
   "files": [
-    "dxl.html",
-    "dxl.js"
+    "lib",
+    "nodes",
+    "examples",
+    "LICENSE",
+    "README.md"
   ],
   "engines": {
     "node": ">=4.0.0"
@@ -21,6 +24,7 @@
     "@opendxl/dxl-client": "^0.0.1"
   },
   "devDependencies": {
+    "commander": "^2.13.0",
     "jshint": "^2.9.5",
     "eslint-plugin-html": "^3.2.2",
     "standard": "^10.0.3",
@@ -42,11 +46,13 @@
     }
   },
   "scripts": {
+    "remove-config-node": "scripts/remove-config-node.js",
     "snazzy": "npm run standard | node_modules/.bin/snazzy",
     "standard": "node_modules/.bin/standard \"**/*.html\" \"**/*.js\""
   },
   "standard": {
     "globals": [
+      "DXL",
       "RED",
       "$"
     ],

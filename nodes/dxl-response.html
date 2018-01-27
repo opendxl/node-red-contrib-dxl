@@ -3,7 +3,10 @@
     category: 'output',
     defaults: {
       name: {value: ''},
-      client: {type: 'dxl-client', required: true}
+      client: {type: 'dxl-client',
+        required: false,
+        validate: function () { return DXL.validators.client(this) }
+      }
     },
     color: '#d8bfd8',
     inputs: 1,
@@ -15,22 +18,6 @@
     },
     labelStyle: function () {
       return this.name ? 'node_label_italic' : ''
-    },
-    onadd: function () {
-      if (!this.client && RED.nodes.hasOwnProperty('eachConfig')) {
-        var clientConfigId = ''
-        var configCount = 0
-        RED.nodes.eachConfig(function (n) {
-          if (n.hasOwnProperty('id') && n.hasOwnProperty('type') &&
-            (n.type === 'dxl-client')) {
-            clientConfigId = n.id
-            configCount++
-          }
-        })
-        if (configCount === 1) {
-          this.client = clientConfigId
-        }
-      }
     }
   })
 </script>

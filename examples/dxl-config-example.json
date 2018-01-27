@@ -1,0 +1,9 @@
+[
+    {
+        "configfile": "/root/.node-red/dxlclient.config",
+        "id": "4d73f880.04a33",
+        "name": "client",
+        "type": "dxl-client",
+        "z": ""
+    }
+]

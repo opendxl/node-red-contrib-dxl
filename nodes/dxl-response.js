@@ -26,12 +26,13 @@ module.exports = function (RED) {
 
     var node = this
 
+    this.status({
+      fill: 'red',
+      shape: 'ring',
+      text: 'node-red:common.status.disconnected'
+    })
+
     if (this._client) {
-      this.status({
-        fill: 'red',
-        shape: 'ring',
-        text: 'node-red:common.status.disconnected'
-      })
       this._client.registerUserNode(this)
       this.on('input', function (msg) {
         if (msg.hasOwnProperty('payload') &&

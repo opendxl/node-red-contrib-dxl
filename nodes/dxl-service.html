@@ -11,7 +11,10 @@
       defaults: {
         name: {value: ''},
         serviceType: {value: '', required: true},
-        client: {type: 'dxl-client', required: true},
+        client: {type: 'dxl-client',
+          required: false,
+          validate: function () { return DXL.validators.client(this) }
+        },
         rules: {value: [{payloadType: 'txt', topic: ''}]},
         outputs: {value: 1}
       },

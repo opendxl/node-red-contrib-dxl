@@ -1,0 +1,67 @@
+[
+    {
+        "id": "7d0acc33.7ed804",
+        "type": "tab",
+        "label": "DXL Event Example",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "b3f728da.f0fe18",
+        "type": "inject",
+        "z": "7d0acc33.7ed804",
+        "name": "Set 'hello' payload for event",
+        "topic": "",
+        "payload": "hello",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 164,
+        "y": 83,
+        "wires": [
+            [
+                "c06b8d3a.d193d8"
+            ]
+        ]
+    },
+    {
+        "id": "1fcc773b.38e131",
+        "type": "debug",
+        "z": "7d0acc33.7ed804",
+        "name": "Output payload from event",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 436,
+        "y": 176,
+        "wires": []
+    },
+    {
+        "id": "c06b8d3a.d193d8",
+        "type": "dxl-event out",
+        "z": "7d0acc33.7ed804",
+        "name": "Send event to DXL fabric",
+        "topic": "/isecg/sample/basicevent",
+        "client": "",
+        "x": 427,
+        "y": 83,
+        "wires": []
+    },
+    {
+        "id": "45beaa3.c4be8d4",
+        "type": "dxl-event in",
+        "z": "7d0acc33.7ed804",
+        "name": "Receive event from DXL fabric",
+        "topic": "/isecg/sample/basicevent",
+        "client": "",
+        "returntype": "txt",
+        "x": 145,
+        "y": 176,
+        "wires": [
+            [
+                "1fcc773b.38e131"
+            ]
+        ]
+    }
+]

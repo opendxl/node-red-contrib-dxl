@@ -1,11 +1,37 @@
 <script type="text/javascript">
+  var DXL = {}
+
+  DXL.validators = {
+    client: function (node) {
+      var valid = false
+      var clientIds = []
+      RED.nodes.eachConfig(function (n) {
+        if (n.id && n.type && (n.type === 'dxl-client')) {
+          clientIds.push(n.id)
+        }
+      })
+      if (clientIds.indexOf(node.client) >= 0) {
+        valid = true
+      } else if (clientIds.length === 1) {
+        node.client = clientIds[0]
+        if (RED.nodes.updateConfigNodeUsers) {
+          RED.nodes.updateConfigNodeUsers(node)
+        }
+        valid = true
+      }
+      return valid
+    }
+  }
+</script>
+
+<script type="text/javascript">
   RED.nodes.registerType('dxl-client', {
     category: 'config',
     defaults: {
       configfile: {value: '', required: true},
       name: {value: ''},
-      keepalive: {value: 1800, validate:RED.validators.number()},
-      reconnectdelay: {value: 1, validate:RED.validators.number()}
+      keepalive: {value: 1800, validate: RED.validators.number()},
+      reconnectdelay: {value: 1, validate: RED.validators.number()}
     },
     inputs: 0,
     outputs: 1,
@@ -13,14 +39,14 @@
     label: function () {
       return this.name || 'dxl client'
     },
-    oneditprepare: function() {
+    oneditprepare: function () {
       if (typeof this.keepalive === 'undefined') {
         this.keepalive = 1800
-        $("#node-config-input-keepalive").val(this.keepalive)
+        $('#node-config-input-keepalive').val(this.keepalive)
       }
       if (typeof this.reconnectdelay === 'undefined') {
         this.reconnectdelay = 1
-        $("#node-config-input-reconnectdelay").val(this.reconnectdelay)
+        $('#node-config-input-reconnectdelay').val(this.reconnectdelay)
       }
     }
   })

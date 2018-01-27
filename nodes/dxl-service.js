@@ -53,12 +53,13 @@ module.exports = function (RED) {
 
     var node = this
 
+    this.status({
+      fill: 'red',
+      shape: 'ring',
+      text: 'node-red:common.status.disconnected'
+    })
+
     if (this._client) {
-      this.status({
-        fill: 'red',
-        shape: 'ring',
-        text: 'node-red:common.status.disconnected'
-      })
       if (this._serviceType) {
         var valid = true
         for (var i = 0; i < this._rules.length; i += 1) {
