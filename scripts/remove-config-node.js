@@ -37,7 +37,7 @@ inputNodes.forEach(function (node) {
   }
 })
 
-var outputJson = JSON.stringify(outputNodes, null, 4)
+var outputJson = JSON.stringify(outputNodes, null, 4) + '\n'
 if (program.outputFile) {
   fs.writeFileSync(program.outputFile, outputJson)
   console.log('Wrote modified file to: ' + program.outputFile)
