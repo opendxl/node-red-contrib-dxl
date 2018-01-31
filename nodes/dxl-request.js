@@ -9,11 +9,11 @@ module.exports = function (RED) {
    * from the input message to a remote DXL service and writes the response
    * received from the request to the output msg.payload property.
    * @param {Object} nodeConfig - Configuration data which the node uses.
-   * @param {String} [nodeConfig.returntype=txt] - Controls the data type for
+   * @param {String} [nodeConfig.returnType=txt] - Controls the data type for
    *   the msg.payload property in the new message injected into a flow. If
-   *   returntype is 'bin', the raw binary Buffer received in the DXL response
-   *   payload is forwarded along. If returntype is 'txt', the binary Buffer is
-   *   decoded from UTF-8 octets into a String. If returntype is 'obj', the
+   *   returnType is 'bin', the raw binary Buffer received in the DXL response
+   *   payload is forwarded along. If returnType is 'txt', the binary Buffer is
+   *   decoded from UTF-8 octets into a String. If returnType is 'obj', the
    *   binary Buffer is decoded into a UTF-8 string and parsed as JSON text into
    *   an Object. If an error occurs when attempting to convert the binary
    *   Buffer of the payload into the desired data type, the current flow is

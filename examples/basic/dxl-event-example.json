@@ -55,7 +55,7 @@
         "name": "Receive event from DXL fabric",
         "topic": "/isecg/sample/basicevent",
         "client": "",
-        "returntype": "txt",
+        "returnType": "txt",
         "x": 145,
         "y": 176,
         "wires": [

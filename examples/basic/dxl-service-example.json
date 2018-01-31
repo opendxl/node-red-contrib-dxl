@@ -36,7 +36,7 @@
         "name": "Send request to DXL fabric",
         "topic": "/isecg/sample/mybasicservice",
         "client": "",
-        "returntype": "txt",
+        "returnType": "txt",
         "x": 475,
         "y": 46,
         "wires": [

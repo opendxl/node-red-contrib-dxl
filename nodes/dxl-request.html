@@ -8,7 +8,7 @@
         required: false,
         validate: function () { return DXL.validators.client(this) }
       },
-      returntype: {value: 'txt'}
+      returnType: {value: 'txt'}
     },
     color: '#5ccfe2',
     inputs: 1,
@@ -37,8 +37,8 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-returntype"><i class="fa fa-arrow-left"></i> Return</span></label>
-        <select type="text" id="node-input-returntype" style="width:70%;">
+        <label for="node-input-returnType"><i class="fa fa-arrow-left"></i> Return</span></label>
+        <select type="text" id="node-input-returnType" style="width:70%;">
             <option value="txt">a UTF-8 string</option>
             <option value="bin">a binary buffer</option>
             <option value="obj">a parsed JSON object</option>
