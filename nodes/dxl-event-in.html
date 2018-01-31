@@ -8,7 +8,7 @@
         required: false,
         validate: function () { return DXL.validators.client(this) }
       },
-      returntype: {value: 'txt'}
+      payloadType: {value: 'txt'}
     },
     color: '#5ccfe2',
     inputs: 0,
@@ -37,8 +37,8 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-returntype"><i class="fa fa-arrow-left"></i> Return</span></label>
-        <select type="text" id="node-input-returntype" style="width:70%;">
+        <label for="node-input-payloadType"><i class="fa fa-arrow-left"></i> Payload type</span></label>
+        <select type="text" id="node-input-payloadType" style="width:70%;">
             <option value="txt">a UTF-8 string</option>
             <option value="bin">a binary buffer</option>
             <option value="obj">a parsed JSON object</option>
@@ -54,7 +54,7 @@
     <h3>Outputs</h3>
     <dl class="message-properties">
        <dt>payload <span class="property-type">string | buffer</span></dt>
-       <dd> The application-specific payload of the message. Through the <i>Return</i> node property, the node can be configured to set the event payload as a UTF-8 String, an Object parsed from a JSON formatted string, or as a binary Buffer.</dd>
+       <dd> The application-specific payload of the message. Through the <i>Payload type</i> node property, the node can be configured to set the event payload as a UTF-8 String, an Object parsed from a JSON formatted string, or as a binary Buffer.</dd>
 
        <dt>topic <span class="property-type">string</span></dt>
        <dd> The topic to publish the message to.</dd>
@@ -70,7 +70,7 @@
     Click on the pencil icon to add or modify a client configuration.</p>
     <p><i>Topic</i> is the topic to subscribe to for event notifications.</p>
     <p><i>Name</i> is only used for display purposes in the Node-RED user interface.<p>
-    <p><i>Return</i> controls the data type for the <code>msg.payload</code> property in the new message injected into a flow.
+    <p><i>Payload type</i> controls the data type for the <code>msg.payload</code> property in the new message injected into a flow.
     If the value is set to <i>a binary buffer</i>, the raw binary Buffer received in the DXL event payload is forwarded along.
     If the value is set to <i>a UTF-8 string</i>, the binary Buffer is decoded from UTF-8 octets into a String.
     If the value is set to <i>a parsed JSON object</i>, the binary Buffer is decoded into a UTF-8 string and parsed as JSON text into an Object.

@@ -7,11 +7,11 @@ module.exports = function (RED) {
    * @classdesc Node which subscribes for event messages to the specific topic
    * on the DXL fabric.
    * @param {Object} nodeConfig - Configuration data which the node uses.
-   * @param {String} [nodeConfig.returntype=txt] - Controls the data type for
+   * @param {String} [nodeConfig.payloadType=txt] - Controls the data type for
    *   the msg.payload property in the new message injected into a flow. If
-   *   returntype is 'bin', the raw binary Buffer received in the DXL event
-   *   payload is forwarded along. If returntype is 'txt', the binary Buffer is
-   *   decoded from UTF-8 octets into a String. If returntype is 'obj', the
+   *   payloadType is 'bin', the raw binary Buffer received in the DXL event
+   *   payload is forwarded along. If payloadType is 'txt', the binary Buffer is
+   *   decoded from UTF-8 octets into a String. If payloadType is 'obj', the
    *   binary Buffer is decoded into a UTF-8 string and parsed as JSON text into
    *   an Object. If an error occurs when attempting to convert the binary
    *   Buffer of the payload into the desired data type, the current flow is
@@ -31,7 +31,7 @@ module.exports = function (RED) {
      * @type {String}
      * @private
      */
-    this._returnType = nodeConfig.returntype || 'txt'
+    this._payloadType = nodeConfig.payloadType || 'txt'
     /**
      * Topic to subscribe to for event notifications.
      * @type {String}
@@ -61,12 +61,12 @@ module.exports = function (RED) {
             dxlEvent: event,
             dxlMessage: event}
           try {
-            msg.payload = util.convertBufferToReturnType(node._returnType,
+            msg.payload = util.convertBufferToReturnType(node._payloadType,
               event.payload)
             node.send(msg)
           } catch (e) {
             msg.payload = event.payload
-            node.error('Error converting event to ' + node._returnType +
+            node.error('Error converting event to ' + node._payloadType +
                 '. Error: ' + e.message + ', Payload: ' + event.payload, msg)
           }
         }
