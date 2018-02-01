@@ -34,7 +34,7 @@ module.exports = function (RED) {
      * @type {String}
      * @private
      */
-    this._returnType = nodeConfig.returntype || 'txt'
+    this._returnType = nodeConfig.returnType || 'txt'
     /**
      * Topic to send the request to.
      * @type {String}
@@ -63,7 +63,7 @@ module.exports = function (RED) {
           var topic = node._topic || msg.dxlTopic
           if (topic) {
             var request = new dxl.Request(topic)
-            request.payload = util.convertNonBufferTextToString(msg.payload)
+            request.payload = msg.payload
             if (node._client.connected) {
               this._client.asyncRequest(request,
                   function (error, response) {
@@ -75,7 +75,7 @@ module.exports = function (RED) {
                         }
                         errorMessage = errorMessage + '(' + error.code + ')'
                         msg.payload = error.detail.payload
-                        msg.dxlResponse = msg.detail
+                        msg.dxlResponse = error.detail
                         msg.dxlMessage = msg.dxlResponse
                       }
                       node.error(errorMessage, msg)

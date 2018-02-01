@@ -1,7 +1,6 @@
 'use strict'
 
 var dxl = require('@opendxl/dxl-client')
-var util = require('../lib/util')
 
 module.exports = function (RED) {
   /**
@@ -45,7 +44,7 @@ module.exports = function (RED) {
           var topic = node._topic || msg.dxlTopic
           if (topic) {
             var event = new dxl.Event(topic)
-            event.payload = util.convertNonBufferTextToString(msg.payload)
+            event.payload = msg.payload
             if (this._client.connected) {
               this._client.sendEvent(event)
             } else {

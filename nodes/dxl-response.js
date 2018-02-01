@@ -1,7 +1,6 @@
 'use strict'
 
 var dxl = require('@opendxl/dxl-client')
-var util = require('../lib/util')
 
 module.exports = function (RED) {
   /**
@@ -35,24 +34,26 @@ module.exports = function (RED) {
     if (this._client) {
       this._client.registerUserNode(this)
       this.on('input', function (msg) {
-        if (msg.hasOwnProperty('payload') &&
-          msg.hasOwnProperty('dxlRequest')) {
+        if (msg.hasOwnProperty('dxlRequest')) {
+          if (typeof msg.payload === 'undefined') {
+            msg.payload = ''
+          }
           var response
           if (msg.hasOwnProperty('error') &&
             msg.error.hasOwnProperty('message')) {
             var errorMessage = msg.error.message
             var errorCode = 0
-            var errorMessageParts = errorMessage.match(/(.*)\((.*)\)/)
+            var errorMessageParts = errorMessage.match(/(.*)\(([-?\d]*)\)$/)
             if (errorMessageParts) {
-              errorMessage = errorMessageParts[1]
-              errorCode = errorMessageParts[2]
+              errorMessage = errorMessageParts[1].replace(/\s+$/, '')
+              errorCode = Number(errorMessageParts[2])
             }
             response = new dxl.ErrorResponse(msg.dxlRequest, errorCode,
               errorMessage)
             response.payload = msg.payload
           } else {
             response = new dxl.Response(msg.dxlRequest)
-            response.payload = util.convertNonBufferTextToString(msg.payload)
+            response.payload = msg.payload
           }
           if (this._client.connected) {
             this._client.sendResponse(response)
