@@ -20,12 +20,12 @@ describe('dxl-client node', function () {
   it('should be loaded', function (done) {
     var testFlows = [
       {
-        configfile: testHelpers.getTestClientConfigFile(),
+        configFile: testHelpers.getTestClientConfigFile(),
         id: 'dxl.clientId',
         name: 'client',
         type: 'dxl-client',
-        keepalive: 123,
-        reconnectdelay: 16
+        keepAliveInterval: 123,
+        reconnectDelay: 16
       }
     ]
     testHelpers.loadNodeRed(testNode, testFlows, function () {

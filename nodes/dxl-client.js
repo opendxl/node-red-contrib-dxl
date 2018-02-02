@@ -27,7 +27,7 @@ module.exports = function (RED) {
    * @classdesc Node responsible for establishing communication with the Data
    * Exchange Layer (DXL) fabric.
    * @param {Object} nodeConfig - Configuration data which the node uses.
-   * @param {String} nodeConfig.configfile - Directory path in which the
+   * @param {String} nodeConfig.configFile - Directory path in which the
    *   DXL client configuration file should reside.
    * @param {Number|String} nodeConfig.keepAliveInterval - The maximum period in
    *   seconds between communications with a connected broker. If no other
@@ -40,11 +40,11 @@ module.exports = function (RED) {
   function DxlClientNode (nodeConfig) {
     RED.nodes.createNode(this, nodeConfig)
 
-    var clientConfig = Config.createDxlConfigFromFile(nodeConfig.configfile)
+    var clientConfig = Config.createDxlConfigFromFile(nodeConfig.configFile)
     clientConfig.keepAliveInterval = convertValueToNumber(
-      nodeConfig.keepalive, 1800)
+      nodeConfig.keepAliveInterval, 1800)
     clientConfig.reconnectDelay = convertValueToNumber(
-      nodeConfig.reconnectdelay, 1)
+      nodeConfig.reconnectDelay, 1)
 
     /**
      * Whether or not the client is currently connected to the DXL fabric.

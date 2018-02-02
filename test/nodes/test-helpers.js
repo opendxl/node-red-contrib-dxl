@@ -64,7 +64,7 @@ module.exports = {
   getClientNodeConfig: function (id) {
     return {
       id: id,
-      configfile: module.exports.getTestClientConfigFile(),
+      configFile: module.exports.getTestClientConfigFile(),
       name: 'client',
       type: 'dxl-client'
     }
