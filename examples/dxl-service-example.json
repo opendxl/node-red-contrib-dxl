@@ -1,15 +1,15 @@
 [
     {
-        "id": "e74509d9.57f32",
+        "id": "1c784deb.1ab752",
         "type": "tab",
         "label": "DXL Service Example",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "25b0f63f.4bf4d2",
+        "id": "788177c.d0fa088",
         "type": "dxl-service in",
-        "z": "e74509d9.57f32",
+        "z": "1c784deb.1ab752",
         "name": "Receive service request from DXL fabric",
         "serviceType": "myService",
         "client": "",
@@ -21,34 +21,34 @@
         ],
         "outputs": 1,
         "x": 180,
-        "y": 200,
+        "y": 176,
         "wires": [
             [
-                "85c2b3be.1513a",
-                "591cdc1a.0bc234"
+                "f4e5ec61.ea5998",
+                "70b7064b.e2c7c"
             ]
         ]
     },
     {
-        "id": "54260f9d.9304b",
+        "id": "d78f6b9a.48c378",
         "type": "dxl request",
-        "z": "e74509d9.57f32",
+        "z": "1c784deb.1ab752",
         "name": "Send request to DXL fabric",
         "topic": "/isecg/sample/mybasicservice",
         "client": "",
         "returnType": "txt",
-        "x": 475,
-        "y": 46,
+        "x": 172,
+        "y": 94,
         "wires": [
             [
-                "a6267dc.1325a8"
+                "23ad49ac.605fbe"
             ]
         ]
     },
     {
-        "id": "89025ee4.057128",
+        "id": "1d2dbf3.51877c1",
         "type": "inject",
-        "z": "e74509d9.57f32",
+        "z": "1c784deb.1ab752",
         "name": "Set 'ping' payload for request",
         "topic": "",
         "payload": "ping",
@@ -56,52 +56,52 @@
         "repeat": "",
         "crontab": "",
         "once": false,
-        "x": 171,
-        "y": 45,
+        "x": 166,
+        "y": 36,
         "wires": [
             [
-                "54260f9d.9304b"
+                "d78f6b9a.48c378"
             ]
         ]
     },
     {
-        "id": "85c2b3be.1513a",
+        "id": "f4e5ec61.ea5998",
         "type": "debug",
-        "z": "e74509d9.57f32",
+        "z": "1c784deb.1ab752",
         "name": "Output payload from request",
         "active": true,
         "console": "false",
         "complete": "payload",
-        "x": 533,
-        "y": 171,
+        "x": 493,
+        "y": 136,
         "wires": []
     },
     {
-        "id": "afebb1fa.62bba",
+        "id": "eb0cb78f.1ebb98",
         "type": "dxl-response out",
-        "z": "e74509d9.57f32",
+        "z": "1c784deb.1ab752",
         "name": "Send response to DXL fabric",
         "client": "",
-        "x": 542,
-        "y": 299,
+        "x": 480,
+        "y": 215,
         "wires": []
     },
     {
-        "id": "a6267dc.1325a8",
+        "id": "23ad49ac.605fbe",
         "type": "debug",
-        "z": "e74509d9.57f32",
+        "z": "1c784deb.1ab752",
         "name": "Output payload from response",
         "active": true,
         "console": "false",
         "complete": "payload",
-        "x": 546,
-        "y": 110,
+        "x": 463,
+        "y": 56,
         "wires": []
     },
     {
-        "id": "591cdc1a.0bc234",
+        "id": "70b7064b.e2c7c",
         "type": "change",
-        "z": "e74509d9.57f32",
+        "z": "1c784deb.1ab752",
         "name": "Set 'pong' payload for response",
         "rules": [
             {
@@ -117,11 +117,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 542,
-        "y": 233,
+        "x": 185,
+        "y": 236,
         "wires": [
             [
-                "afebb1fa.62bba"
+                "eb0cb78f.1ebb98"
             ]
         ]
     }

@@ -1,15 +1,15 @@
 [
     {
-        "id": "7d0acc33.7ed804",
+        "id": "ebb60155.6dd988",
         "type": "tab",
         "label": "DXL Event Example",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "b3f728da.f0fe18",
+        "id": "bdb2408d.46924",
         "type": "inject",
-        "z": "7d0acc33.7ed804",
+        "z": "ebb60155.6dd988",
         "name": "Set 'hello' payload for event",
         "topic": "",
         "payload": "hello",
@@ -18,49 +18,49 @@
         "crontab": "",
         "once": false,
         "x": 164,
-        "y": 83,
+        "y": 36,
         "wires": [
             [
-                "c06b8d3a.d193d8"
+                "529330d1.8c695"
             ]
         ]
     },
     {
-        "id": "1fcc773b.38e131",
+        "id": "ab2487e3.00c5d",
         "type": "debug",
-        "z": "7d0acc33.7ed804",
+        "z": "ebb60155.6dd988",
         "name": "Output payload from event",
         "active": true,
         "console": "false",
         "complete": "payload",
-        "x": 436,
-        "y": 176,
+        "x": 420,
+        "y": 96,
         "wires": []
     },
     {
-        "id": "c06b8d3a.d193d8",
+        "id": "529330d1.8c695",
         "type": "dxl-event out",
-        "z": "7d0acc33.7ed804",
+        "z": "ebb60155.6dd988",
         "name": "Send event to DXL fabric",
         "topic": "/isecg/sample/basicevent",
         "client": "",
-        "x": 427,
-        "y": 83,
+        "x": 429,
+        "y": 36,
         "wires": []
     },
     {
-        "id": "45beaa3.c4be8d4",
+        "id": "96574b91.8110c8",
         "type": "dxl-event in",
-        "z": "7d0acc33.7ed804",
+        "z": "ebb60155.6dd988",
         "name": "Receive event from DXL fabric",
         "topic": "/isecg/sample/basicevent",
         "client": "",
         "payloadType": "txt",
-        "x": 145,
-        "y": 176,
+        "x": 149,
+        "y": 96,
         "wires": [
             [
-                "1fcc773b.38e131"
+                "ab2487e3.00c5d"
             ]
         ]
     }
