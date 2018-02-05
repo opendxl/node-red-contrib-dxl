@@ -64,7 +64,7 @@ describe('dxl service', function () {
           topic: '/dxl-service-test/obj'
         },
         {
-          payloadType: 'txt',
+          payloadType: 'obj',
           topic: '/dxl-service-test/error'
         }
       ],
@@ -101,7 +101,8 @@ describe('dxl service', function () {
       wires: [['dxl.response']]
     },
     {
-      func: 'node.error(msg.payload, msg);',
+      func: 'msg.dxlError = {code: msg.payload.errorCode}; ' +
+        'node.error(msg.payload.errorMessage, msg);',
       id: 'error.function',
       type: 'function',
       outputs: 1,
@@ -160,6 +161,7 @@ describe('dxl service', function () {
               msg.should.have.propertyByPath('dxlRequest', 'payload').eql(
                 requestPayload)
               msg.should.have.property('dxlMessage').equal(msg.dxlRequest)
+              msg.should.not.have.property('dxlError')
               done()
             }, done)
           })
@@ -193,6 +195,7 @@ describe('dxl service', function () {
               msg.should.have.propertyByPath('dxlResponse',
                   'payload').equal(expectedResponsePayload)
               msg.should.have.property('dxlMessage').equal(msg.dxlResponse)
+              msg.should.not.have.property('dxlError')
               done()
             }, done)
           })
@@ -330,9 +333,12 @@ describe('dxl service', function () {
             z: flowTabId
           })
 
-          var requestPayload = 'really bad error (95)'
+          var requestPayload = {
+            errorMessage: 'really bad error',
+            errorCode: 95
+          }
           testFlows.push(testHelpers.getInjectNodeConfig(requestPayload,
-            requestNodeId, 'txt'))
+            requestNodeId, 'obj'))
 
           testHelpers.loadNodeRed(nodesToLoad, testFlows,
             function () {
@@ -340,7 +346,7 @@ describe('dxl service', function () {
               helperNode.on('input', function (msg) {
                 testHelpers.forwardOnError(function () {
                   msg.should.have.propertyByPath(
-                    'error', 'message').match(/really bad error \(95\)/)
+                    'error', 'message').match(/really bad error/)
                   msg.should.have.propertyByPath(
                     'error', 'source', 'type').equal('dxl request')
                   msg.should.have.propertyByPath('dxlResponse',

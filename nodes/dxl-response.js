@@ -43,10 +43,8 @@ module.exports = function (RED) {
             msg.error.hasOwnProperty('message')) {
             var errorMessage = msg.error.message
             var errorCode = 0
-            var errorMessageParts = errorMessage.match(/(.*)\(([-?\d]*)\)$/)
-            if (errorMessageParts) {
-              errorMessage = errorMessageParts[1].replace(/\s+$/, '')
-              errorCode = Number(errorMessageParts[2])
+            if (msg.dxlError && msg.dxlError.hasOwnProperty('code')) {
+              errorCode = msg.dxlError.code
             }
             response = new dxl.ErrorResponse(msg.dxlRequest, errorCode,
               errorMessage)

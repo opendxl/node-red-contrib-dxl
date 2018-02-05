@@ -68,20 +68,17 @@ module.exports = function (RED) {
               this._client.asyncRequest(request,
                   function (error, response) {
                     if (error) {
-                      var errorMessage = error.message
                       if (error instanceof dxl.MessageError) {
-                        if (errorMessage) {
-                          errorMessage = errorMessage + ' '
-                        }
-                        errorMessage = errorMessage + '(' + error.code + ')'
+                        msg.dxlError = {code: error.code}
                         msg.payload = error.detail.payload
                         msg.dxlResponse = error.detail
                         msg.dxlMessage = msg.dxlResponse
                       }
-                      node.error(errorMessage, msg)
+                      node.error(error.message, msg)
                     } else {
                       msg.dxlResponse = response
                       msg.dxlMessage = msg.dxlResponse
+                      delete msg.dxlError
                       try {
                         response.payload = util.convertBufferToReturnType(
                           node._returnType, response.payload)
