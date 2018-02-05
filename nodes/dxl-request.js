@@ -83,8 +83,9 @@ module.exports = function (RED) {
                       msg.dxlResponse = response
                       msg.dxlMessage = msg.dxlResponse
                       try {
-                        msg.payload = util.convertBufferToReturnType(
+                        response.payload = util.convertBufferToReturnType(
                           node._returnType, response.payload)
+                        msg.payload = response.payload
                         node.send(msg)
                       } catch (e) {
                         node.error('Error converting response to ' +

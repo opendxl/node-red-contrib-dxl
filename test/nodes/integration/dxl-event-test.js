@@ -87,6 +87,8 @@ describe('dxl event', function () {
               msg.should.have.property('topic', eventTopic)
               msg.should.have.property('dxlEvent').instanceOf(dxl.Event)
               msg.should.have.propertyByPath('dxlEvent',
+                'payload').equal(expectedEventPayload)
+              msg.should.have.propertyByPath('dxlEvent',
                 'destinationTopic').equal(eventTopic)
               msg.should.have.property('dxlMessage').equal(msg.dxlEvent)
               done()

@@ -48,6 +48,10 @@ describe('dxl service', function () {
       client: clientNodeId,
       rules: [
         {
+          payloadType: 'obj',
+          topic: '/dxl-service-test/no-response'
+        },
+        {
           payloadType: 'txt',
           topic: '/dxl-service-test/txt'
         },
@@ -64,8 +68,9 @@ describe('dxl service', function () {
           topic: '/dxl-service-test/error'
         }
       ],
-      outputs: 4,
+      outputs: 5,
       wires: [
+        [helperNodeId],
         ['txt.function'],
         ['bin.function'],
         ['obj.function'],
@@ -128,6 +133,39 @@ describe('dxl service', function () {
     }
   ]
 
+  it('should copy the dxl request into a flow msg', function (done) {
+    var testFlows = baseTestFlows.slice()
+    testFlows.push({
+      id: requestNodeId,
+      type: 'dxl request',
+      topic: '/dxl-service-test/no-response',
+      returnType: 'obj',
+      client: clientNodeId,
+      wires: [[helperNodeId]],
+      z: flowTabId
+    })
+
+    var requestPayload = { hello: 'how are you', fine: 'thanks' }
+    testFlows.push(testHelpers.getInjectNodeConfig(requestPayload,
+        requestNodeId, 'obj'))
+
+    testHelpers.loadNodeRed(nodesToLoad, testFlows,
+        function () {
+          var helperNode = nodeRedHelper.getNode(helperNodeId)
+          helperNode.on('input', function (msg) {
+            testHelpers.forwardOnError(function () {
+              msg.should.have.property('payload', requestPayload)
+              msg.should.have.property('topic', '/dxl-service-test/no-response')
+              msg.should.have.property('dxlRequest').instanceOf(dxl.Request)
+              msg.should.have.propertyByPath('dxlRequest', 'payload').eql(
+                requestPayload)
+              msg.should.have.property('dxlMessage').equal(msg.dxlRequest)
+              done()
+            }, done)
+          })
+        }, done)
+  })
+
   context('when payloadType set to txt', function () {
     it('should be sent properly through the DXL fabric', function (done) {
       var testFlows = baseTestFlows.slice()
@@ -141,6 +179,7 @@ describe('dxl service', function () {
       })
 
       var requestPayload = 'my request payload as a string'
+      var expectedResponsePayload = 'txt is: ' + requestPayload
       testFlows.push(testHelpers.getInjectNodeConfig(requestPayload,
         requestNodeId, 'txt'))
 
@@ -149,8 +188,10 @@ describe('dxl service', function () {
           var helperNode = nodeRedHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
-              msg.should.have.property('payload', 'txt is: ' + requestPayload)
+              msg.should.have.property('payload', expectedResponsePayload)
               msg.should.have.property('dxlResponse').instanceOf(dxl.Response)
+              msg.should.have.propertyByPath('dxlResponse',
+                  'payload').equal(expectedResponsePayload)
               msg.should.have.property('dxlMessage').equal(msg.dxlResponse)
               done()
             }, done)
