@@ -55,9 +55,12 @@
   },
   "scripts": {
     "remove-config-node": "scripts/remove-config-node.js",
-    "snazzy": "npm run standard | node_modules/.bin/snazzy",
-    "standard": "node_modules/.bin/standard \"**/*.html\" \"**/*.js\"",
-    "test": "node_modules/.bin/mocha --recursive"
+    "test": "mocha --recursive",
+    "lint": "npm run lint:jshint && npm run lint:standard",
+    "lint:jshint": "jshint lib test",
+    "lint:standard": "standard \"**/*.html\" \"**/*.js\" | snazzy",
+    "preci": "npm run lint",
+    "ci": "npm run test"
   },
   "standard": {
     "env": [
