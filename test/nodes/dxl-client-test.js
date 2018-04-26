@@ -31,7 +31,7 @@ describe('dxl-client node', function () {
     testHelpers.loadNodeRed(testNode, testFlows, function () {
       var clientNode = nodeRedHelper.getNode('dxl.clientId')
       clientNode.should.have.property('name', 'client')
-      var clientConfig = clientNode._client.config
+      var clientConfig = clientNode.dxlClient.config
       clientConfig.keepAliveInterval.should.be.equal(123)
       clientConfig.reconnectDelay.should.be.equal(16)
       done()

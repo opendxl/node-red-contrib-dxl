@@ -55,9 +55,8 @@ module.exports = function (RED) {
     /**
      * Handle to the underlying DXL client object
      * @type {Client}
-     * @private
      */
-    this._client = new Client(clientConfig)
+    this.dxlClient = new Client(clientConfig)
     /**
      * Whether or not the DXL client is in the process of connecting to the
      * DXL fabric.
@@ -92,10 +91,10 @@ module.exports = function (RED) {
     this._connect = function () {
       if (!node.connected && !node._connecting) {
         node._connecting = true
-        node._client.connect()
-        node._client.setMaxListeners(0)
+        node.dxlClient.connect()
+        node.dxlClient.setMaxListeners(0)
         // Register successful connect or reconnect handler
-        node._client.on('connect', function () {
+        node.dxlClient.on('connect', function () {
           node._connecting = false
           node.connected = true
           for (var id in node._users) {
@@ -108,7 +107,7 @@ module.exports = function (RED) {
             }
           }
         })
-        node._client.on('reconnect', function () {
+        node.dxlClient.on('reconnect', function () {
           for (var id in node._users) {
             if (node._users.hasOwnProperty(id)) {
               node._users[id].status({
@@ -120,7 +119,7 @@ module.exports = function (RED) {
           }
         })
         // Register disconnect handlers
-        node._client.on('close', function () {
+        node.dxlClient.on('close', function () {
           if (node.connected) {
             node.connected = false
             for (var id in node._users) {
@@ -169,10 +168,10 @@ module.exports = function (RED) {
         return done()
       }
       if (Object.keys(node._users).length === 0) {
-        if (node._client && node._client.connected) {
-          return node._client.disconnect(done)
+        if (node.dxlClient && node.dxlClient.connected) {
+          return node.dxlClient.disconnect(done)
         } else {
-          node._client.disconnect()
+          node.dxlClient.disconnect()
           return done()
         }
       }
@@ -191,7 +190,7 @@ module.exports = function (RED) {
      *   callback function is the {@link Event} object.
      */
     this.addEventCallback = function (topic, eventCallback) {
-      node._client.addEventCallback(topic, eventCallback)
+      node.dxlClient.addEventCallback(topic, eventCallback)
     }
 
     /**
@@ -204,7 +203,7 @@ module.exports = function (RED) {
      */
     this.removeEventCallback = function (topic, eventCallback) {
       if (!node._closing) {
-        node._client.removeEventCallback(topic, eventCallback)
+        node.dxlClient.removeEventCallback(topic, eventCallback)
       }
     }
 
@@ -223,7 +222,7 @@ module.exports = function (RED) {
      *   {@link DxlClientNode#registerUserNode}.
      */
     this.asyncRequest = function (request, responseCallback) {
-      node._client.asyncRequest(request, responseCallback)
+      node.dxlClient.asyncRequest(request, responseCallback)
     }
 
     /**
@@ -235,7 +234,7 @@ module.exports = function (RED) {
      *   {@link DxlClientNode#registerUserNode}.
      */
     this.sendEvent = function (event) {
-      node._client.sendEvent(event)
+      node.dxlClient.sendEvent(event)
     }
 
     /**
@@ -248,7 +247,7 @@ module.exports = function (RED) {
      *   {@link DxlClientNode#registerUserNode}.
      */
     this.sendResponse = function (response) {
-      node._client.sendResponse(response)
+      node.dxlClient.sendResponse(response)
     }
 
     /**
@@ -268,10 +267,10 @@ module.exports = function (RED) {
      *   when the service should be unregistered.
      */
     this.registerServiceAsync = function (serviceType, callbacksByTopic) {
-      var serviceInfo = new ServiceRegistrationInfo(node._client,
+      var serviceInfo = new ServiceRegistrationInfo(node.dxlClient,
           serviceType)
       serviceInfo.addTopics(callbacksByTopic)
-      node._client.registerServiceAsync(serviceInfo)
+      node.dxlClient.registerServiceAsync(serviceInfo)
       return serviceInfo
     }
 
@@ -284,15 +283,15 @@ module.exports = function (RED) {
      *   about the service that is to be unregistered.
      */
     this.unregisterServiceAsync = function (serviceRegInfo) {
-      node._client.unregisterServiceAsync(serviceRegInfo)
+      node.dxlClient.unregisterServiceAsync(serviceRegInfo)
     }
 
     this.on('close', function (done) {
       node._closing = true
       if (this.connected) {
-        node._client.once('close', function () { done() })
+        node.dxlClient.once('close', function () { done() })
       }
-      node._client.destroy()
+      node.dxlClient.destroy()
       if (!this.connected) {
         done()
       }

@@ -41,7 +41,7 @@ describe('dxl-event in node', function () {
         var eventInNode = nodeRedHelper.getNode(eventInNodeId)
         eventInNode.should.have.property('name', 'my event in')
         eventInNode.should.have.property('_payloadType', 'obj')
-        var client = nodeRedHelper.getNode(clientNodeId)._client
+        var client = nodeRedHelper.getNode(clientNodeId).dxlClient
         client.subscriptions.should.containEql(eventTopic)
         done()
       }, done)

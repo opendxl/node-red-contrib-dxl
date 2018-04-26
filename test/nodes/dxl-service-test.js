@@ -53,7 +53,7 @@ describe('dxl-service in node', function () {
         var serviceNode = nodeRedHelper.getNode(serviceNodeId)
         serviceNode.should.have.property('name', 'my service in')
         serviceNode.should.have.property('_rules', topicEntries)
-        var client = nodeRedHelper.getNode(clientNodeId)._client
+        var client = nodeRedHelper.getNode(clientNodeId).dxlClient
         client.subscriptions.should.containEql(firstServiceTopicEntry.topic)
         client.subscriptions.should.containEql(secondServiceTopicEntry.topic)
         done()
