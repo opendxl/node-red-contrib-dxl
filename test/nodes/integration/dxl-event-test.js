@@ -60,14 +60,14 @@ describe('dxl event', function () {
 
       testFlows.push({
         id: eventOutNodeId,
-        type: 'dxl-event out',
+        type: 'dxl-core-event out',
         topic: eventTopic,
         client: clientNodeId
       })
 
       testFlows.push({
         id: eventInNodeId,
-        type: 'dxl-event in',
+        type: 'dxl-core-event in',
         topic: eventTopic,
         payloadType: 'txt',
         client: clientNodeId,
@@ -104,14 +104,14 @@ describe('dxl event', function () {
 
       testFlows.push({
         id: eventOutNodeId,
-        type: 'dxl-event out',
+        type: 'dxl-core-event out',
         topic: '',
         client: clientNodeId
       })
 
       testFlows.push({
         id: eventInNodeId,
-        type: 'dxl-event in',
+        type: 'dxl-core-event in',
         topic: eventTopic,
         payloadType: 'bin',
         client: clientNodeId,
@@ -149,14 +149,14 @@ describe('dxl event', function () {
 
       testFlows.push({
         id: eventOutNodeId,
-        type: 'dxl-event out',
+        type: 'dxl-core-event out',
         topic: eventTopic,
         client: clientNodeId
       })
 
       testFlows.push({
         id: eventInNodeId,
-        type: 'dxl-event in',
+        type: 'dxl-core-event in',
         topic: eventTopic,
         payloadType: 'obj',
         client: clientNodeId,
@@ -194,14 +194,14 @@ describe('dxl event', function () {
 
       testFlows.push({
         id: eventOutNodeId,
-        type: 'dxl-event out',
+        type: 'dxl-core-event out',
         topic: eventTopic,
         client: clientNodeId
       })
 
       testFlows.push({
         id: eventInNodeId,
-        type: 'dxl-event in',
+        type: 'dxl-core-event in',
         topic: eventTopic,
         payloadType: 'obj',
         client: clientNodeId,
@@ -221,7 +221,7 @@ describe('dxl event', function () {
               msg.should.have.propertyByPath(
                 'error', 'message').match(/malformed json/)
               msg.should.have.propertyByPath(
-                'error', 'source', 'type').equal('dxl-event in')
+                'error', 'source', 'type').equal('dxl-core-event in')
               done()
             }, done)
           })

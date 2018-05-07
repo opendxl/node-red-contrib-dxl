@@ -5,7 +5,7 @@ var testNode = require('../../nodes/dxl-event-in')
 var nodeRedHelper = require('../node-red-helper')
 var testHelpers = require('./test-helpers')
 
-describe('dxl-event in node', function () {
+describe('dxl-core-event in node', function () {
   before(function (done) {
     nodeRedHelper.startServer(done)
   })
@@ -28,7 +28,7 @@ describe('dxl-event in node', function () {
       {
         id: eventInNodeId,
         name: 'my event in',
-        type: 'dxl-event in',
+        type: 'dxl-core-event in',
         topic: eventTopic,
         payloadType: 'obj',
         client: clientNodeId

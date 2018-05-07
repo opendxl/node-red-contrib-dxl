@@ -6,7 +6,7 @@ var testNode = require('../../nodes/dxl-request')
 var nodeRedHelper = require('../node-red-helper')
 var testHelpers = require('./test-helpers')
 
-describe('dxl-request node', function () {
+describe('dxl-core-request node', function () {
   before(function (done) {
     nodeRedHelper.startServer(done)
   })
@@ -29,7 +29,7 @@ describe('dxl-request node', function () {
       {
         id: requestNodeId,
         name: 'my request',
-        type: 'dxl request',
+        type: 'dxl-core-request',
         topic: requestTopic,
         client: clientNodeId,
         returnType: 'bin',

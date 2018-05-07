@@ -115,5 +115,5 @@ module.exports = function (RED) {
     }
   }
 
-  RED.nodes.registerType('dxl request', DxlRequestNode)
+  RED.nodes.registerType('dxl-core-request', DxlRequestNode)
 }

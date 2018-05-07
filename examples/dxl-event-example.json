@@ -39,7 +39,7 @@
     },
     {
         "id": "529330d1.8c695",
-        "type": "dxl-event out",
+        "type": "dxl-core-event out",
         "z": "ebb60155.6dd988",
         "name": "Send event to DXL fabric",
         "topic": "/isecg/sample/basicevent",
@@ -50,7 +50,7 @@
     },
     {
         "id": "96574b91.8110c8",
-        "type": "dxl-event in",
+        "type": "dxl-core-event in",
         "z": "ebb60155.6dd988",
         "name": "Receive event from DXL fabric",
         "topic": "/isecg/sample/basicevent",

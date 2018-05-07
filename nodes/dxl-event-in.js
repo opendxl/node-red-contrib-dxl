@@ -91,5 +91,5 @@ module.exports = function (RED) {
     }
   }
 
-  RED.nodes.registerType('dxl-event in', DxlEventInNode)
+  RED.nodes.registerType('dxl-core-event in', DxlEventInNode)
 }

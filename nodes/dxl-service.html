@@ -6,7 +6,7 @@
       {v: 'obj', t: 'a parsed JSON object'}
     ]
 
-    RED.nodes.registerType('dxl-service in', {
+    RED.nodes.registerType('dxl-core-service', {
       category: 'dxl',
       defaults: {
         name: {value: ''},
@@ -136,12 +136,13 @@
         var editorRow = $('#dialog-form>div.node-input-rule-container-row')
         height -= (parseInt(editorRow.css('marginTop')) + parseInt(editorRow.css('marginBottom')))
         $('#node-input-rule-container').editableList('height', height)
-      }
+      },
+      paletteLabel: 'dxl service'
     })
   })()
 </script>
 
-<script type="text/x-red" data-template-name="dxl-service in">
+<script type="text/x-red" data-template-name="dxl-core-service">
     <div class="form-row">
         <label for="node-input-client"><i class="icon-tag"></i> Client</label>
         <input type="text" id="node-input-client" placeholder="Client">
@@ -160,7 +161,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="dxl-service in">
+<script type="text/x-red" data-help-name="dxl-core-service">
     <p>Registers a service with the DXL fabric. When a request message is received by the service, a corresponding new message is injected into a flow.</p>
     <p>For more information on services, see the <a href="https://opendxl.github.io/opendxl-client-python/pydoc/dxlclient.service.html">service documentation</a> in the OpenDXL Python client SDK.</p>
     <h3>Outputs</h3>

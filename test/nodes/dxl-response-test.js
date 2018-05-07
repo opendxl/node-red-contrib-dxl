@@ -6,7 +6,7 @@ var testNode = require('../../nodes/dxl-response')
 var nodeRedHelper = require('../node-red-helper')
 var testHelpers = require('./test-helpers')
 
-describe('dxl-response out node', function () {
+describe('dxl-core-response node', function () {
   before(function (done) {
     nodeRedHelper.startServer(done)
   })
@@ -28,7 +28,7 @@ describe('dxl-response out node', function () {
       {
         id: responseNodeId,
         name: 'my response',
-        type: 'dxl-response out',
+        type: 'dxl-core-response',
         client: clientNodeId
       }
     ]

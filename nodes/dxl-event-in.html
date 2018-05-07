@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  RED.nodes.registerType('dxl-event in', {
+  RED.nodes.registerType('dxl-core-event in', {
     category: 'dxl',
     defaults: {
       name: {value: ''},
@@ -15,15 +15,16 @@
     outputs: 1,
     icon: 'opendxl.png',
     label: function () {
-      return this.name || this.topic || 'dxl event'
+      return this.name || this.topic || 'dxl event subscriber'
     },
     labelStyle: function () {
       return this.name ? 'node_label_italic' : ''
-    }
+    },
+    paletteLabel: 'dxl event subscriber'
   })
 </script>
 
-<script type="text/x-red" data-template-name="dxl-event in">
+<script type="text/x-red" data-template-name="dxl-core-event in">
     <div class="form-row">
         <label for="node-input-client"><i class="icon-tag"></i> Client</label>
         <input type="text" id="node-input-client" placeholder="Client">
@@ -46,7 +47,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="dxl-event in">
+<script type="text/x-red" data-help-name="dxl-core-event in">
     <p>Subscribes for event messages to the specific topic on the DXL fabric.
     When an event message is received from DXL, a corresponding new message is injected into a flow.</p>
     <p>Event messages are sent by one publisher and received by one or more recipients that are currently subscribed to the topic associated with the event (otherwise known as one-to-many).

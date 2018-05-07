@@ -5,7 +5,7 @@ var testNode = require('../../nodes/dxl-service')
 var nodeRedHelper = require('../node-red-helper')
 var testHelpers = require('./test-helpers')
 
-describe('dxl-service in node', function () {
+describe('dxl-core-service node', function () {
   before(function (done) {
     nodeRedHelper.startServer(done)
   })
@@ -37,8 +37,8 @@ describe('dxl-service in node', function () {
       testHelpers.getClientNodeConfig(clientNodeId),
       {
         id: serviceNodeId,
-        name: 'my service in',
-        type: 'dxl-service in',
+        name: 'my service',
+        type: 'dxl-core-service',
         serviceType: 'my service',
         outputs: 2,
         client: clientNodeId,
@@ -51,7 +51,7 @@ describe('dxl-service in node', function () {
       testFlows,
       function () {
         var serviceNode = nodeRedHelper.getNode(serviceNodeId)
-        serviceNode.should.have.property('name', 'my service in')
+        serviceNode.should.have.property('name', 'my service')
         serviceNode.should.have.property('_rules', topicEntries)
         var client = nodeRedHelper.getNode(clientNodeId).dxlClient
         client.subscriptions.should.containEql(firstServiceTopicEntry.topic)

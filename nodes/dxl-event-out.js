@@ -70,5 +70,5 @@ module.exports = function (RED) {
     }
   }
 
-  RED.nodes.registerType('dxl-event out', DxlEventOutNode)
+  RED.nodes.registerType('dxl-core-event out', DxlEventOutNode)
 }

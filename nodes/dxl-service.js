@@ -132,5 +132,5 @@ module.exports = function (RED) {
     }
   }
 
-  RED.nodes.registerType('dxl-service in', DxlServiceNode)
+  RED.nodes.registerType('dxl-core-service', DxlServiceNode)
 }

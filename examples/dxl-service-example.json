@@ -8,7 +8,7 @@
     },
     {
         "id": "788177c.d0fa088",
-        "type": "dxl-service in",
+        "type": "dxl-core-service",
         "z": "1c784deb.1ab752",
         "name": "Receive service request from DXL fabric",
         "serviceType": "myService",
@@ -31,7 +31,7 @@
     },
     {
         "id": "d78f6b9a.48c378",
-        "type": "dxl request",
+        "type": "dxl-core-request",
         "z": "1c784deb.1ab752",
         "name": "Send request to DXL fabric",
         "topic": "/isecg/sample/mybasicservice",
@@ -78,7 +78,7 @@
     },
     {
         "id": "eb0cb78f.1ebb98",
-        "type": "dxl-response out",
+        "type": "dxl-core-response",
         "z": "1c784deb.1ab752",
         "name": "Send response to DXL fabric",
         "client": "",

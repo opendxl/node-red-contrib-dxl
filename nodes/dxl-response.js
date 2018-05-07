@@ -75,5 +75,5 @@ module.exports = function (RED) {
     }
   }
 
-  RED.nodes.registerType('dxl-response out', DxlResponseNode)
+  RED.nodes.registerType('dxl-core-response', DxlResponseNode)
 }

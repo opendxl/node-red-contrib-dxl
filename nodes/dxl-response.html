@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  RED.nodes.registerType('dxl-response out', {
+  RED.nodes.registerType('dxl-core-response', {
     category: 'dxl',
     defaults: {
       name: {value: ''},
@@ -18,11 +18,12 @@
     },
     labelStyle: function () {
       return this.name ? 'node_label_italic' : ''
-    }
+    },
+    paletteLabel: 'dxl response'
   })
 </script>
 
-<script type="text/x-red" data-template-name="dxl-response out">
+<script type="text/x-red" data-template-name="dxl-core-response">
     <div class="form-row">
         <label for="node-input-client"><i class="icon-tag"></i> Client</label>
         <input type="text" id="node-input-client" placeholder="Client">
@@ -33,7 +34,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="dxl-response out">
+<script type="text/x-red" data-help-name="dxl-core-response">
     <p>Delivers a response message with the <code>msg.payload</code> from the input message to the DXL fabric. This node should typically be downstream in the flow from a DXL service node, which receives the original request from the DXL fabric.</p>
     <p>Response messages are sent by service instances upon receiving request messages.
     For more information on message types, how they are delivered to remote clients, etc., see the <a href="https://opendxl.github.io/opendxl-client-python/pydoc/dxlclient.message.html">message documentation</a> in the OpenDXL Python client SDK.</p>

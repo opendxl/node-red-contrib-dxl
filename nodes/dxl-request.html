@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  RED.nodes.registerType('dxl request', {
+  RED.nodes.registerType('dxl-core-request', {
     category: 'dxl',
     defaults: {
       name: {value: ''},
@@ -19,11 +19,12 @@
     },
     labelStyle: function () {
       return this.name ? 'node_label_italic' : ''
-    }
+    },
+    paletteLabel: 'dxl request'
   })
 </script>
 
-<script type="text/x-red" data-template-name="dxl request">
+<script type="text/x-red" data-template-name="dxl-core-request">
     <div class="form-row">
         <label for="node-input-client"><i class="icon-tag"></i> Client</label>
         <input type="text" id="node-input-client" placeholder="Client">
@@ -47,7 +48,7 @@
     <div class="form-tips">Tip: Leave topic blank if you want to set it via the <code>msg.dxlTopic</code> property</div>
 </script>
 
-<script type="text/x-red" data-help-name="dxl request">
+<script type="text/x-red" data-help-name="dxl-core-request">
     <p>Sends a request message containing the <code>msg.payload</code> from the input message to a remote DXL service and writes the response received from the request to the output <code>msg.payload</code> property.</p>
     <p>Request messages are used when invoking a method on a remote service. This communication is one-to-one where a client sends a request to a service instance and in turn receives a response.
     For more information on message types, how they are delivered to remote clients, etc., see the <a href="https://opendxl.github.io/opendxl-client-python/pydoc/dxlclient.message.html">message documentation</a> in the OpenDXL Python client SDK.</p>

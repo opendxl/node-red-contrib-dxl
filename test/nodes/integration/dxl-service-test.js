@@ -42,7 +42,7 @@ describe('dxl service', function () {
     testHelpers.getClientNodeConfig(clientNodeId),
     {
       id: serviceNodeId,
-      type: 'dxl-service in',
+      type: 'dxl-core-service',
       name: 'my service',
       serviceType: 'dxl test service',
       client: clientNodeId,
@@ -111,7 +111,7 @@ describe('dxl service', function () {
     },
     {
       id: 'dxl.response',
-      type: 'dxl-response out',
+      type: 'dxl-core-response',
       client: clientNodeId
     },
     {
@@ -138,7 +138,7 @@ describe('dxl service', function () {
     var testFlows = baseTestFlows.slice()
     testFlows.push({
       id: requestNodeId,
-      type: 'dxl request',
+      type: 'dxl-core-request',
       topic: '/dxl-service-test/no-response',
       returnType: 'obj',
       client: clientNodeId,
@@ -173,7 +173,7 @@ describe('dxl service', function () {
       var testFlows = baseTestFlows.slice()
       testFlows.push({
         id: requestNodeId,
-        type: 'dxl request',
+        type: 'dxl-core-request',
         topic: '/dxl-service-test/txt',
         returnType: 'txt',
         client: clientNodeId,
@@ -208,7 +208,7 @@ describe('dxl service', function () {
       var testFlows = baseTestFlows.slice()
       testFlows.push({
         id: requestNodeId,
-        type: 'dxl request',
+        type: 'dxl-core-request',
         topic: '',
         returnType: 'bin',
         client: clientNodeId,
@@ -246,7 +246,7 @@ describe('dxl service', function () {
       var testFlows = baseTestFlows.slice()
       testFlows.push({
         id: requestNodeId,
-        type: 'dxl request',
+        type: 'dxl-core-request',
         topic: '/dxl-service-test/obj',
         returnType: 'obj',
         client: clientNodeId,
@@ -287,7 +287,7 @@ describe('dxl service', function () {
       var testFlows = baseTestFlows.slice()
       testFlows.push({
         id: requestNodeId,
-        type: 'dxl request',
+        type: 'dxl-core-request',
         topic: '/dxl-service-test/obj',
         returnType: 'obj',
         client: clientNodeId,
@@ -307,7 +307,7 @@ describe('dxl service', function () {
               msg.should.have.propertyByPath(
                 'error', 'message').match(/malformed json/)
               msg.should.have.propertyByPath(
-                'error', 'source', 'type').equal('dxl request')
+                'error', 'source', 'type').equal('dxl-core-request')
               msg.should.have.propertyByPath('dxlResponse',
                 'errorMessage').match(/malformed json/)
               msg.should.have.property('dxlMessage').equal(msg.dxlResponse)
@@ -325,7 +325,7 @@ describe('dxl service', function () {
           var testFlows = baseTestFlows.slice()
           testFlows.push({
             id: requestNodeId,
-            type: 'dxl request',
+            type: 'dxl-core-request',
             topic: '/dxl-service-test/error',
             returnType: 'obj',
             client: clientNodeId,
@@ -348,7 +348,7 @@ describe('dxl service', function () {
                   msg.should.have.propertyByPath(
                     'error', 'message').match(/really bad error/)
                   msg.should.have.propertyByPath(
-                    'error', 'source', 'type').equal('dxl request')
+                    'error', 'source', 'type').equal('dxl-core-request')
                   msg.should.have.propertyByPath('dxlResponse',
                     'errorCode').equal(95)
                   msg.should.have.propertyByPath('dxlResponse',
@@ -369,7 +369,7 @@ describe('dxl service', function () {
       var testFlows = baseTestFlows.slice()
       testFlows.push({
         id: requestNodeId,
-        type: 'dxl request',
+        type: 'dxl-core-request',
         topic: '/dxl-service-test/txt',
         returnType: 'obj',
         client: clientNodeId,
@@ -389,7 +389,7 @@ describe('dxl service', function () {
               msg.should.have.propertyByPath(
                 'error', 'message').match(/txt is: not a json string/)
               msg.should.have.propertyByPath(
-                'error', 'source', 'type').equal('dxl request')
+                'error', 'source', 'type').equal('dxl-core-request')
               msg.should.have.property('dxlResponse').instanceOf(dxl.Response)
               msg.should.have.property('dxlMessage').equal(msg.dxlResponse)
               done()
