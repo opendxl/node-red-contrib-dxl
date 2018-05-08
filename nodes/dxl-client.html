@@ -1,22 +1,50 @@
 <script type="text/javascript">
   var DXL = {}
 
+  DXL._getClientIds = function () {
+    var clientIds = []
+    RED.nodes.eachConfig(function (node) {
+      if (node.id && (node.type === 'dxl-client')) {
+        clientIds.push(node.id)
+      }
+    })
+    return clientIds
+  }
+
+  DXL._setNodeClientId = function (node, clientId) {
+    if (node.client !== clientId) {
+      node.client = clientId
+      if (RED.nodes.updateConfigNodeUsers) {
+        RED.nodes.updateConfigNodeUsers(node)
+      }
+      if (RED.editor.validateNode) {
+        RED.editor.validateNode(node)
+      }
+    }
+  }
+
+  DXL._updateNodeClientIds = function (clientId) {
+    RED.nodes.eachNode(function (node) {
+      if (node.type) {
+        var nodeType = RED.nodes.getType(node.type)
+        if (nodeType &&
+          nodeType.defaults &&
+          nodeType.defaults.client &&
+          nodeType.defaults.client.type === 'dxl-client') {
+          DXL._setNodeClientId(node, clientId)
+        }
+      }
+    })
+  }
+
   DXL.validators = {
     client: function (node) {
       var valid = false
-      var clientIds = []
-      RED.nodes.eachConfig(function (n) {
-        if (n.id && n.type && (n.type === 'dxl-client')) {
-          clientIds.push(n.id)
-        }
-      })
+      var clientIds = DXL._getClientIds()
       if (clientIds.indexOf(node.client) >= 0) {
         valid = true
       } else if (clientIds.length === 1) {
-        node.client = clientIds[0]
-        if (RED.nodes.updateConfigNodeUsers) {
-          RED.nodes.updateConfigNodeUsers(node)
-        }
+        DXL._setNodeClientId(node, clientIds[0])
         valid = true
       }
       return valid
@@ -44,6 +72,28 @@
       if (typeof this.reconnectDelay === 'undefined') {
         this.reconnectDelay = 1
         $('#node-config-input-reconnectDelay').val(this.reconnectDelay)
+      }
+    },
+    oneditsave: function () {
+      var node = this
+      var clientIds = DXL._getClientIds()
+      if (clientIds.indexOf(this.id) < 0) {
+        if (clientIds.length === 0) {
+          setTimeout(function () { DXL._updateNodeClientIds(node.id) }, 0)
+        }
+      } else if (clientIds.length === 1) {
+        DXL._updateNodeClientIds(this.id)
+      }
+    },
+    oneditdelete: function () {
+      var clientIds = DXL._getClientIds()
+      var curIdPos = clientIds.indexOf(this.id)
+      if (curIdPos < 0) {
+        if (clientIds.length === 1) {
+          DXL._updateNodeClientIds(clientIds[0])
+        }
+      } else if (clientIds.length === 2) {
+        DXL._updateNodeClientIds(clientIds[curIdPos ? 0 : 1])
       }
     },
     paletteLabel: 'dxl client'
