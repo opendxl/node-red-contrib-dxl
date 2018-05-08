@@ -1,9 +1,14 @@
 'use strict'
 
+var fs = require('fs')
+var path = require('path')
+
 var dxl = require('@opendxl/dxl-client')
 var Client = dxl.Client
 var Config = dxl.Config
 var ServiceRegistrationInfo = dxl.ServiceRegistrationInfo
+
+var DEFAULT_CONFIG_FILE_NAME = 'dxlclient.config'
 
 module.exports = function (RED) {
   /**
@@ -40,7 +45,16 @@ module.exports = function (RED) {
   function DxlClientNode (nodeConfig) {
     RED.nodes.createNode(this, nodeConfig)
 
-    var clientConfig = Config.createDxlConfigFromFile(nodeConfig.configFile)
+    var configFile = nodeConfig.configFile
+    if (fs.statSync(configFile).isDirectory()) {
+      var configFileWithDefault = path.join(configFile,
+        DEFAULT_CONFIG_FILE_NAME)
+      if (fs.existsSync(configFileWithDefault)) {
+        configFile = configFileWithDefault
+      }
+    }
+
+    var clientConfig = Config.createDxlConfigFromFile(configFile)
     clientConfig.keepAliveInterval = convertValueToNumber(
       nodeConfig.keepAliveInterval, 1800)
     clientConfig.reconnectDelay = convertValueToNumber(
