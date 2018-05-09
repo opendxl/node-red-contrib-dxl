@@ -1,7 +1,7 @@
 {
   "name": "@opendxl/node-red-contrib-dxl",
   "version": "0.0.1",
-  "author": "McAfee, Inc.",
+  "author": "McAfee, LLC",
   "description": "DXL nodes for Node-RED",
   "license": "Apache-2.0",
   "keywords": [

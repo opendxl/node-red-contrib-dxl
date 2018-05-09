@@ -163,7 +163,7 @@
 
 <script type="text/x-red" data-help-name="dxl-core-service">
     <p>Registers a service with the DXL fabric. When a request message is received by the service, a corresponding new message is injected into a flow.</p>
-    <p>For more information on services, see the <a href="https://opendxl.github.io/opendxl-client-python/pydoc/dxlclient.service.html">service documentation</a> in the OpenDXL Python client SDK.</p>
+    <p>For more information on services, see the <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/ServiceRegistrationInfo.html">service documentation</a> in the OpenDXL JavaScript client SDK.</p>
     <h3>Outputs</h3>
     <dl class="message-properties">
        <dt>payload <span class="property-type">string | buffer</span></dt>
@@ -173,10 +173,10 @@
        <dd> The topic to which the request was published.</dd>
 
        <dt>dxlRequest <span class="property-type">dxl-client.Request</d></span></dt>
-       <dd> The <a href="https://opendxl.github.io/opendxl-client-javascript/Request.html" target="_blank">Request</a> object received from the DXL client for the published request.</dd>
+       <dd> The <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Request.html" target="_blank">Request</a> object received from the DXL client for the published request.</dd>
 
        <dt>dxlMessage <span class="property-type">dxl-client.Message</d></span></dt>
-       <dd> The <a href="https://opendxl.github.io/opendxl-client-javascript/Request.html" target="_blank">Request</a> object received from the DXL client for the published request.</dd>
+       <dd> The <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Request.html" target="_blank">Request</a> object received from the DXL client for the published request.</dd>
     </dl>
     <h3>Details</h3>
     <p>DXL Services are exposed to the DXL fabric and are invoked in a fashion similar to RESTful web services.

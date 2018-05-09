@@ -37,26 +37,26 @@
 <script type="text/x-red" data-help-name="dxl-core-response">
     <p>Delivers a response message with the <code>msg.payload</code> from the input message to the DXL fabric. This node should typically be downstream in the flow from a DXL service node, which receives the original request from the DXL fabric.</p>
     <p>Response messages are sent by service instances upon receiving request messages.
-    For more information on message types, how they are delivered to remote clients, etc., see the <a href="https://opendxl.github.io/opendxl-client-python/pydoc/dxlclient.message.html">message documentation</a> in the OpenDXL Python client SDK.</p>
+    For more information on message types, how they are delivered to remote clients, etc., see the <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Message.html">message documentation</a> in the OpenDXL JavaScript client SDK.</p>
     <h3>Inputs</h3>
     <dl class="message-properties">
        <dt>payload <span class="property-type">string | buffer</span></dt>
        <dd> The application-specific payload of the response message.</dd>
 
        <dt>dxlRequest <span class="property-type">dxl-client.Request</d></span></dt>
-       <dd> The DXL <a href="https://opendxl.github.io/opendxl-client-javascript/Request.html" target="_blank">Request</a> message that this node is providing a response for. A DXL service node sets this property for the request it receives from the DXL fabric.</dd>
+       <dd> The DXL <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Request.html" target="_blank">Request</a> message that this node is providing a response for. A DXL service node sets this property for the request it receives from the DXL fabric.</dd>
 
        <dt class="optional">error <span class="property-type">object</span></dt>
-       <dd> If this property is present and its object contains a <i>message</i> property, the response is delivered to the DXL fabric as an <a href="https://opendxl.github.io/opendxl-client-javascript/ErrorResponse.html" target="_blank">ErrorResponse</a>. The contents of the <i>message</i> property is set as the payload in the error response. The <i>error</i> property is most often by Node-RED itself when a flow error occurs.</dd>
+       <dd> If this property is present and its object contains a <i>message</i> property, the response is delivered to the DXL fabric as an <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/ErrorResponse.html" target="_blank">ErrorResponse</a>. The contents of the <i>message</i> property is set as the payload in the error response. The <i>error</i> property is most often by Node-RED itself when a flow error occurs.</dd>
 
        <dt class="optional">dxlError <span class="property-type">object</span></dt>
-       <dd> If this property and the <i>error</i> property are both present and the <i>dxlError</i> object contains a <i>code</i> property, the contents of the <a href="https://opendxl.github.io/opendxl-client-javascript/ErrorResponse.html#errorCode" target="_blank">errorCode</a> in the error response will be set to the value of the <code>dxlError.code</code> property.</dd>
+       <dd> If this property and the <i>error</i> property are both present and the <i>dxlError</i> object contains a <i>code</i> property, the contents of the <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/ErrorResponse.html#errorCode" target="_blank">errorCode</a> in the error response will be set to the value of the <code>dxlError.code</code> property.</dd>
     </dl>
     <h3>Details</h3>
-    <p>If the input message does not contain an <i>error.message</i> property, a DXL <a href="https://opendxl.github.io/opendxl-client-javascript/Response.html" target="_blank">Response</a> message is sent with the <code>msg.payload</code> as the payload.
+    <p>If the input message does not contain an <i>error.message</i> property, a DXL <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Response.html" target="_blank">Response</a> message is sent with the <code>msg.payload</code> as the payload.
     If it contains an Object, it will be converted to a JSON string before being sent.
     If it contains a binary Buffer, the message will be published as-is.</p>
-    <p>If the input message contains an <i>error.message</i> property, a DXL <a href="https://opendxl.github.io/opendxl-client-javascript/ErrorResponse.html" target="_blank">ErrorResponse</a> message is sent with the contents of the <i>error.message</i> as the payload.
+    <p>If the input message contains an <i>error.message</i> property, a DXL <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/ErrorResponse.html" target="_blank">ErrorResponse</a> message is sent with the contents of the <i>error.message</i> as the payload.
     <p><i>Client</i> is the configuration node for the DXL client through which the response should be sent.
     Click on the pencil icon to add or modify a client configuration.</p>
     <p><i>Name</i> is only used for display purposes in the Node-RED user interface.<p>

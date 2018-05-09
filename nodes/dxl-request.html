@@ -51,7 +51,7 @@
 <script type="text/x-red" data-help-name="dxl-core-request">
     <p>Sends a request message containing the <code>msg.payload</code> from the input message to a remote DXL service and writes the response received from the request to the output <code>msg.payload</code> property.</p>
     <p>Request messages are used when invoking a method on a remote service. This communication is one-to-one where a client sends a request to a service instance and in turn receives a response.
-    For more information on message types, how they are delivered to remote clients, etc., see the <a href="https://opendxl.github.io/opendxl-client-python/pydoc/dxlclient.message.html">message documentation</a> in the OpenDXL Python client SDK.</p>
+    For more information on message types, how they are delivered to remote clients, etc., see the <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Message.html">message documentation</a> in the OpenDXL JavaScript client SDK.</p>
     </p>
     <h3>Inputs</h3>
     <dl class="message-properties">
@@ -67,10 +67,10 @@
        <dd> The application-specific payload of the response message. Through the <i>Return</i> node property, the node can be configured to set the response payload as a UTF-8 String, an Object parsed from a JSON formatted string, or as a binary Buffer.</dd>
 
        <dt>dxlResponse <span class="property-type">dxl-client.Response</d></span></dt>
-       <dd> The <a href="https://opendxl.github.io/opendxl-client-javascript/Response.html" target="_blank">Response</a> or <a href="https://opendxl.github.io/opendxl-client-javascript/ErrorResponse.html" target="_blank">ErrorResponse</a> object received from the DXL client for the request message.</dd>
+       <dd> The <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Response.html" target="_blank">Response</a> or <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/ErrorResponse.html" target="_blank">ErrorResponse</a> object received from the DXL client for the request message.</dd>
 
        <dt>dxlMessage <span class="property-type">dxl-client.Message</d></span></dt>
-       <dd> The <a href="https://opendxl.github.io/opendxl-client-javascript/Response.html" target="_blank">Response</a> or <a href="https://opendxl.github.io/opendxl-client-javascript/ErrorResponse.html" target="_blank">ErrorResponse</a> object received from the DXL client for the request message.</dd>
+       <dd> The <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Response.html" target="_blank">Response</a> or <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/ErrorResponse.html" target="_blank">ErrorResponse</a> object received from the DXL client for the request message.</dd>
     </dl>
     <h3>Details</h3>
     <p><i>Client</i> is the configuration node for the DXL client through which the request should be made.
@@ -82,8 +82,8 @@
     If the value is set to <i>a binary buffer</i>, the raw binary Buffer received in the DXL response payload is forwarded along.
     If the value is set to <i>a UTF-8 string</i>, the binary Buffer is decoded from UTF-8 octets into a String.
     If the value is set to <i>a parsed JSON object</i>, the binary Buffer is decoded into a UTF-8 string and parsed as JSON text into an Object.
-    If an error occurs when attempting to convert the binary Buffer of the payload into the desired data type, the current flow is halted with an error.</dd>
+    If an error occurs when attempting to convert the binary Buffer of the payload into the desired data type, the current flow is halted with an error.
     <p>If an error is received from a broker for the request, the current flow is halted with an error.
     In the message received by any catch node for the error, the <code>msg.payload</code> property is set to the payload from the DXL error response.
-    If the error returned from the broker contains a DXL <a href="https://opendxl.github.io/opendxl-client-javascript/ErrorResponse.html" target="_blank">ErrorResponse message</a>, the <i>ErrorResponse</i> object is set as the <code>msg.dxlResponse</code> and <code>msg.dxlMessage</code>.</dd>
+    If the error returned from the broker contains a DXL <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/ErrorResponse.html" target="_blank">ErrorResponse message</a>, the <i>ErrorResponse</i> object is set as the <code>msg.dxlResponse</code> and <code>msg.dxlMessage</code>.
 </script>
