@@ -1,6 +1,6 @@
 'use strict'
 
-var util = require('../lib/util')
+var MessageUtils = require('../lib/message-utils')
 
 module.exports = function (RED) {
   /**
@@ -61,8 +61,7 @@ module.exports = function (RED) {
             dxlEvent: event,
             dxlMessage: event}
           try {
-            event.payload = util.convertBufferToReturnType(node._payloadType,
-              event.payload)
+            event.payload = MessageUtils.decodePayload(event, node._payloadType)
             msg.payload = event.payload
             node.send(msg)
           } catch (e) {

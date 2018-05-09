@@ -1,7 +1,7 @@
 'use strict'
 
 var dxl = require('@opendxl/dxl-client')
-var util = require('../lib/util')
+var MessageUtils = require('../lib/message-utils')
 
 module.exports = function (RED) {
   /**
@@ -80,8 +80,8 @@ module.exports = function (RED) {
                       msg.dxlMessage = msg.dxlResponse
                       delete msg.dxlError
                       try {
-                        response.payload = util.convertBufferToReturnType(
-                          node._returnType, response.payload)
+                        response.payload = MessageUtils.decodePayload(
+                          response, node._returnType)
                         msg.payload = response.payload
                         node.send(msg)
                       } catch (e) {

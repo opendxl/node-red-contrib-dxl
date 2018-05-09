@@ -1,6 +1,6 @@
 'use strict'
 
-var util = require('../lib/util')
+var MessageUtils = require('../lib/message-utils')
 
 module.exports = function (RED) {
   /**
@@ -87,9 +87,8 @@ module.exports = function (RED) {
               for (var j = 0; j < node._rules.length; j += 1) {
                 if (j === counter) {
                   try {
-                    request.payload = util.convertBufferToReturnType(
-                      node._rules[j].payloadType,
-                      request.payload)
+                    request.payload = MessageUtils.decodePayload(request,
+                      node._rules[j].payloadType)
                     msg.payload = request.payload
                     outputMessages.push(msg)
                   } catch (e) {

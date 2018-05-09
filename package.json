@@ -21,16 +21,19 @@
     "node": ">=4.0.0"
   },
   "dependencies": {
-    "@opendxl/dxl-client": "^0.0.1"
+    "@opendxl/dxl-client": "^0.0.1",
+    "@opendxl/dxl-bootstrap": "^0.1.0"
   },
   "devDependencies": {
     "commander": "^2.13.0",
     "express": "^4.16.2",
+    "jsdoc": "^3.5.5",
     "jshint": "^2.9.5",
     "eslint-plugin-html": "^3.2.2",
     "mocha": "^4.1.0",
     "nock": "^9.1.6",
     "node-red": "^0.18.0",
+    "rimraf": "^2.6.2",
     "should": "^13.2.1",
     "sinon": "^4.1.4",
     "standard": "^10.0.3",
@@ -39,6 +42,7 @@
     "when": "^3.7.8"
   },
   "eslintConfig": {},
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/opendxl/node-red-contrib-dxl.git"
@@ -60,7 +64,9 @@
     "lint:jshint": "jshint lib test",
     "lint:standard": "standard \"**/*.html\" \"**/*.js\" | snazzy",
     "preci": "npm run lint",
-    "ci": "npm run test"
+    "ci": "npm run test",
+    "predoc": "rimraf out/jsdoc",
+    "doc": "jsdoc -c ./doc/conf.json -r lib/ -d out/jsdoc"
   },
   "standard": {
     "env": [
