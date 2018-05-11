@@ -24,8 +24,8 @@ describe('dxl-client node', function () {
         id: 'dxl.clientId',
         name: 'client',
         type: 'dxl-client',
-        keepAliveInterval: 123,
-        reconnectDelay: 16
+        keepAliveInterval: '123',
+        reconnectDelay: '16'
       }
     ]
     testHelpers.loadNodeRed(testNode, testFlows, function () {

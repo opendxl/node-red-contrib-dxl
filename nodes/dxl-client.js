@@ -7,27 +7,11 @@ var dxl = require('@opendxl/dxl-client')
 var Client = dxl.Client
 var Config = dxl.Config
 var ServiceRegistrationInfo = dxl.ServiceRegistrationInfo
+var NodeUtils = require('../lib/node-utils')
 
 var DEFAULT_CONFIG_FILE_NAME = 'dxlclient.config'
 
 module.exports = function (RED) {
-  /**
-   * Convert the supplied value into a number.
-   * @param value - The value to convert.
-   * @param {Number} defaultValue - If the value parameter is undefined, return
-   *   the value for this parameter.
-   * @returns {Number} The converted value.
-   * @private
-   */
-  function convertValueToNumber (value, defaultValue) {
-    if (typeof value === 'undefined') {
-      value = defaultValue
-    } else if (typeof value === 'string') {
-      value = Number(value)
-    }
-    return value
-  }
-
   /**
    * @classdesc Node responsible for establishing communication with the Data
    * Exchange Layer (DXL) fabric.
@@ -55,9 +39,9 @@ module.exports = function (RED) {
     }
 
     var clientConfig = Config.createDxlConfigFromFile(configFile)
-    clientConfig.keepAliveInterval = convertValueToNumber(
+    clientConfig.keepAliveInterval = NodeUtils.valueToNumber(
       nodeConfig.keepAliveInterval, 1800)
-    clientConfig.reconnectDelay = convertValueToNumber(
+    clientConfig.reconnectDelay = NodeUtils.valueToNumber(
       nodeConfig.reconnectDelay, 1)
 
     /**
