@@ -2,6 +2,7 @@
 
 var dxl = require('@opendxl/dxl-client')
 var MessageUtils = require('../lib/message-utils')
+var NodeUtils = require('..').NodeUtils
 
 module.exports = function (RED) {
   /**
@@ -36,12 +37,6 @@ module.exports = function (RED) {
      */
     this._returnType = nodeConfig.returnType || 'txt'
     /**
-     * Topic to send the request to.
-     * @type {String}
-     * @private
-     */
-    this._topic = nodeConfig.topic
-    /**
      * Handle to the DXL client node used to make requests to the DXL fabric.
      * @type {Client}
      * @private
@@ -59,45 +54,43 @@ module.exports = function (RED) {
     if (this._client) {
       this._client.registerUserNode(this)
       this.on('input', function (msg) {
-        if (msg.hasOwnProperty('payload')) {
-          var topic = node._topic || msg.dxlTopic
-          if (topic) {
-            var request = new dxl.Request(topic)
-            request.payload = msg.payload
-            if (node._client.connected) {
-              this._client.asyncRequest(request,
-                  function (error, response) {
-                    if (error) {
-                      if (error instanceof dxl.MessageError) {
-                        msg.dxlError = {code: error.code}
-                        msg.payload = error.detail.payload
-                        msg.dxlResponse = error.detail
-                        msg.dxlMessage = msg.dxlResponse
-                      }
-                      node.error(error.message, msg)
-                    } else {
-                      msg.dxlResponse = response
+        var topic = NodeUtils.defaultIfEmpty(nodeConfig.topic, msg.dxlTopic)
+        if (topic) {
+          var request = new dxl.Request(topic)
+          request.payload = msg.payload
+          if (node._client.connected) {
+            this._client.asyncRequest(request,
+                function (error, response) {
+                  if (error) {
+                    if (error instanceof dxl.MessageError) {
+                      msg.dxlError = {code: error.code}
+                      msg.payload = error.detail.payload
+                      msg.dxlResponse = error.detail
                       msg.dxlMessage = msg.dxlResponse
-                      delete msg.dxlError
-                      try {
-                        response.payload = MessageUtils.decodePayload(
-                          response, node._returnType)
-                        msg.payload = response.payload
-                        node.send(msg)
-                      } catch (e) {
-                        node.error('Error converting response to ' +
-                          node._returnType + '. Error: ' + e.message +
-                          ', Payload: ' + response.payload, msg)
-                      }
+                    }
+                    node.error(error.message, msg)
+                  } else {
+                    msg.dxlResponse = response
+                    msg.dxlMessage = msg.dxlResponse
+                    delete msg.dxlError
+                    try {
+                      response.payload = MessageUtils.decodePayload(
+                        response, node._returnType)
+                      msg.payload = response.payload
+                      node.send(msg)
+                    } catch (e) {
+                      node.error('Error converting response to ' +
+                        node._returnType + '. Error: ' + e.message +
+                        ', Payload: ' + response.payload, msg)
                     }
                   }
-              )
-            } else {
-              this.error('Unable to send request, not connected')
-            }
+                }
+            )
           } else {
-            this.error('Unable to send request, no topic available')
+            this.error('Unable to send request, not connected')
           }
+        } else {
+          this.error('Unable to send request, no topic available')
         }
       })
       this.on('close', function (done) {

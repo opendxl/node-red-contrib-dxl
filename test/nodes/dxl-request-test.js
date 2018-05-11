@@ -42,7 +42,6 @@ describe('dxl-core-request node', function () {
       function () {
         var requestNode = nodeRedHelper.getNode(requestNodeId)
         requestNode.should.have.property('name', 'my request')
-        requestNode.should.have.property('_topic', requestTopic)
         requestNode.should.have.property('_returnType', 'bin')
         var clientNode = nodeRedHelper.getNode(clientNodeId)
         should(clientNode).not.be.null()

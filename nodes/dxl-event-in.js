@@ -33,12 +33,6 @@ module.exports = function (RED) {
      */
     this._payloadType = nodeConfig.payloadType || 'txt'
     /**
-     * Topic to subscribe to for event notifications.
-     * @type {String}
-     * @private
-     */
-    this._topic = nodeConfig.topic
-    /**
      * Handle to the DXL client node used to make requests to the DXL fabric.
      * @type {Client}
      * @private
@@ -54,7 +48,7 @@ module.exports = function (RED) {
     })
 
     if (this._client) {
-      if (this._topic) {
+      if (nodeConfig.topic) {
         this._client.registerUserNode(this)
         var eventCallback = function (event) {
           var msg = {topic: event.destinationTopic,
@@ -70,9 +64,9 @@ module.exports = function (RED) {
                 '. Error: ' + e.message + ', Payload: ' + event.payload, msg)
           }
         }
-        this._client.addEventCallback(this._topic, eventCallback)
+        this._client.addEventCallback(nodeConfig.topic, eventCallback)
         this.on('close', function (done) {
-          node._client.removeEventCallback(node._topic, eventCallback)
+          node._client.removeEventCallback(nodeConfig.topic, eventCallback)
           node._client.unregisterUserNode(node, done)
         })
         if (this._client.connected) {

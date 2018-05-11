@@ -1,6 +1,7 @@
 'use strict'
 
 var dxl = require('@opendxl/dxl-client')
+var NodeUtils = require('..').NodeUtils
 
 module.exports = function (RED) {
   /**
@@ -16,12 +17,7 @@ module.exports = function (RED) {
    */
   function DxlEventOutNode (nodeConfig) {
     RED.nodes.createNode(this, nodeConfig)
-    /**
-     * Topic to publish the event message to.
-     * @type {String}
-     * @private
-     */
-    this._topic = nodeConfig.topic
+
     /**
      * Handle to the DXL client node used to make requests to the DXL fabric.
      * @type {Client}
@@ -40,19 +36,17 @@ module.exports = function (RED) {
     if (this._client) {
       this._client.registerUserNode(this)
       this.on('input', function (msg) {
-        if (msg.hasOwnProperty('payload')) {
-          var topic = node._topic || msg.dxlTopic
-          if (topic) {
-            var event = new dxl.Event(topic)
-            event.payload = msg.payload
-            if (this._client.connected) {
-              this._client.sendEvent(event)
-            } else {
-              this.error('Unable to send event, not connected')
-            }
+        var topic = NodeUtils.defaultIfEmpty(nodeConfig.topic, msg.dxlTopic)
+        if (topic) {
+          var event = new dxl.Event(topic)
+          event.payload = msg.payload
+          if (this._client.connected) {
+            this._client.sendEvent(event)
           } else {
-            this.error('Unable to send event, no topic available')
+            this.error('Unable to send event, not connected')
           }
+        } else {
+          this.error('Unable to send event, no topic available')
         }
       })
       this.on('close', function (done) {

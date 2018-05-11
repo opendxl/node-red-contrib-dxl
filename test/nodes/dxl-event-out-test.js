@@ -41,7 +41,6 @@ describe('dxl-core-event out node', function () {
       function () {
         var eventOutNode = nodeRedHelper.getNode(eventOutNodeId)
         eventOutNode.should.have.property('name', 'my event out')
-        eventOutNode.should.have.property('_topic', eventTopic)
         var clientNode = nodeRedHelper.getNode(clientNodeId)
         should(clientNode).not.be.null()
         done()
