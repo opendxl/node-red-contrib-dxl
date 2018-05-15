@@ -166,28 +166,16 @@
     <p>For more information on services, see the <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/ServiceRegistrationInfo.html">service documentation</a> in the OpenDXL JavaScript client SDK.</p>
     <h3>Outputs</h3>
     <dl class="message-properties">
-       <dt>payload <span class="property-type">string | buffer</span></dt>
+       <dt>payload <span class="property-type">string | object | buffer</span></dt>
        <dd> The application-specific payload of the message. Through the <i>Payload type</i> property value for <i>Topic</i> entry which matches the request, the node can be configured to set the request payload as a UTF-8 String, an Object parsed from a JSON formatted string, or as a binary Buffer.</dd>
-
        <dt>topic <span class="property-type">string</span></dt>
        <dd> The topic to which the request was published.</dd>
-
        <dt>dxlRequest <span class="property-type">dxl-client.Request</d></span></dt>
        <dd> The <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Request.html" target="_blank">Request</a> object received from the DXL client for the published request.</dd>
-
        <dt>dxlMessage <span class="property-type">dxl-client.Message</d></span></dt>
        <dd> The <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Request.html" target="_blank">Request</a> object received from the DXL client for the published request.</dd>
     </dl>
-    <h3>Details</h3>
-    <p>DXL Services are exposed to the DXL fabric and are invoked in a fashion similar to RESTful web services.
-    Communication between an invoking client and the DXL service is one-to-one (request/response).</p>
-    <p>Each service is identified by the <i>topics</i> it responds to.
-    Each of these <i>topics</i> can be thought of as a method that is being "invoked" on the service by the remote client.</p>
-    <p>Multiple service “instances” can be registered with the DXL fabric that respond to the same <i>topics</i>.
-    When this occurs (unless explicitly overridden by the client) the fabric will select the particular instance to route the request to (by default round-robin).
-    Multiple service instances can be used to increase scalability and fault-tolerance.</p>
-    <p>When a request is received by the Node-RED DXL service node, the node will evaluate the request topic against each of the node's <i>Topic</i> entries and inject a new message into the corresponding output node(s).
-    <p><b>Note:</b> this node does not send a response to the request. The flow must include an DXL response node to complete the request.</p>
+    <h3>Node Properties</h3>
     <p><i>Client</i> is the configuration node for the DXL client through which the service registration should be sent and service requests should be received.
     Click on the pencil icon to add or modify a client configuration.</p>
     <p><i>Service type</i> is a textual name for the service. This name is supplied to the DXL fabric during service registration.</p>
@@ -200,4 +188,14 @@
     If the value is set to <i>a parsed JSON object</i>, the binary Buffer is decoded into a UTF-8 string and parsed as JSON text into an Object.
     If an error occurs when attempting to convert the binary Buffer of the payload into the desired data type, the current flow is halted with an error.
     In the error case, the request message can be retrieved from a catch node via the <code>msg.dxlRequest</code> property.</p>
+    <h3>Details</h3>
+    <p>DXL Services are exposed to the DXL fabric and are invoked in a fashion similar to RESTful web services.
+    Communication between an invoking client and the DXL service is one-to-one (request/response).</p>
+    <p>Each service is identified by the <i>topics</i> it responds to.
+    Each of these <i>topics</i> can be thought of as a method that is being "invoked" on the service by the remote client.</p>
+    <p>Multiple service instances can be registered with the DXL fabric that respond to the same <i>topics</i>.
+    When this occurs (unless explicitly overridden by the client) the fabric will select the particular instance to route the request to (by default round-robin).
+    Multiple service instances can be used to increase scalability and fault-tolerance.</p>
+    <p>When a request is received by the Node-RED DXL service node, the node will evaluate the request topic against each of the node's <i>Topic</i> entries and inject a new message into the corresponding output node(s).</p>
+    <p><b>Note:</b> This node does not send a response to the request. The flow must include an DXL response node to complete the request.</p>
 </script>

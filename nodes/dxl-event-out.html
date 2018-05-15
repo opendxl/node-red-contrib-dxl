@@ -48,17 +48,17 @@
     <dl class="message-properties">
        <dt>payload <span class="property-type">string | buffer</span></dt>
        <dd> The application-specific payload of the message.</dd>
-
        <dt class="optional">dxlTopic <span class="property-type">string</span></dt>
        <dd> The topic to publish the event message to.</dd>
     </dl>
-    <h3>Details</h3>
-    <p><code>msg.payload</code> is used as the payload of the published message.
-    If it contains an Object, it will be converted to a JSON string before being sent.
-    If it contains a binary Buffer, the message will be published as-is.</p>
+    <h3>Node Properties</h3>
     <p><i>Client</i> is the configuration node for the DXL client through which the event should be sent.
     Click on the pencil icon to add or modify a client configuration.</p>
     <p><i>Topic</i> is the topic to publish the event message to.
     If the value is empty, the topic will be derived from the input message's <code>msg.dxlTopic</code> property.</p>
-    <p><i>Name</i> is only used for display purposes in the Node-RED user interface.<p>
+    <p><i>Name</i> is only used for display purposes in the Node-RED user interface.</p>
+    <h3>Details</h3>
+    <p><code>msg.payload</code> is used as the payload of the published message.
+    If it contains an Object, it will be converted to a JSON string before being sent.
+    If it contains a binary Buffer, the message will be published as-is.</p>
 </script>

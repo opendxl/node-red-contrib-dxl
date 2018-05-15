@@ -54,26 +54,23 @@
     For more information on message types, how they are delivered to remote clients, etc., see the <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Message.html">message documentation</a> in the OpenDXL JavaScript client SDK.</p>
     <h3>Outputs</h3>
     <dl class="message-properties">
-       <dt>payload <span class="property-type">string | buffer</span></dt>
+       <dt>payload <span class="property-type">string | object | buffer</span></dt>
        <dd> The application-specific payload of the message. Through the <i>Payload type</i> node property, the node can be configured to set the event payload as a UTF-8 String, an Object parsed from a JSON formatted string, or as a binary Buffer.</dd>
-
        <dt>topic <span class="property-type">string</span></dt>
        <dd> The topic to publish the message to.</dd>
-
        <dt>dxlEvent <span class="property-type">dxl-client.Event</d></span></dt>
        <dd> The <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Event.html" target="_blank">Event</a> object received from the DXL client for the published event.</dd>
-
        <dt>dxlMessage <span class="property-type">dxl-client.Message</d></span></dt>
        <dd> The <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Event.html" target="_blank">Event</a> object received from the DXL client for the published event.</dd>
     </dl>
-    <h3>Details</h3>
+    <h3>Node Properties</h3>
     <p><i>Client</i> is the configuration node for the DXL client through which the event subscription should be sent and event notifications should be received.
     Click on the pencil icon to add or modify a client configuration.</p>
     <p><i>Topic</i> is the topic to subscribe to for event notifications.</p>
-    <p><i>Name</i> is only used for display purposes in the Node-RED user interface.<p>
+    <p><i>Name</i> is only used for display purposes in the Node-RED user interface.</p>
     <p><i>Payload type</i> controls the data type for the <code>msg.payload</code> property in the new message injected into a flow.
     If the value is set to <i>a binary buffer</i>, the raw binary Buffer received in the DXL event payload is forwarded along.
     If the value is set to <i>a UTF-8 string</i>, the binary Buffer is decoded from UTF-8 octets into a String.
     If the value is set to <i>a parsed JSON object</i>, the binary Buffer is decoded into a UTF-8 string and parsed as JSON text into an Object.
-    If an error occurs when attempting to convert the binary Buffer of the payload into the desired data type, the current flow is halted with an error.
+    If an error occurs when attempting to convert the binary Buffer of the payload into the desired data type, the current flow is halted with an error.</p>
 </script>
