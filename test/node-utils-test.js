@@ -8,6 +8,14 @@ describe('NodeUtils', function () {
     it('should convert a numeric string to a number', function () {
       NodeUtils.valueToNumber('42', 'thedefault').should.equal(42)
     })
+    it('should convert a boolean to a number', function () {
+      NodeUtils.valueToNumber(false, 'thedefault').should.equal(0)
+      NodeUtils.valueToNumber('false', 'thedefault').should.equal(0)
+      NodeUtils.valueToNumber(' FALSE ', 'thedefault').should.equal(0)
+      NodeUtils.valueToNumber(true, 'thedefault').should.equal(1)
+      NodeUtils.valueToNumber('true', 'thedefault').should.equal(1)
+      NodeUtils.valueToNumber(' TRUE ', 'thedefault').should.equal(1)
+    })
     it('should convert a number to itself', function () {
       NodeUtils.valueToNumber(42, 'thedefault').should.equal(42)
     })
