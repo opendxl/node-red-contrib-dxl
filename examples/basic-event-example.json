@@ -1,15 +1,15 @@
 [
     {
-        "id": "988a2edc.1eba3",
+        "id": "4164c849.8f23a8",
         "type": "tab",
         "label": "DXL Event Example",
         "disabled": false,
-        "info": "This sample demonstrates how send and receive `Event` messages from the DXL\r\nfabric from Node-RED. The payload in the `Event` message received from the DXL\r\nfabric is printed to the Node-RED `debug` tab.\r\n\r\n### Prerequisites\r\n\r\nPrior to loading this sample, make sure that you have completed the completed\r\nthe client configuration prerequisites in the\r\n[configuration example](https://github.com/opendxl/node-red-contrib-dxl/wiki/Client-Configuration).\r\n\r\n### Running the Sample\r\n\r\n1. To deploy the flow, press the `Deploy` button in the upper-right corner\r\n   of the screen. If Node-RED is able to properly connect to the DXL fabric, a\r\n   green dot with the word `connected` should appear under each of the nodes\r\n   which use the DXL fabric: `Send event to DXL fabric` and\r\n   `Receive event from DXL fabric`.\r\n\r\n1. To exercise the flow, double-click the button on the left side of the\r\n   `Set 'hello' payload for event` node.\r\n\r\n### Output\r\n\r\nThe following output should appear in the Node-RED `debug` tab:\r\n\r\n~~~\r\n\"hello\"\r\n~~~\r\n\r\n### Nodes in the Sample Flow\r\n\r\nThe flow exercises the nodes below.\r\n\r\n#### Set 'hello payload for event'\r\n\r\nThis is an `inject` input node which starts the flow. This node injects the\r\ntext \"hello\" as the message `payload`. \r\n\r\n#### Send event to DXL fabric\r\n\r\nThis is a `dxl event publisher` output node. This node connects to the DXL\r\nfabric and sends a DXL `Event` message with the configured topic,\r\n\"/isecg/sample/basicevent\". The event message contains the `payload` set by the\r\n`Set 'hello payload for event'` node.\r\n\r\n#### Receive event from DXL fabric\r\n\r\nThis is a `dxl event receiver` input node. This node connects to the DXL fabric and\r\nregisters to receive events sent to the configured topic,\r\n\"/isecg/sample/basicevent\". When an event is received, a message containing\r\nthe `payload` from the event is injected as a message into a new flow.\r\n\r\nThe `Payload type` field is set to \"a UTF-8 string\" to indicate that the payload\r\nfor the event should be set into the flow message as a UTF-8 string decoded from\r\nthe raw binary payload in the event message.\r\n\r\n#### Output payload from event\r\n\r\nThis is a `debug` output node. This node outputs the `payload` from\r\nthe message injected by the `Receive event from DXL fabric` node."
+        "info": "This sample demonstrates how send and receive `Event` messages from the DXL\r\nfabric from Node-RED. The payload in the `Event` message received from the DXL\r\nfabric is printed to the Node-RED `debug` tab.\r\n\r\n### Prerequisites\r\n\r\nThe samples configuration step has been completed (see the\r\n[DXL configuration sample](https://github.com/opendxl/node-red-contrib-dxl/wiki/Client-Configuration)).\r\n\r\n### Setup\r\n\r\nTo deploy the flow, press the `Deploy` button in the upper-right corner\r\nof the screen. If Node-RED is able to properly connect to the DXL fabric, a\r\ngreen dot with the word `connected` should appear under each of the nodes\r\nwhich use the DXL fabric: `Send event to DXL fabric` and\r\n`Receive event from DXL fabric`.\r\n\r\n### Running\r\n\r\nTo exercise the flow, double-click the button on the left side of the\r\n`Set 'hello' payload for event` node.\r\n\r\n### Output\r\n\r\nThe following output should appear in the Node-RED `debug` tab:\r\n\r\n~~~\r\n\"hello\"\r\n~~~\r\n\r\n### Details\r\n\r\nThe flow exercises the nodes below.\r\n\r\n#### Set 'hello payload for event'\r\n\r\nThis is an `inject` input node which starts the flow. This node injects the\r\ntext \"hello\" as the message `payload`. \r\n\r\n#### Send event to DXL fabric\r\n\r\nThis is a `dxl event publisher` output node. This node connects to the DXL\r\nfabric and sends a DXL `Event` message with the configured topic,\r\n\"/isecg/sample/basicevent\". The event message contains the `payload` set by the\r\n`Set 'hello payload for event'` node.\r\n\r\n#### Receive event from DXL fabric\r\n\r\nThis is a `dxl event receiver` input node. This node connects to the DXL fabric and\r\nregisters to receive events sent to the configured topic,\r\n\"/isecg/sample/basicevent\". When an event is received, a message containing\r\nthe `payload` from the event is injected as a message into a new flow.\r\n\r\nThe `Payload type` field is set to \"a UTF-8 string\" to indicate that the payload\r\nfor the event should be set into the flow message as a UTF-8 string decoded from\r\nthe raw binary payload in the event message.\r\n\r\n#### Output payload from event\r\n\r\nThis is a `debug` output node. This node outputs the `payload` from\r\nthe message injected by the `Receive event from DXL fabric` node."
     },
     {
-        "id": "a1d25f72.c3f2d",
+        "id": "68ea7c0b.91a224",
         "type": "inject",
-        "z": "988a2edc.1eba3",
+        "z": "4164c849.8f23a8",
         "name": "Set 'hello' payload for event",
         "topic": "",
         "payload": "hello",
@@ -21,14 +21,14 @@
         "y": 36,
         "wires": [
             [
-                "351eee90.03f132"
+                "4e89cbb4.95a4b4"
             ]
         ]
     },
     {
-        "id": "b48044d4.672398",
+        "id": "cfba8aa0.ec9668",
         "type": "debug",
-        "z": "988a2edc.1eba3",
+        "z": "4164c849.8f23a8",
         "name": "Output payload from event",
         "active": true,
         "tosidebar": true,
@@ -39,9 +39,9 @@
         "wires": []
     },
     {
-        "id": "351eee90.03f132",
+        "id": "4e89cbb4.95a4b4",
         "type": "dxl-core-event out",
-        "z": "988a2edc.1eba3",
+        "z": "4164c849.8f23a8",
         "name": "Send event to DXL fabric",
         "topic": "/isecg/sample/basicevent",
         "client": "",
@@ -50,9 +50,9 @@
         "wires": []
     },
     {
-        "id": "8d82fedd.0d2e3",
+        "id": "95619b18.0cc058",
         "type": "dxl-core-event in",
-        "z": "988a2edc.1eba3",
+        "z": "4164c849.8f23a8",
         "name": "Receive event from DXL fabric",
         "topic": "/isecg/sample/basicevent",
         "client": "",
@@ -61,7 +61,7 @@
         "y": 96,
         "wires": [
             [
-                "b48044d4.672398"
+                "cfba8aa0.ec9668"
             ]
         ]
     }

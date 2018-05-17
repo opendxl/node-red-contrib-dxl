@@ -1,15 +1,15 @@
 [
     {
-        "id": "9ed9dd8a.e8816",
+        "id": "9098e257.a97a6",
         "type": "tab",
         "label": "DXL Service Example",
         "disabled": false,
-        "info": "This sample demonstrates how to register a DXL service to receive `Request`\r\nmessages and send back `Response` messages from Node-RED. The payloads in the\r\n`Request` and `Response` messages received from the DXL fabric are printed\r\nto the Node-RED `debug` tab.\r\n\r\n### Prerequisites\r\n\r\nPrior to loading this sample, make sure that you have completed the completed\r\nthe client configuration prerequisites in the\r\n[configuration example](https://github.com/opendxl/node-red-contrib-dxl/wiki/Client-Configuration).\r\n\r\n### Running the Sample\r\n\r\n1. To deploy the flow, press the `Deploy` button in the upper-right corner\r\n   of the screen. If Node-RED is able to properly connect to the DXL fabric, a\r\n   green dot with the word `connected` should appear under each of the nodes\r\n   which use the DXL fabric: `Send request to DXL fabric` and\r\n   `Receive service request from DXL fabric`, and `Send response to DXL fabric`.\r\n\r\n1. To exercise the flow, double-click the button on the left side of the\r\n   `Set 'ping payload for request'` node.\r\n\r\n### Output\r\n\r\nThe following output should appear in the Node-RED `debug` tab:\r\n\r\n~~~\r\n\"ping\"\r\n~~~\r\n\r\n~~~\r\n\"pong\"\r\n~~~\r\n\r\n### Nodes in the Sample Flow\r\n\r\nThe flow exercises the nodes below.\r\n\r\n#### Set 'ping payload for request'\r\n\r\nThis is an `inject` input node which starts the flow. This node injects the\r\ntext \"ping\" as the message `payload`.\r\n\r\n#### Send request to DXL fabric\r\n\r\nThis is a `dxl request` function node. This node connects to the DXL fabric and\r\nsends a DXL `Request` message with the configured topic,\r\n\"/isecg/sample/mybasicservice\". The request message contains the `payload` set by\r\nthe `Set 'ping payload for request'` node.\r\n \r\nThe `Return` field is set to \"a UTF-8 string\" to indicate that the payload for\r\nthe response should be set into the flow message as a UTF-8 string decoded from\r\nthe raw binary payload in the response message.\r\n\r\n#### Receive service request from DXL fabric\r\n\r\nThis is a `dxl service` input node. This node connects to the DXL fabric and\r\nregisters a service with a `service type` of \"myService\". The service registers\r\nto receive requests made to the \"/isecg/sample/mybasicservice\" `topic`. \r\n\r\nWhen a request is received, a message containing the `payload` from the request\r\nis injected as a message into a new flow. The flow message also includes a copy\r\nof the full DXL request content in the `dxlRequest` key in the message. This\r\nis used later in the flow by a `dxl response` node to determine which request\r\nthat the response corresponds to.\r\n\r\nThe `Payload type` field is set to \"a UTF-8 string\" to indicate that the payload\r\nfor the request should be set into the flow message as a UTF-8 string decoded\r\nfrom the raw binary payload in the request message.\r\n\r\n#### Output payload from request\r\n\r\nThis is a `debug` output node. This node outputs the `payload` from the message\r\ninjected by the `Receive service request from DXL fabric` node. The output\r\nshould be the payload from the request: \"ping\".\r\n\r\n#### Set 'pong' payload for response\r\n\r\nThis is a `change` function node. This node changes the `payload` field from\r\nthe message injected by the `Receive serviced request from DXL fabric` node to\r\n\"pong\".\r\n\r\n#### Send response to DXL fabric\r\n\r\nThis is a `dxl response` output node. This node connects to the DXL fabric and\r\nsends a response for the `dxlRequest` that the node receives. The response\r\nmessage contains the `payload` set by the `Set 'pong' payload for response`\r\nnode.\r\n\r\n#### Output payload from response\r\n\r\nThis is a `debug` output node. This node outputs the `payload` from the message\r\ninjected by the `Send request to DXL fabric` node. The output should be the\r\npayload from the response to the DXL request: \"pong\"."
+        "info": "This sample demonstrates how to register a DXL service to receive `Request`\r\nmessages and send back `Response` messages from Node-RED. The payloads in the\r\n`Request` and `Response` messages received from the DXL fabric are printed\r\nto the Node-RED `debug` tab.\r\n\r\n### Prerequisites\r\n\r\nThe samples configuration step has been completed (see the\r\n[DXL configuration sample](https://github.com/opendxl/node-red-contrib-dxl/wiki/Client-Configuration)).\r\n\r\n### Setup\r\n\r\nTo deploy the flow, press the `Deploy` button in the upper-right corner of the\r\nscreen. If Node-RED is able to properly connect to the DXL fabric, a green dot\r\nwith the word `connected` should appear under each of the nodes which use the\r\nDXL fabric: `Send request to DXL fabric` and\r\n`Receive service request from DXL fabric`, and `Send response to DXL fabric`.\r\n\r\n### Running\r\n\r\nTo exercise the flow, double-click the button on the left side of the\r\n`Set 'ping payload for request'` node.\r\n\r\n### Output\r\n\r\nThe following output should appear in the Node-RED `debug` tab:\r\n\r\n~~~\r\n\"ping\"\r\n~~~\r\n\r\n~~~\r\n\"pong\"\r\n~~~\r\n\r\n### Details\r\n\r\nThe flow exercises the nodes below.\r\n\r\n#### Set 'ping payload for request'\r\n\r\nThis is an `inject` input node which starts the flow. This node injects the\r\ntext \"ping\" as the message `payload`.\r\n\r\n#### Send request to DXL fabric\r\n\r\nThis is a `dxl request` function node. This node connects to the DXL fabric and\r\nsends a DXL `Request` message with the configured topic,\r\n\"/isecg/sample/mybasicservice\". The request message contains the `payload` set by\r\nthe `Set 'ping payload for request'` node.\r\n \r\nThe `Return` field is set to \"a UTF-8 string\" to indicate that the payload for\r\nthe response should be set into the flow message as a UTF-8 string decoded from\r\nthe raw binary payload in the response message.\r\n\r\n#### Receive service request from DXL fabric\r\n\r\nThis is a `dxl service` input node. This node connects to the DXL fabric and\r\nregisters a service with a `service type` of \"myService\". The service registers\r\nto receive requests made to the \"/isecg/sample/mybasicservice\" `topic`. \r\n\r\nWhen a request is received, a message containing the `payload` from the request\r\nis injected as a message into a new flow. The flow message also includes a copy\r\nof the full DXL request content in the `dxlRequest` key in the message. This\r\nis used later in the flow by a `dxl response` node to determine which request\r\nthat the response corresponds to.\r\n\r\nThe `Payload type` field is set to \"a UTF-8 string\" to indicate that the payload\r\nfor the request should be set into the flow message as a UTF-8 string decoded\r\nfrom the raw binary payload in the request message.\r\n\r\n#### Output payload from request\r\n\r\nThis is a `debug` output node. This node outputs the `payload` from the message\r\ninjected by the `Receive service request from DXL fabric` node. The output\r\nshould be the payload from the request: \"ping\".\r\n\r\n#### Set 'pong' payload for response\r\n\r\nThis is a `change` function node. This node changes the `payload` field from\r\nthe message injected by the `Receive serviced request from DXL fabric` node to\r\n\"pong\".\r\n\r\n#### Send response to DXL fabric\r\n\r\nThis is a `dxl response` output node. This node connects to the DXL fabric and\r\nsends a response for the `dxlRequest` that the node receives. The response\r\nmessage contains the `payload` set by the `Set 'pong' payload for response`\r\nnode.\r\n\r\n#### Output payload from response\r\n\r\nThis is a `debug` output node. This node outputs the `payload` from the message\r\ninjected by the `Send request to DXL fabric` node. The output should be the\r\npayload from the response to the DXL request: \"pong\"."
     },
     {
-        "id": "e3c65643.145388",
+        "id": "815773a0.be50b",
         "type": "dxl-core-service",
-        "z": "9ed9dd8a.e8816",
+        "z": "9098e257.a97a6",
         "name": "Receive service request from DXL fabric",
         "serviceType": "myService",
         "client": "",
@@ -24,15 +24,15 @@
         "y": 300,
         "wires": [
             [
-                "187c543e.94a6dc",
-                "15765ff6.01468"
+                "2c5dd85d.9555e8",
+                "3ed3aa39.f126f6"
             ]
         ]
     },
     {
-        "id": "bad40593.ccd328",
+        "id": "99b0aeb7.fe4f2",
         "type": "dxl-core-request",
-        "z": "9ed9dd8a.e8816",
+        "z": "9098e257.a97a6",
         "name": "Send request to DXL fabric",
         "topic": "/isecg/sample/mybasicservice",
         "client": "",
@@ -41,14 +41,14 @@
         "y": 160,
         "wires": [
             [
-                "e4ff5e8.86e88a"
+                "ec3cf47a.20f648"
             ]
         ]
     },
     {
-        "id": "33534c67.6199c4",
+        "id": "d1f9b26a.861fa",
         "type": "inject",
-        "z": "9ed9dd8a.e8816",
+        "z": "9098e257.a97a6",
         "name": "Set 'ping' payload for request",
         "topic": "",
         "payload": "ping",
@@ -60,14 +60,14 @@
         "y": 36,
         "wires": [
             [
-                "bad40593.ccd328"
+                "99b0aeb7.fe4f2"
             ]
         ]
     },
     {
-        "id": "187c543e.94a6dc",
+        "id": "2c5dd85d.9555e8",
         "type": "debug",
-        "z": "9ed9dd8a.e8816",
+        "z": "9098e257.a97a6",
         "name": "Output payload from request",
         "active": true,
         "console": "false",
@@ -77,9 +77,9 @@
         "wires": []
     },
     {
-        "id": "34103d96.61e552",
+        "id": "d3221cef.e8a38",
         "type": "dxl-core-response",
-        "z": "9ed9dd8a.e8816",
+        "z": "9098e257.a97a6",
         "name": "Send response to DXL fabric",
         "client": "",
         "x": 520,
@@ -87,9 +87,9 @@
         "wires": []
     },
     {
-        "id": "e4ff5e8.86e88a",
+        "id": "ec3cf47a.20f648",
         "type": "debug",
-        "z": "9ed9dd8a.e8816",
+        "z": "9098e257.a97a6",
         "name": "Output payload from response",
         "active": true,
         "console": "false",
@@ -99,9 +99,9 @@
         "wires": []
     },
     {
-        "id": "15765ff6.01468",
+        "id": "3ed3aa39.f126f6",
         "type": "change",
-        "z": "9ed9dd8a.e8816",
+        "z": "9098e257.a97a6",
         "name": "Set 'pong' payload for response",
         "rules": [
             {
@@ -121,7 +121,7 @@
         "y": 420,
         "wires": [
             [
-                "34103d96.61e552"
+                "d3221cef.e8a38"
             ]
         ]
     }
