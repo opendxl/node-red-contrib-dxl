@@ -3,10 +3,7 @@
     category: 'dxl',
     defaults: {
       name: {value: ''},
-      client: {type: 'dxl-client',
-        required: false,
-        validate: function () { return DXL.validators.client(this) }
-      }
+      client: {type: 'dxl-client', required: true}
     },
     color: '#b3d2e3',
     inputs: 1,
