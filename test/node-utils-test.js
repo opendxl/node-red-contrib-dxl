@@ -84,4 +84,11 @@ describe('NodeUtils', function () {
       obj.should.eql({prop2: 'val2'})
     })
   })
+  context('.removeProperties', function () {
+    it('should remove properties from an object', function () {
+      var obj = {prop1: 'val1', prop2: 'val2', prop3: 'val3'}
+      NodeUtils.removeProperties(obj, ['prop1', 'prop3'])
+      obj.should.eql({prop2: 'val2'})
+    })
+  })
 })
