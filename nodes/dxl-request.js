@@ -54,7 +54,8 @@ module.exports = function (RED) {
     if (this._client) {
       this._client.registerUserNode(this)
       this.on('input', function (msg) {
-        var topic = NodeUtils.defaultIfEmpty(nodeConfig.topic, msg.dxlTopic)
+        var topic = NodeUtils.defaultIfEmpty(nodeConfig.topic,
+          NodeUtils.extractProperty(msg, 'dxlTopic'))
         if (topic) {
           var request = new dxl.Request(topic)
           request.payload = msg.payload

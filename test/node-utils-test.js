@@ -68,4 +68,20 @@ describe('NodeUtils', function () {
         NodeUtils.isEmpty(' testing ').should.be.false()
       })
   })
+  context('.extractProperty', function () {
+    it('should remove a property from an object and return its value',
+      function () {
+        var obj = {prop1: 'val1', prop2: 'val2', prop3: 'val3'}
+        NodeUtils.extractProperty(obj, 'prop2').should.equal('val2')
+        obj.should.eql({prop1: 'val1', prop3: 'val3'})
+      })
+  })
+  context('.extractProperties', function () {
+    it('should remove and return properties from an object', function () {
+      var obj = {prop1: 'val1', prop2: 'val2', prop3: 'val3'}
+      NodeUtils.extractProperties(obj, ['prop1', 'prop3']).should.eql(
+        {prop1: 'val1', prop3: 'val3'})
+      obj.should.eql({prop2: 'val2'})
+    })
+  })
 })
