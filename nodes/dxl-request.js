@@ -61,31 +61,31 @@ module.exports = function (RED) {
           request.payload = msg.payload
           if (node._client.connected) {
             this._client.asyncRequest(request,
-                function (error, response) {
-                  if (error) {
-                    if (error instanceof dxl.MessageError) {
-                      msg.dxlError = {code: error.code}
-                      msg.payload = error.detail.payload
-                      msg.dxlResponse = error.detail
-                      msg.dxlMessage = msg.dxlResponse
-                    }
-                    node.error(error.message, msg)
-                  } else {
-                    msg.dxlResponse = response
+              function (error, response) {
+                if (error) {
+                  if (error instanceof dxl.MessageError) {
+                    msg.dxlError = {code: error.code}
+                    msg.payload = error.detail.payload
+                    msg.dxlResponse = error.detail
                     msg.dxlMessage = msg.dxlResponse
-                    delete msg.dxlError
-                    try {
-                      response.payload = MessageUtils.decodePayload(
-                        response, node._returnType)
-                      msg.payload = response.payload
-                      node.send(msg)
-                    } catch (e) {
-                      node.error('Error converting response to ' +
-                        node._returnType + '. Error: ' + e.message +
-                        ', Payload: ' + response.payload, msg)
-                    }
+                  }
+                  node.error(error.message, msg)
+                } else {
+                  msg.dxlResponse = response
+                  msg.dxlMessage = msg.dxlResponse
+                  delete msg.dxlError
+                  try {
+                    response.payload = MessageUtils.decodePayload(
+                      response, node._returnType)
+                    msg.payload = response.payload
+                    node.send(msg)
+                  } catch (e) {
+                    node.error('Error converting response to ' +
+                      node._returnType + '. Error: ' + e.message +
+                      ', Payload: ' + response.payload, msg)
                   }
                 }
+              }
             )
           } else {
             this.error('Unable to send request, not connected')
