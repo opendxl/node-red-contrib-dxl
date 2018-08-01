@@ -5,10 +5,10 @@
   "description": "DXL nodes for Node-RED",
   "license": "Apache-2.0",
   "keywords": [
+    "node-red",
     "opendxl",
     "dxl",
-    "mcafee",
-    "Node-RED"
+    "mcafee"
   ],
   "files": [
     "lib",
