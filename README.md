@@ -24,7 +24,7 @@ for installation instructions, API documentation, and examples.
 ## Bugs and Feedback
 
 For bugs, questions and discussions please use the
-[Github Issues](https://github.com/opendxl/node-red-contrib-dxl/issues).
+[GitHub Issues](https://github.com/opendxl/node-red-contrib-dxl/issues).
 
 ## LICENSE
 
