@@ -17,6 +17,10 @@ invoking/providing services.
 See the [Wiki](https://github.com/opendxl/node-red-contrib-dxl/wiki)
 for an overview of the Node-RED OpenDXL contribution package and examples.
 
+See the
+[Node-RED OpenDXL Library Documentation](https://opendxl.github.io/node-red-contrib-dxl/jsdoc)
+for installation instructions, API documentation, and examples.
+
 ## Bugs and Feedback
 
 For bugs, questions and discussions please use the
