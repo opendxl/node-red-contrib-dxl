@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Tutorial: Client Configuration</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Tutorial: Client Configuration</h1>
+
+    <section>
+
+<header>
+    
+
+    <h2>Client Configuration</h2>
+</header>
+
+<article>
+    <p>This page demonstrates how to setup a DXL client configuration for Node-RED. The
+configuration created by following the steps on this page can be used in
+conjunction with the other samples in the Node-RED OpenDXL contribution package.</p>
+<p>Prior to setting up a DXL client configuration in Node-RED, make sure you have
+completed the <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/tutorial-provisioning.html">client provisioning</a>
+step.</p>
+<p>In order to connect to the DXL fabric, each of the OpenDXL nodes need to be
+associated with a <code>dxl client</code>
+<a href="https://nodered.org/docs/creating-nodes/config-nodes">configuration node</a>. Each
+<code>dxl client</code> node is associated with a separate connection to the DXL fabric.
+The same <code>dxl client</code> node can be associated with each DXL node which is
+intended to share a client connection. Multiple client configuration nodes can
+be created, for example, in order to bridge communication among different DXL
+fabrics.</p>
+<p>The examples in the Node-RED OpenDXL contribution package do not include their
+own <code>dxl client</code> configuration node. You can either:</p>
+<ul>
+<li>Import the sample configuration included in the Node-RED OpenDXL contribution
+package before importing any of the examples.</li>
+<li>Import an example flow first and manually create a configuration node from
+within the edit dialog of one of the DXL nodes imported from the example.</li>
+</ul>
+<p>With the sample configuration approach, the client node will be automatically
+associated with DXL nodes imported from other example flows later on. The sample
+configuration approach, therefore, may be a bit simpler for getting flows up and
+running.</p>
+<h3>Importing the Sample Configuration</h3><p>To import the <code>basic-config-example</code>, perform the following steps:</p>
+<ol>
+<li><p>In the upper-right corner of the Node-RED UI, press the <code>side menu</code> button. </p>
+</li>
+<li><p>In the menu drop-down list, select
+<code>Import</code> &rarr; <code>Examples</code> &rarr; <code>dxl</code> &rarr; <code>basic-config-example</code>.</p>
+</li>
+<li><p>To confirm that the configuration node was loaded properly, choose the
+<code>Configuration nodes</code> item under the <code>side menu</code> button. An item similar
+to the following should appear under the <code>config</code> tab on the right-side
+of the screen:</p>
+<p><img src="images/import-config-node.png" alt="Import Config Node"></p>
+</li>
+<li><p>Double-click the <code>client</code> node to open an edit window:</p>
+<p><img src="images/edit-config-node.png" alt="Edit Config Node"></p>
+<p>The value in the <code>Config file</code> text box determines the DXL client
+configuration file that the client node will use to determine how to connect
+to the DXL fabric. Change this value to the location of the
+<code>dxlclient.config</code> file which you generated during the
+<a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/tutorial-provisioning.html">provisioning step</a>
+and press the <code>Update</code> button to commit the change.</p>
+</li>
+</ol>
+<h3>Manually Creating a Configuration Node</h3><p>A DXL client configuration node can be created manually from within the edit
+dialog of another DXL node. For example, you could do the following:</p>
+<ol>
+<li><p>Drag a <code>dxl event subscriber</code> node from the <code>Input</code> palette into the flow
+panel.</p>
+<p><img src="images/add-event-subscriber-node.png" alt="Add Event Subscriber Node"></p>
+</li>
+<li><p>Double-click the <code>dxl subscriber event</code> node to open an edit window:</p>
+<p><img src="images/edit-event-subscriber-node-no-client.png" alt="Edit Event Subscriber Node No Client"></p>
+</li>
+<li><p>Click on the <code>pencil</code> icon to the right of the <code>Add new dxl-client...</code>
+dropdown entry. This should open up an edit dialog box for a new client
+configuration node. Enter the location of the DXL configuration file on your
+Node-RED server and a <code>Name</code> that Node-RED can use to associate with the
+configuration:</p>
+<p><img src="images/add-config-node.png" alt="Add Config Node"></p>
+</li>
+<li><p>Press the <code>Add</code> button to create the new configuration node. The
+configuration node will automatically be associated with the new event
+subscriber node:</p>
+<p><img src="images/edit-event-subscriber-node-with-client.png" alt="Edit Event Subscriber Node With Client"></p>
+<p>Note that the <code>Client</code> field on each DXL node is a drop-down list box. A
+separate list item will appear for each client configuration node which has
+been defined. A DXL node may be associated with only one client configuration
+node.</p>
+</li>
+</ol>
+</article>
+
+</section>
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-MessageUtils.html">MessageUtils</a></li><li><a href="module-NodeUtils.html">NodeUtils</a></li></ul><h3>Externals</h3><ul><li><a href="external-Message.html">Message</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-configuration.html">Client Configuration</a></li><li><a href="tutorial-installation.html">Library Installation</a></li><li><a href="tutorial-samples.html">Samples</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
