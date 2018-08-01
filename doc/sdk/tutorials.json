@@ -1,0 +1,14 @@
+{
+  "overview": {
+    "title": "Overview"
+  },
+  "installation": {
+    "title": "Library Installation"
+  },
+  "configuration": {
+    "title": "Client Configuration"
+  },
+  "samples": {
+    "title": "Samples"
+  }
+}

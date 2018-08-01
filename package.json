@@ -26,6 +26,7 @@
     "safe-buffer": "^5.1.1"
   },
   "devDependencies": {
+    "archiver": "^2.1.1",
     "commander": "^2.13.0",
     "express": "^4.16.2",
     "jsdoc": "^3.5.5",
@@ -60,6 +61,7 @@
   },
   "scripts": {
     "remove-config-node": "scripts/remove-config-node.js",
+    "dist": "npm pack && npm run doc && node scripts/dist.js",
     "test": "mocha --recursive",
     "lint": "npm run lint:jshint && npm run lint:standard",
     "lint:jshint": "jshint lib test",
@@ -67,7 +69,8 @@
     "preci": "npm run lint",
     "ci": "npm run test",
     "predoc": "rimraf out/jsdoc",
-    "doc": "jsdoc -c ./doc/conf.json -r lib/ -d out/jsdoc"
+    "doc": "jsdoc -c ./doc/conf.json doc/index.md -r lib/ -u doc/sdk -d out/jsdoc",
+    "postdoc": "node scripts/postdoc.js"
   },
   "standard": {
     "env": [
