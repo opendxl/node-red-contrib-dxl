@@ -61,6 +61,7 @@
   },
   "scripts": {
     "remove-config-node": "scripts/remove-config-node.js",
+    "predist": "npm install && rimraf *.tgz",
     "dist": "npm pack && npm run doc && node scripts/dist.js",
     "test": "mocha --recursive",
     "lint": "npm run lint:jshint && npm run lint:standard",
