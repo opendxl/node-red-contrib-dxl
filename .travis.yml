@@ -17,7 +17,6 @@ before_install:
   - docker run -d -p 127.0.0.1:8883:8883 --volume "$PWD/dxlbroker-volume:/dxlbroker-volume" opendxl/opendxl-broker
   - docker ps -a
   - cp test/nodes/client_config.cfg.travis test/nodes/client_config.cfg
-  - npm install git://github.com/opendxl/opendxl-bootstrap-javascript
 
 env:
   - CXX=g++-4.8
