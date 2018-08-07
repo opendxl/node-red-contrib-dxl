@@ -10,6 +10,10 @@ invoking/providing services.
 
 * {@tutorial installation}
 
+## Configuration
+
+* {@tutorial configuration}
+
 ## Samples
 
 * {@tutorial samples}
