@@ -49,7 +49,32 @@ UI, version 0.18.0 or newer of Node-RED should be installed.</p>
 </ul>
 </li>
 </ul>
-<h3>Installation</h3><p>Before installing the Node-RED OpenDXL contribution package, first navigate in a
+<h3>Installation</h3><p>The Node-RED OpenDXL contribution package can be installed either through the
+user interface or from the command line of the Node-RED web server. For
+simplicity, you may choose the web UI installation approach. See the following
+sections for information on both installation approaches.</p>
+<h4>Node-RED Web UI Installation</h4><ol>
+<li><p>In the upper-right corner of the Node-RED Web UI, press the side menu button.</p>
+</li>
+<li><p>Choose the <code>Manage palette</code> option in the menu drop-down list.</p>
+</li>
+<li><p>From the <code>Palette</code> user settings tab, click on the <code>Install</code> tab.</p>
+</li>
+<li><p>In the <code>search modules</code> text box, enter <code>dxl</code>.</p>
+</li>
+<li><p>Next to the entry for <code>@opendxl/node-red-contrib-dxl</code> in the search results,
+press the <code>install</code> button.</p>
+</li>
+<li><p>On the <code>Installing</code> confirmation dialog, press the <code>Install</code> button.   </p>
+<p>A dialog containing text like the following should appear when the
+installation is complete:</p>
+<pre class="prettyprint source"><code>Nodes added to palette:
+
+* dxl</code></pre></li>
+<li><p>Click on the <code>Close</code> button to close the <code>User Settings</code> tab.</p>
+</li>
+</ol>
+<h4>Command Line Installation</h4><p>Before installing the Node-RED OpenDXL contribution package, first navigate in a
 command shell to the user directory which you have configured for Node-RED. The
 <code>.node-red</code> directory under the user's <code>HOME</code> directory is the default user
 directory for Node-RED.</p>
@@ -61,8 +86,10 @@ system, run the following command:</p>
 <pre class="prettyprint source lang-sh"><code>npm install .\lib\opendxl-node-red-contrib-dxl-0.1.0.tgz --save</code></pre><p>To install the library via the
 <a href="https://www.npmjs.com/package/@opendxl/node-red-contrib-dxl">npm package registry</a>,
 run the following command:</p>
-<pre class="prettyprint source lang-sh"><code>npm install @opendxl/node-red-contrib-dxl --save</code></pre><p>After you restart Node-RED and browse to the Node-RED web interface, you should
-see several &quot;dxl&quot; nodes in the left column:</p>
+<pre class="prettyprint source lang-sh"><code>npm install @opendxl/node-red-contrib-dxl --save</code></pre><p>After the installation is complete, restart Node-RED and browse to the
+Node-RED web interface.</p>
+<h4>Confirming the Installation Result</h4><p>After the installation is complete, you should see several &quot;dxl&quot; nodes in the
+left column of the Node-RED web interface:</p>
 <p><img src="images/dxl-nodes.png" alt="DXL Nodes"></p>
 <p>For more information, see the
 <a href="https://nodered.org/docs/configuration">Node-RED Configuration</a> documentation.</p>
