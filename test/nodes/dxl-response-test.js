@@ -3,20 +3,20 @@
 var should = require('should')
 var dxlClientNode = require('../../nodes/dxl-client')
 var testNode = require('../../nodes/dxl-response')
-var nodeRedHelper = require('../node-red-helper')
+var nodeRedTestHelper = require('node-red-node-test-helper')
 var testHelpers = require('./test-helpers')
 
 describe('dxl-core-response node', function () {
   before(function (done) {
-    nodeRedHelper.startServer(done)
+    nodeRedTestHelper.startServer(done)
   })
 
   afterEach(function () {
-    nodeRedHelper.unload()
+    nodeRedTestHelper.unload()
   })
 
   after(function (done) {
-    nodeRedHelper.stopServer(done)
+    nodeRedTestHelper.stopServer(done)
   })
 
   it('should be loaded', function (done) {
@@ -36,9 +36,9 @@ describe('dxl-core-response node', function () {
       [dxlClientNode, testNode],
       testFlows,
       function () {
-        var responseOutNode = nodeRedHelper.getNode(responseNodeId)
+        var responseOutNode = nodeRedTestHelper.getNode(responseNodeId)
         responseOutNode.should.have.property('name', 'my response')
-        var clientNode = nodeRedHelper.getNode(clientNodeId)
+        var clientNode = nodeRedTestHelper.getNode(clientNodeId)
         should(clientNode).not.be.null()
         done()
       }, done)

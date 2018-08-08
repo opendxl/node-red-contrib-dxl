@@ -3,20 +3,20 @@
 var should = require('should')
 var dxlClientNode = require('../../nodes/dxl-client')
 var testNode = require('../../nodes/dxl-request')
-var nodeRedHelper = require('../node-red-helper')
+var nodeRedTestHelper = require('node-red-node-test-helper')
 var testHelpers = require('./test-helpers')
 
 describe('dxl-core-request node', function () {
   before(function (done) {
-    nodeRedHelper.startServer(done)
+    nodeRedTestHelper.startServer(done)
   })
 
   afterEach(function () {
-    nodeRedHelper.unload()
+    nodeRedTestHelper.unload()
   })
 
   after(function (done) {
-    nodeRedHelper.stopServer(done)
+    nodeRedTestHelper.stopServer(done)
   })
 
   it('should be loaded', function (done) {
@@ -40,10 +40,10 @@ describe('dxl-core-request node', function () {
       [dxlClientNode, testNode],
       testFlows,
       function () {
-        var requestNode = nodeRedHelper.getNode(requestNodeId)
+        var requestNode = nodeRedTestHelper.getNode(requestNodeId)
         requestNode.should.have.property('name', 'my request')
         requestNode.should.have.property('_returnType', 'bin')
-        var clientNode = nodeRedHelper.getNode(clientNodeId)
+        var clientNode = nodeRedTestHelper.getNode(clientNodeId)
         should(clientNode).not.be.null()
         done()
       }, done)

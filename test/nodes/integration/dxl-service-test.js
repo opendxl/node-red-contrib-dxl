@@ -9,20 +9,20 @@ var dxlClientNode = require('../../../nodes/dxl-client')
 var dxlRequestNode = require('../../../nodes/dxl-request')
 var dxlResponseNode = require('../../../nodes/dxl-response')
 var dxlServiceNode = require('../../../nodes/dxl-service')
-var nodeRedHelper = require('../../node-red-helper')
+var nodeRedTestHelper = require('node-red-node-test-helper')
 var testHelpers = require('../test-helpers')
 
 describe('dxl service', function () {
   before(function (done) {
-    nodeRedHelper.startServer(done)
+    nodeRedTestHelper.startServer(done)
   })
 
   afterEach(function () {
-    nodeRedHelper.unload()
+    nodeRedTestHelper.unload()
   })
 
   after(function (done) {
-    nodeRedHelper.stopServer(done)
+    nodeRedTestHelper.stopServer(done)
   })
 
   var nodesToLoad = [catchNode, functionNode, injectNode,
@@ -152,7 +152,7 @@ describe('dxl service', function () {
 
     testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedHelper.getNode(helperNodeId)
+          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.property('payload', requestPayload)
@@ -187,7 +187,7 @@ describe('dxl service', function () {
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedHelper.getNode(helperNodeId)
+          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.property('payload', expectedResponsePayload)
@@ -229,7 +229,7 @@ describe('dxl service', function () {
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedHelper.getNode(helperNodeId)
+          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.property('payload',
@@ -267,7 +267,7 @@ describe('dxl service', function () {
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedHelper.getNode(helperNodeId)
+          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.property('payload', {
@@ -301,7 +301,7 @@ describe('dxl service', function () {
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedHelper.getNode(helperNodeId)
+          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.propertyByPath(
@@ -342,7 +342,7 @@ describe('dxl service', function () {
 
           testHelpers.loadNodeRed(nodesToLoad, testFlows,
             function () {
-              var helperNode = nodeRedHelper.getNode(helperNodeId)
+              var helperNode = nodeRedTestHelper.getNode(helperNodeId)
               helperNode.on('input', function (msg) {
                 testHelpers.forwardOnError(function () {
                   msg.should.have.propertyByPath(
@@ -383,7 +383,7 @@ describe('dxl service', function () {
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedHelper.getNode(helperNodeId)
+          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.propertyByPath(

@@ -4,7 +4,7 @@ var fs = require('fs')
 var os = require('os')
 var path = require('path')
 
-var nodeRedHelper = require('../node-red-helper')
+var nodeRedTestHelper = require('node-red-node-test-helper')
 
 var CLIENT_CONFIG_FILE = 'client_config.cfg'
 
@@ -37,13 +37,13 @@ module.exports = {
   },
   loadNodeRed: function (testNode, testFlows,
                          callbackFunction, resultFunction) {
-    nodeRedHelper.load(testNode, testFlows, function () {
+    nodeRedTestHelper.load(testNode, testFlows, function () {
       module.exports.forwardOnError(callbackFunction, resultFunction)
     })
   },
   dumpNodeRedLog: function () {
     console.log('Error, dumping Node RED log: ' +
-      nodeRedHelper.log().getCalls())
+      nodeRedTestHelper.log().getCalls())
   },
   getInjectNodeConfig: function (payload, wires, payloadType) {
     if (typeof wires === 'string') {

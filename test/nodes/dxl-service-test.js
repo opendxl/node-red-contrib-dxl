@@ -2,20 +2,20 @@
 
 var dxlClientNode = require('../../nodes/dxl-client')
 var testNode = require('../../nodes/dxl-service')
-var nodeRedHelper = require('../node-red-helper')
+var nodeRedTestHelper = require('node-red-node-test-helper')
 var testHelpers = require('./test-helpers')
 
 describe('dxl-core-service node', function () {
   before(function (done) {
-    nodeRedHelper.startServer(done)
+    nodeRedTestHelper.startServer(done)
   })
 
   afterEach(function () {
-    nodeRedHelper.unload()
+    nodeRedTestHelper.unload()
   })
 
   after(function (done) {
-    nodeRedHelper.stopServer(done)
+    nodeRedTestHelper.stopServer(done)
   })
 
   it('should be loaded', function (done) {
@@ -50,10 +50,10 @@ describe('dxl-core-service node', function () {
       [dxlClientNode, testNode],
       testFlows,
       function () {
-        var serviceNode = nodeRedHelper.getNode(serviceNodeId)
+        var serviceNode = nodeRedTestHelper.getNode(serviceNodeId)
         serviceNode.should.have.property('name', 'my service')
         serviceNode.should.have.property('_rules', topicEntries)
-        var client = nodeRedHelper.getNode(clientNodeId).dxlClient
+        var client = nodeRedTestHelper.getNode(clientNodeId).dxlClient
         client.subscriptions.should.containEql(firstServiceTopicEntry.topic)
         client.subscriptions.should.containEql(secondServiceTopicEntry.topic)
         done()

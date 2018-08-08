@@ -8,20 +8,20 @@ var injectNode = require('node-red/nodes/core/core/20-inject')
 var dxlEventOutNode = require('../../../nodes/dxl-event-out')
 var dxlClientNode = require('../../../nodes/dxl-client')
 var dxlEventInNode = require('../../../nodes/dxl-event-in')
-var nodeRedHelper = require('../../node-red-helper')
+var nodeRedTestHelper = require('node-red-node-test-helper')
 var testHelpers = require('../test-helpers')
 
 describe('dxl event', function () {
   before(function (done) {
-    nodeRedHelper.startServer(done)
+    nodeRedTestHelper.startServer(done)
   })
 
   afterEach(function () {
-    nodeRedHelper.unload()
+    nodeRedTestHelper.unload()
   })
 
   after(function (done) {
-    nodeRedHelper.stopServer(done)
+    nodeRedTestHelper.stopServer(done)
   })
 
   var nodesToLoad = [catchNode, functionNode, injectNode,
@@ -80,7 +80,7 @@ describe('dxl event', function () {
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedHelper.getNode(helperNodeId)
+          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.property('payload', expectedEventPayload)
@@ -132,7 +132,7 @@ describe('dxl event', function () {
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedHelper.getNode(helperNodeId)
+          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.property('payload', expectedEventPayload)
@@ -177,7 +177,7 @@ describe('dxl event', function () {
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedHelper.getNode(helperNodeId)
+          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.property('payload', expectedEventPayload)
@@ -215,7 +215,7 @@ describe('dxl event', function () {
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedHelper.getNode(helperNodeId)
+          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.propertyByPath(

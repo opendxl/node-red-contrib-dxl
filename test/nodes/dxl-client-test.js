@@ -1,20 +1,20 @@
 'use strict'
 
 var testNode = require('../../nodes/dxl-client')
-var nodeRedHelper = require('../node-red-helper')
+var nodeRedTestHelper = require('node-red-node-test-helper')
 var testHelpers = require('./test-helpers')
 
 describe('dxl-client node', function () {
   before(function (done) {
-    nodeRedHelper.startServer(done)
+    nodeRedTestHelper.startServer(done)
   })
 
   afterEach(function () {
-    nodeRedHelper.unload()
+    nodeRedTestHelper.unload()
   })
 
   after(function (done) {
-    nodeRedHelper.stopServer(done)
+    nodeRedTestHelper.stopServer(done)
   })
 
   it('should be loaded', function (done) {
@@ -29,7 +29,7 @@ describe('dxl-client node', function () {
       }
     ]
     testHelpers.loadNodeRed(testNode, testFlows, function () {
-      var clientNode = nodeRedHelper.getNode('dxl.clientId')
+      var clientNode = nodeRedTestHelper.getNode('dxl.clientId')
       clientNode.should.have.property('name', 'client')
       var clientConfig = clientNode.dxlClient.config
       clientConfig.keepAliveInterval.should.be.equal(123)
