@@ -20,5 +20,6 @@ invoking/providing services.
     
 ## JavaScript API
 
+* [DxlClientNode]{@link module:DxlClient~DxlClientNode}
 * [MessageUtils]{@link module:MessageUtils}
 * [NodeUtils]{@link module:NodeUtils}

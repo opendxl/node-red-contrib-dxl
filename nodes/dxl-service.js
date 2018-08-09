@@ -1,3 +1,9 @@
+/**
+ * @module DxlService
+ * @description Implementation of the `dxl-core-service` node
+ * @private
+ */
+
 'use strict'
 
 var MessageUtils = require('../lib/message-utils')
@@ -27,6 +33,7 @@ module.exports = function (RED) {
    * @param {String} nodeConfig.client - Id of the DXL client configuration node
    *   that this node should be associated with.
    * @constructor
+   * @private
    */
   function DxlServiceNode (nodeConfig) {
     RED.nodes.createNode(this, nodeConfig)

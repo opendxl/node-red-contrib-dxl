@@ -1,3 +1,8 @@
+/**
+ * @module DxlClient
+ * @description Implementation of the `dxl-client` node
+ */
+
 'use strict'
 
 var fs = require('fs')
@@ -233,7 +238,7 @@ module.exports = function (RED) {
      *   topics (no filtering).
      * @param {Function} eventCallback - Callback function which should be
      *   invoked for a matching message. The first argument passed to the
-     *   callback function is the {@link Event} object.
+     *   callback function is the [Event]{@link external:Event} object.
      */
     this.addEventCallback = function (topic, eventCallback) {
       node.dxlClient.addEventCallback(topic, eventCallback)
@@ -242,7 +247,8 @@ module.exports = function (RED) {
     /**
      * Removes an event callback from the client for the specified topic. This
      * method must be invoked with the same arguments as when the callback was
-     * originally registered via {@link DxlClientNode#addEventCallback}.
+     * originally registered via
+     * [addEventCallback]{@link module:DxlClient~DxlClientNode#addEventCallback}.
      * @param {String} topic - The topic to remove the callback for.
      * @param {Function} eventCallback - The event callback to be removed for
      *   the specified topic.
@@ -265,7 +271,7 @@ module.exports = function (RED) {
      *   [Response]{@link external:Response} message is received by the client.
      * @throws {external:DxlError} If no prior attempt has been made to connect
      *   the client. This could occur if no prior call has been made to
-     *   {@link DxlClientNode#registerUserNode}.
+     *   [registerUserNode]{@link module:DxlClient~DxlClientNode#registerUserNode}.
      */
     this.asyncRequest = function (request, responseCallback) {
       node.dxlClient.asyncRequest(request, responseCallback)
@@ -274,10 +280,10 @@ module.exports = function (RED) {
     /**
      * Attempts to deliver the specified [Event]{@link external:Event} message
      * to the DXL fabric.
-     * @param {external:Event} event - The {@link Event} to send.
+     * @param {external:Event} event - The {@link external:Event} to send.
      * @throws {external:DxlError} If no prior attempt has been made to connect
      *   the client. This could occur if no prior call has been made to
-     *   {@link DxlClientNode#registerUserNode}.
+     *   [registerUserNode]{@link module:DxlClient~DxlClientNode#registerUserNode}.
      */
     this.sendEvent = function (event) {
       node.dxlClient.sendEvent(event)
@@ -292,7 +298,7 @@ module.exports = function (RED) {
      *   [Response]{@link external:Response} to send.
      * @throws {external:DxlError} If no prior attempt has been made to connect
      *   the client. This could occur if no prior call has been made to
-     *   {@link DxlClientNode#registerUserNode}.
+     *   [registerUserNode]{@link module:DxlClient~DxlClientNode#registerUserNode}.
      */
     this.sendResponse = function (response) {
       node.dxlClient.sendResponse(response)
@@ -313,8 +319,8 @@ module.exports = function (RED) {
      * @returns {external:ServiceRegistrationInfo} An object containing
      *   information for the registered service. This value should be supplied
      *   in the corresponding call to
-     *   {@link DxlClientNode#unregisterServiceAsync} when the service should be
-     *   unregistered.
+     *   [unregisterServiceAsync]{@link module:DxlClient~DxlClientNode#unregisterServiceAsync}.
+     *   when the service should be unregistered.
      */
     this.registerServiceAsync = function (serviceType, callbacksByTopic) {
       var serviceInfo = new ServiceRegistrationInfo(node.dxlClient,

@@ -1,3 +1,9 @@
+/**
+ * @module DxlResponse
+ * @description Implementation of the `dxl-core-response` node
+ * @private
+ */
+
 'use strict'
 
 var dxl = require('@opendxl/dxl-client')
@@ -12,6 +18,7 @@ module.exports = function (RED) {
    * @param {String} nodeConfig.client - Id of the DXL client configuration node
    *   that this node should be associated with.
    * @constructor
+   * @private
    */
   function DxlResponseNode (nodeConfig) {
     RED.nodes.createNode(this, nodeConfig)
