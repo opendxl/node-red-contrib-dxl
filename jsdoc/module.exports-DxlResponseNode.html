@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: External: Message</title>
+    <title>JSDoc: Class: DxlResponseNode</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">External: Message</h1>
+    <h1 class="page-title">Class: DxlResponseNode</h1>
 
     
 
@@ -28,8 +28,12 @@
 
 <header>
     
-        <h2>
-            <span class="ancestors"><a href="module-MessageUtils.html">MessageUtils</a>~</span>Message</h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>DxlResponseNode<span class="signature">(nodeConfig)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>Node which delivers a response message with the msg.payload from
+the input message to the DXL fabric. This node should typically be
+downstream in the flow from a DXL service node, which receives the original
+request from the DXL fabric.</p></div>
         
     
 </header>
@@ -38,10 +42,128 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Base class for the different Data Exchange Layer (DXL) message types.</p></div>
+
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id="DxlResponseNode"><span class="type-signature"></span>new DxlResponseNode<span class="signature">(nodeConfig)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
         
 
         
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nodeConfig</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Configuration data which the node uses.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>client</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Id of the DXL client configuration node
+  that this node should be associated with.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
 
 
 <dl class="details">
@@ -73,26 +195,34 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_message-utils.js.html">lib/message-utils.js</a>, <a href="lib_message-utils.js.html#line6">line 6</a>
+        <a href="nodes_dxl-response.js.html">nodes/dxl-response.js</a>, <a href="nodes_dxl-response.js.html#line16">line 16</a>
     </li></ul></dd>
     
 
     
 
     
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Message.html">https://opendxl.github.io/opendxl-client-javascript/jsdoc/Message.html</a></li>
-        </ul>
-    </dd>
-    
 
     
 </dl>
 
 
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     </div>
 
