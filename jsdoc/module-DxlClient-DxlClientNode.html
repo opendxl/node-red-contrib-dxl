@@ -28,7 +28,8 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>DxlClientNode<span class="signature">(nodeConfig)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="module-DxlClient.html">DxlClient</a>~</span>DxlClientNode<span class="signature">(nodeConfig)</span><span class="type-signature"></span></h2>
         
             <div class="class-description"><p>Client configuration node responsible for establishing
 communication with the Data Exchange Layer (DXL) fabric.</p></div>
@@ -244,7 +245,7 @@ communication with the Data Exchange Layer (DXL) fabric.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line76">line 76</a>
+        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line81">line 81</a>
     </li></ul></dd>
     
 
@@ -346,7 +347,7 @@ communication with the Data Exchange Layer (DXL) fabric.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line98">line 98</a>
+        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line103">line 103</a>
     </li></ul></dd>
     
 
@@ -418,7 +419,7 @@ communication with the Data Exchange Layer (DXL) fabric.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line104">line 104</a>
+        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line109">line 109</a>
     </li></ul></dd>
     
 
@@ -536,7 +537,7 @@ messages are received by the client on the specified topic.</p>
 
             <td class="description last"><p>Callback function which should be
   invoked for a matching message. The first argument passed to the
-  callback function is the Event object.</p></td>
+  callback function is the <a href="external-Event.html">Event</a> object.</p></td>
         </tr>
 
     
@@ -577,7 +578,7 @@ messages are received by the client on the specified topic.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line238">line 238</a>
+        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line243">line 243</a>
     </li></ul></dd>
     
 
@@ -761,7 +762,7 @@ callback will be invoked when the corresponding
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line270">line 270</a>
+        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line276">line 276</a>
     </li></ul></dd>
     
 
@@ -791,7 +792,7 @@ callback will be invoked when the corresponding
         <div class="param-desc">
         <p>If no prior attempt has been made to connect
   the client. This could occur if no prior call has been made to
-  DxlClientNode#registerUserNode.</p>
+  <a href="module-DxlClient-DxlClientNode.html#registerUserNode">registerUserNode</a>.</p>
         </div>
     </dt>
     <dd></dd>
@@ -958,7 +959,7 @@ callback will be invoked when the corresponding
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line319">line 319</a>
+        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line325">line 325</a>
     </li></ul></dd>
     
 
@@ -988,8 +989,8 @@ callback will be invoked when the corresponding
     <p>An object containing
   information for the registered service. This value should be supplied
   in the corresponding call to
-  DxlClientNode#unregisterServiceAsync when the service should be
-  unregistered.</p>
+  <a href="module-DxlClient-DxlClientNode.html#unregisterServiceAsync">unregisterServiceAsync</a>.
+  when the service should be unregistered.</p>
 </div>
 
 
@@ -1124,7 +1125,7 @@ broker connection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line195">line 195</a>
+        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line200">line 200</a>
     </li></ul></dd>
     
 
@@ -1168,7 +1169,8 @@ broker connection.</p>
 <div class="description">
     <p>Removes an event callback from the client for the specified topic. This
 method must be invoked with the same arguments as when the callback was
-originally registered via DxlClientNode#addEventCallback.</p>
+originally registered via
+<a href="module-DxlClient-DxlClientNode.html#addEventCallback">addEventCallback</a>.</p>
 </div>
 
 
@@ -1285,7 +1287,7 @@ originally registered via DxlClientNode#addEventCallback.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line250">line 250</a>
+        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line256">line 256</a>
     </li></ul></dd>
     
 
@@ -1380,7 +1382,7 @@ to the DXL fabric.</p>
 
             
 
-            <td class="description last"><p>The Event to send.</p></td>
+            <td class="description last"><p>The <a href="external-Event.html">external:Event</a> to send.</p></td>
         </tr>
 
     
@@ -1421,7 +1423,7 @@ to the DXL fabric.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line282">line 282</a>
+        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line288">line 288</a>
     </li></ul></dd>
     
 
@@ -1451,7 +1453,7 @@ to the DXL fabric.</p>
         <div class="param-desc">
         <p>If no prior attempt has been made to connect
   the client. This could occur if no prior call has been made to
-  DxlClientNode#registerUserNode.</p>
+  <a href="module-DxlClient-DxlClientNode.html#registerUserNode">registerUserNode</a>.</p>
         </div>
     </dt>
     <dd></dd>
@@ -1591,7 +1593,7 @@ response back to the client who sent the corresponding
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line297">line 297</a>
+        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line303">line 303</a>
     </li></ul></dd>
     
 
@@ -1621,7 +1623,7 @@ response back to the client who sent the corresponding
         <div class="param-desc">
         <p>If no prior attempt has been made to connect
   the client. This could occur if no prior call has been made to
-  DxlClientNode#registerUserNode.</p>
+  <a href="module-DxlClient-DxlClientNode.html#registerUserNode">registerUserNode</a>.</p>
         </div>
     </dt>
     <dd></dd>
@@ -1763,7 +1765,7 @@ instance contains information about the service that is to be removed.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line337">line 337</a>
+        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line343">line 343</a>
     </li></ul></dd>
     
 
@@ -1854,7 +1856,7 @@ broker connection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line210">line 210</a>
+        <a href="nodes_dxl-client.js.html">nodes/dxl-client.js</a>, <a href="nodes_dxl-client.js.html#line215">line 215</a>
     </li></ul></dd>
     
 
@@ -1898,7 +1900,7 @@ broker connection.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-MessageUtils.html">MessageUtils</a></li><li><a href="module-NodeUtils.html">NodeUtils</a></li></ul><h3>Externals</h3><ul><li><a href="external-DxlClient.html">DxlClient</a></li><li><a href="external-DxlError.html">DxlError</a></li><li><a href="external-Event.html">Event</a></li><li><a href="external-Message.html">Message</a></li><li><a href="external-Request.html">Request</a></li><li><a href="external-Response.html">Response</a></li><li><a href="external-ServiceRegistrationInfo.html">ServiceRegistrationInfo</a></li></ul><h3>Classes</h3><ul><li><a href="module.exports-DxlClientNode.html">DxlClientNode</a></li><li><a href="module.exports-DxlEventInNode.html">DxlEventInNode</a></li><li><a href="module.exports-DxlEventOutNode.html">DxlEventOutNode</a></li><li><a href="module.exports-DxlRequestNode.html">DxlRequestNode</a></li><li><a href="module.exports-DxlResponseNode.html">DxlResponseNode</a></li><li><a href="module.exports-DxlServiceNode.html">DxlServiceNode</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-configuration.html">Client Configuration</a></li><li><a href="tutorial-installation.html">Library Installation</a></li><li><a href="tutorial-samples.html">Samples</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-DxlClient.html">DxlClient</a></li><li><a href="module-MessageUtils.html">MessageUtils</a></li><li><a href="module-NodeUtils.html">NodeUtils</a></li></ul><h3>Externals</h3><ul><li><a href="external-DxlClient.html">DxlClient</a></li><li><a href="external-DxlError.html">DxlError</a></li><li><a href="external-Event.html">Event</a></li><li><a href="external-Message.html">Message</a></li><li><a href="external-Request.html">Request</a></li><li><a href="external-Response.html">Response</a></li><li><a href="external-ServiceRegistrationInfo.html">ServiceRegistrationInfo</a></li></ul><h3>Classes</h3><ul><li><a href="module-DxlClient-DxlClientNode.html">DxlClientNode</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-configuration.html">Client Configuration</a></li><li><a href="tutorial-installation.html">Library Installation</a></li><li><a href="tutorial-samples.html">Samples</a></li></ul>
 </nav>
 
 <br class="clear">
