@@ -51,7 +51,7 @@ sections for information on both installation approaches.
    ```
    Nodes added to palette:
    
-   * dxl
+   * dxl-client
    ```
 
 1. Click on the `Close` button to close the `User Settings` tab.

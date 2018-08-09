@@ -11,18 +11,65 @@ var NodeUtils = require('../lib/node-utils')
 
 var DEFAULT_CONFIG_FILE_NAME = 'dxlclient.config'
 
+/**
+ * @classdesc Responsible for all communication with the
+ * Data Exchange Layer (DXL) fabric.
+ * @external DxlClient
+ * @see {@link https://opendxl.github.io/opendxl-client-javascript/jsdoc/Client.html}
+ */
+
+/**
+* @classdesc Event messages are sent using the {@link DxlClient#sendEvent} method
+*   of a client instance. Event messages are sent by one publisher and received
+*   by one or more recipients that are currently subscribed to the topic
+ *  associated with the event (otherwise known as one-to-many).
+* @external Event
+* @see {@link https://opendxl.github.io/opendxl-client-javascript/jsdoc/Event.html}
+*/
+
+/**
+ * @classdesc Request messages are used when invoking a method on a remote
+ *   service. This communication is one-to-one where a client sends a request to
+ *   a service instance and in turn receives a response.
+ * @external Request
+ * @see {@link https://opendxl.github.io/opendxl-client-javascript/jsdoc/Request.html}
+ */
+
+/**
+ * @classdesc Response messages are sent by service instances upon
+ *   receiving [Request]{@link external:Request} messages. This communication is
+ *   one-to-one where a client sends a request to a service instance and in turn
+ *   receives a response.
+ * @external Response
+ * @see {@link https://opendxl.github.io/opendxl-client-javascript/jsdoc/Response.html}
+ */
+
+/**
+ * @classdesc Service registration instances are used to register and expose
+ *   services onto a DXL fabric.
+ * @external ServiceRegistrationInfo
+ * @see {@link https://opendxl.github.io/opendxl-client-javascript/jsdoc/ServiceRegistrationInfo.html}
+ */
+
+/**
+ * @classdesc A general Data Exchange Layer (DXL) exception.
+ * @external DxlError
+ * @see {@link https://opendxl.github.io/opendxl-client-javascript/jsdoc/DxlError.html}
+ */
+
 module.exports = function (RED) {
   /**
-   * @classdesc Node responsible for establishing communication with the Data
-   * Exchange Layer (DXL) fabric.
+   * @classdesc Client configuration node responsible for establishing
+   * communication with the Data Exchange Layer (DXL) fabric.
    * @param {Object} nodeConfig - Configuration data which the node uses.
-   * @param {String} nodeConfig.configFile - Directory path in which the
-   *   DXL client configuration file should reside.
-   * @param {Number|String} nodeConfig.keepAliveInterval - The maximum period in
+   * @param {String} nodeConfig.configFile - Path to the DXL client
+   *   configuration file. If this value is a directory, the node will attempt
+   *   to load a file named `dxlclient.config` within the directory.
+   * @param {Number} nodeConfig.keepAliveInterval - The maximum period in
    *   seconds between communications with a connected broker. If no other
    *   messages are being exchanged, this controls the rate at which the client
    *   will send ping messages to the broker.
-   * @param {Number|String} nodeConfig.reconnectDelay - The delay between
+   * @param {Number} nodeConfig.reconnectDelay - The delay between
    *   connection retry attempts in seconds.
    * @constructor
    */
@@ -52,7 +99,7 @@ module.exports = function (RED) {
 
     /**
      * Handle to the underlying DXL client object
-     * @type {Client}
+     * @type {external:DxlClient}
      */
     this.dxlClient = new Client(clientConfig)
     /**
@@ -178,11 +225,12 @@ module.exports = function (RED) {
 
     /**
      * Adds an event callback to the client for the specified topic. The
-     * callback will be invoked when {@link Event} messages are received by
-     * the client on the specified topic.
-     * @param {String} topic - Topic to receive {@link Event} messages on.
-     *   An empty string or null value indicates that the callback should
-     *   receive messages for all topics (no filtering).
+     * callback will be invoked when [DxlClient]{@link external:DxlClient}
+     * messages are received by the client on the specified topic.
+      * @param {String} topic - Topic to receive
+     *   [DxlClient]{@link external:DxlClient} messages on. An empty string or
+     *   null value indicates that the callback should receive messages for all
+     *   topics (no filtering).
      * @param {Function} eventCallback - Callback function which should be
      *   invoked for a matching message. The first argument passed to the
      *   callback function is the {@link Event} object.
@@ -206,17 +254,17 @@ module.exports = function (RED) {
     }
 
     /**
-     * Sends a {@link Request} message to a remote DXL service
+     * Sends a [Request]{@link external:Request} message to a remote DXL service
      * asynchronously. An optional response callback can be specified. This
-     * callback will be invoked when the corresponding {@link Response}
-     * message is received by the client.
-     * @param {Request} request - The request message to send to a remote
-     *   DXL service.
-     * @param {Function} [responseCallback=null] - An optional response callback
-     *   that will be invoked when the corresponding {@link Response}
-     *   message is received by the client.
-     * @throws {DxlError} If no prior attempt has been made to connect the
-     *   client. This could occur if no prior call has been made to
+     * callback will be invoked when the corresponding
+     * [Response]{@link external:Response} message is received by the client.
+     * @param {external:Request} request - The request message to send to a
+     *   remote DXL service.
+     * @param {Function} [responseCallback] - An optional response callback
+     *   that will be invoked when the corresponding
+     *   [Response]{@link external:Response} message is received by the client.
+     * @throws {external:DxlError} If no prior attempt has been made to connect
+     *   the client. This could occur if no prior call has been made to
      *   {@link DxlClientNode#registerUserNode}.
      */
     this.asyncRequest = function (request, responseCallback) {
@@ -224,11 +272,11 @@ module.exports = function (RED) {
     }
 
     /**
-     * Attempts to deliver the specified {@link Event} message to the DXL
-     * fabric.
-     * @param {Event} event - The {@link Event} to send.
-     * @throws {DxlError} If no prior attempt has been made to connect the
-     *   client. This could occur if no prior call has been made to
+     * Attempts to deliver the specified [Event]{@link external:Event} message
+     * to the DXL fabric.
+     * @param {external:Event} event - The {@link Event} to send.
+     * @throws {external:DxlError} If no prior attempt has been made to connect
+     *   the client. This could occur if no prior call has been made to
      *   {@link DxlClientNode#registerUserNode}.
      */
     this.sendEvent = function (event) {
@@ -236,12 +284,14 @@ module.exports = function (RED) {
     }
 
     /**
-     * Attempts to deliver the specified {@link Response} message to the DXL
-     * fabric. The fabric will in turn attempt to deliver the response back to
-     * the client who sent the corresponding {@link Request}.
-     * @param {Response} response - The {@link Response} to send.
-     * @throws {DxlError} If no prior attempt has been made to connect the
-     *   client. This could occur if no prior call has been made to
+     * Attempts to deliver the specified [Response]{@link external:Response}
+     * message to the DXL fabric. The fabric will in turn attempt to deliver the
+     * response back to the client who sent the corresponding
+     * [Request]{@link external:Request}.
+     * @param {external:Response} response - The
+     *   [Response]{@link external:Response} to send.
+     * @throws {external:DxlError} If no prior attempt has been made to connect
+     *   the client. This could occur if no prior call has been made to
      *   {@link DxlClientNode#registerUserNode}.
      */
     this.sendResponse = function (response) {
@@ -256,13 +306,15 @@ module.exports = function (RED) {
      *   the service to respond to along with their associated request callback
      *   instances. Each key in the object should have a string representation
      *   of the topic name. Each corresponding value in the object should
-     *   contain the function to be invoked when a {@link Request} message
-     *   is received. The {@link Request} object is supplied as the only
+     *   contain the function to be invoked when a
+     *   [Request]{@link external:Request} message is received. The
+     *   [Request]{@link external:Request} object is supplied as the only
      *   parameter to the request callback function.
-     * @returns {ServiceRegistrationInfo} An object containing information
-     *   for the registered service. This value should be supplied in the
-     *   corresponding call to {@link DxlClientNode#unregisterServiceAsync}
-     *   when the service should be unregistered.
+     * @returns {external:ServiceRegistrationInfo} An object containing
+     *   information for the registered service. This value should be supplied
+     *   in the corresponding call to
+     *   {@link DxlClientNode#unregisterServiceAsync} when the service should be
+     *   unregistered.
      */
     this.registerServiceAsync = function (serviceType, callbacksByTopic) {
       var serviceInfo = new ServiceRegistrationInfo(node.dxlClient,
@@ -274,11 +326,13 @@ module.exports = function (RED) {
 
     /**
      * Unregisters (removes) a DXL service from the fabric asynchronously. The
-     * specified {@link ServiceRegistrationInfo} instance contains
-     * information about the service that is to be removed.
-     * @param {ServiceRegistrationInfo} serviceRegInfo - A
-     *   {@link ServiceRegistrationInfo} instance containing information
-     *   about the service that is to be unregistered.
+     * specified
+     * [ServiceRegistrationInfo]{@link external:ServiceRegistrationInfo}
+     * instance contains information about the service that is to be removed.
+     * @param {external:ServiceRegistrationInfo} serviceRegInfo - A
+     *   [ServiceRegistrationInfo]{@link external:ServiceRegistrationInfo}
+     *   instance containing information about the service that is to be
+     *   unregistered.
      */
     this.unregisterServiceAsync = function (serviceRegInfo) {
       node.dxlClient.unregisterServiceAsync(serviceRegInfo)
