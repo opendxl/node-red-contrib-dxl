@@ -3,7 +3,14 @@
 To use the Node-RED OpenDXL contribution package, the following prerequisites
 must be satisfied:    
 
-* Node-RED must be installed. For more information, see
+* Node-RED must be installed.
+
+  The [OpenDXL Node-RED Docker](https://github.com/opendxl/opendxl-node-red-docker)
+  repository provides instructions on how create a Node-RED container in
+  [Docker](https://www.docker.com/), with the Node-RED OpenDXL contribution
+  package installed automatically.
+
+  For more information on other Node-RED installation approaches, see
   <https://nodered.org/docs/getting-started/installation>.
   
   > **Note**: In order to be able to import examples properly from the Node-RED
@@ -12,7 +19,7 @@ must be satisfied:
 * OpenDXL JavaScript Client (Node.js) library installed
   * <https://github.com/opendxl/opendxl-client-javascript>
 
-  > **Note**: When you follow either of the installation approaches in the
+  > **Note**: When you follow any of the installation approaches in the
   > next section, the OpenDXL JavaScript Client should be installed
   > automatically. You do not need to explicitly install the OpenDXL
   > JavaScript Client library before installing the Node-RED OpenDXL
@@ -23,10 +30,30 @@ must be satisfied:
 
 ### Installation
 
-The Node-RED OpenDXL contribution package can be installed either through
-Node-RED itself or from the command line on the Node-RED server. For simplicity,
-you may choose the Node-RED based installation approach. See the following
-sections for information on both installation approaches.
+The Node-RED OpenDXL contribution package can be installed via the following
+approaches:
+
+* OpenDXL Node-RED Docker image
+
+  With this approach, the Node-RED OpenDXL contribution package is installed
+  automatically as a new Docker container is created. For more information, see
+  the [OpenDXL Node-RED Docker](https://github.com/opendxl/opendxl-node-red-docker)
+  repository.
+
+* Node-RED Based
+
+  With this approach, the Node-RED OpenDXL contribution package is installed
+  from within Node-RED itself. See the
+  [Node-RED Based Installation](#node-red-based-installation) section below for
+  more information.
+
+* Command Line Installation
+
+  With this approach, the Node-RED OpenDXL contribution package is installed
+  via the [npm](https://docs.npmjs.com/) from the command-line on the host
+  where the Node-RED server is running. See the
+  [Command Line Installation](#command-line-installation) section below for more
+  information.
 
 #### Node-RED Based Installation
 
