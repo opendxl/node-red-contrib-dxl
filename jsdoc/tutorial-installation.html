@@ -28,10 +28,16 @@
 </header>
 
 <article>
-    <h3>Prerequisites</h3><p>To use the Node-RED OpenDXL contribution package, the following prerequisites
+    <h3 id="prerequisites">Prerequisites</h3>
+<p>To use the Node-RED OpenDXL contribution package, the following prerequisites
 must be satisfied:    </p>
 <ul>
-<li><p>Node-RED must be installed. For more information, see
+<li><p>Node-RED must be installed.</p>
+<p>The <a href="https://github.com/opendxl/opendxl-node-red-docker">OpenDXL Node-RED Docker</a>
+repository provides instructions on how create a Node-RED container in
+<a href="https://www.docker.com/">Docker</a>, with the Node-RED OpenDXL contribution
+package installed automatically.</p>
+<p>For more information on other Node-RED installation approaches, see
 <a href="https://nodered.org/docs/getting-started/installation">https://nodered.org/docs/getting-started/installation</a>.</p>
 <blockquote>
 <p><strong>Note</strong>: In order to be able to import examples properly from the Node-RED
@@ -43,7 +49,7 @@ UI, version 0.18.0 or newer of Node-RED should be installed.</p>
 <li><a href="https://github.com/opendxl/opendxl-client-javascript">https://github.com/opendxl/opendxl-client-javascript</a></li>
 </ul>
 <blockquote>
-<p><strong>Note</strong>: When you follow either of the installation approaches in the
+<p><strong>Note</strong>: When you follow any of the installation approaches in the
 next section, the OpenDXL JavaScript Client should be installed
 automatically. You do not need to explicitly install the OpenDXL
 JavaScript Client library before installing the Node-RED OpenDXL
@@ -56,11 +62,32 @@ contribution package.</p>
 </ul>
 </li>
 </ul>
-<h3>Installation</h3><p>The Node-RED OpenDXL contribution package can be installed either through
-Node-RED itself or from the command line on the Node-RED server. For simplicity,
-you may choose the Node-RED based installation approach. See the following
-sections for information on both installation approaches.</p>
-<h4>Node-RED Based Installation</h4><ol>
+<h3 id="installation">Installation</h3>
+<p>The Node-RED OpenDXL contribution package can be installed via the following
+approaches:</p>
+<ul>
+<li><p>OpenDXL Node-RED Docker image</p>
+<p>With this approach, the Node-RED OpenDXL contribution package is installed
+automatically as a new Docker container is created. For more information, see
+the <a href="https://github.com/opendxl/opendxl-node-red-docker">OpenDXL Node-RED Docker</a>
+repository.</p>
+</li>
+<li><p>Node-RED Based</p>
+<p>With this approach, the Node-RED OpenDXL contribution package is installed
+from within Node-RED itself. See the
+<a href="#node-red-based-installation">Node-RED Based Installation</a> section below for
+more information.</p>
+</li>
+<li><p>Command Line Installation</p>
+<p>With this approach, the Node-RED OpenDXL contribution package is installed
+via the <a href="https://docs.npmjs.com/">npm</a> from the command-line on the host
+where the Node-RED server is running. See the
+<a href="#command-line-installation">Command Line Installation</a> section below for more
+information.</p>
+</li>
+</ul>
+<h4 id="node-red-based-installation">Node-RED Based Installation</h4>
+<ol>
 <li><p>Browse to your Node-RED server.</p>
 </li>
 <li><p>In the upper-right corner, press the side menu button.</p>
@@ -83,7 +110,8 @@ installation is complete:</p>
 <li><p>Click on the <code>Close</code> button to close the <code>User Settings</code> tab.</p>
 </li>
 </ol>
-<h4>Command Line Installation</h4><p>Before installing the Node-RED OpenDXL contribution package, first navigate in a
+<h4 id="command-line-installation">Command Line Installation</h4>
+<p>Before installing the Node-RED OpenDXL contribution package, first navigate in a
 command shell to the user directory which you have configured for Node-RED. The
 <code>.node-red</code> directory under the user's <code>HOME</code> directory is the default user
 directory for Node-RED.</p>
@@ -97,7 +125,8 @@ system, run the following command:</p>
 run the following command:</p>
 <pre class="prettyprint source lang-sh"><code>npm install @opendxl/node-red-contrib-dxl --save</code></pre><p>After the installation is complete, restart Node-RED and browse to your
 Node-RED server.</p>
-<h4>Confirming the Installation Result</h4><p>After the installation is complete, you should see several &quot;dxl&quot; nodes in the
+<h4 id="confirming-the-installation-result">Confirming the Installation Result</h4>
+<p>After the installation is complete, you should see several &quot;dxl&quot; nodes in the
 left column:</p>
 <p><img src="images/dxl-nodes.png" alt="DXL Nodes"></p>
 <p>For more information, see the
