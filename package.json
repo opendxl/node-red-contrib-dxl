@@ -2,7 +2,7 @@
   "name": "@opendxl/node-red-contrib-dxl",
   "version": "0.1.1",
   "author": "McAfee, LLC",
-  "description": "DXL nodes for Node-RED",
+  "description": "Core collection of DXL Node-RED nodes",
   "license": "Apache-2.0",
   "keywords": [
     "node-red",
@@ -66,7 +66,7 @@
     "dist": "npm pack && npm run doc && node scripts/dist.js",
     "test": "mocha --recursive",
     "lint": "npm run lint:jshint && npm run lint:standard",
-    "lint:jshint": "jshint lib test",
+    "lint:jshint": "jshint nodes lib test",
     "lint:standard": "standard \"**/*.html\" \"**/*.js\" | snazzy",
     "preci": "npm run lint",
     "ci": "npm run test",
