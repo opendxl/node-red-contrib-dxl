@@ -28,21 +28,16 @@
   "devDependencies": {
     "archiver": "^2.1.1",
     "commander": "^2.13.0",
-    "express": "^4.16.2",
     "jsdoc": "^3.5.5",
     "jshint": "^2.9.5",
     "eslint-plugin-html": "^3.2.2",
     "mocha": "^4.1.0",
-    "nock": "^9.1.6",
     "node-red": "^0.18.0",
     "node-red-node-test-helper": "^0.1.8",
     "rimraf": "^2.6.2",
     "should": "^13.2.1",
-    "sinon": "^4.1.4",
     "standard": "^10.0.3",
-    "snazzy": "^7.0.0",
-    "supertest": "^3.0.0",
-    "when": "^3.7.8"
+    "snazzy": "^7.0.0"
   },
   "eslintConfig": {},
   "main": "index.js",
