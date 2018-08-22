@@ -65,6 +65,10 @@
         <dd> <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Response.html" target="_blank">Response</a> or <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/ErrorResponse.html" target="_blank">ErrorResponse</a> object received from the DXL client for the request message.</dd>
         <dt>dxlMessage <span class="property-type">dxl-client.Message</d></span></dt>
         <dd> <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Response.html" target="_blank">Response</a> or <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/ErrorResponse.html" target="_blank">ErrorResponse</a> object received from the DXL client for the request message.</dd>
+        <dt class="optional">dxlError <span class="property-type">string</span></dt>
+        <dd> If the error returned from the broker contains a DXL <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/ErrorResponse.html" target="_blank">ErrorResponse message</a>, a <code>dxlError</code> object is added to the <code>msg</code>.
+        The <code>code</code> property on the <code>dxlError</code> is set to the numeric <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/ErrorResponse.html#errorCode" target="_blank">errorCode</a> from the ErrorResponse or, if the code is a common DXL error code, a string representation of the code.
+        For a list of the well-known DXL response error code strings, see the list of constants in the <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/module-ResponseErrorCode.html" target="_blank">ResponseErrorCode</a> module.</dd>
     </dl>
     <p>The <code>dxlTopic</code> property is removed, if present, from the output message.</p>
     <h3>Node Properties</h3>
