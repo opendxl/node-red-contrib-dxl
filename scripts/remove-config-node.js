@@ -16,7 +16,9 @@ program
     'from a flows JSON file')
   .option('-o, --output-file [file]', 'file to output transformed flows into')
   .action(function (inputFile, cmd) {
-    inputFilePath = inputFile
+    if (inputFile) {
+      inputFilePath = inputFile
+    }
   })
   .parse(process.argv)
 
