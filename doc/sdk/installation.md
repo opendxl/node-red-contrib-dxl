@@ -50,8 +50,8 @@ approaches:
 * Command Line Installation
 
   With this approach, the Node-RED OpenDXL contribution package is installed
-  via the [npm](https://docs.npmjs.com/) from the command-line on the host
-  where the Node-RED server is running. See the
+  via [npm](https://docs.npmjs.com/) from the command-line on the host where the
+  Node-RED server is running. See the
   [Command Line Installation](#command-line-installation) section below for more
   information.
 
