@@ -28,6 +28,8 @@ must be satisfied:
 * The OpenDXL JavaScript Client (Node.js) prerequisites must be satisfied
   * <https://opendxl.github.io/opendxl-client-javascript/jsdoc/tutorial-installation.html>
 
+* Node.js 4.0 or higher installed.
+
 ### Installation
 
 The Node-RED OpenDXL contribution package can be installed via the following
