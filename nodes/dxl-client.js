@@ -24,13 +24,13 @@ var DEFAULT_CONFIG_FILE_NAME = 'dxlclient.config'
  */
 
 /**
-* @classdesc Event messages are sent using the {@link DxlClient#sendEvent} method
-*   of a client instance. Event messages are sent by one publisher and received
-*   by one or more recipients that are currently subscribed to the topic
+ * @classdesc Event messages are sent using the {@link DxlClient#sendEvent} method
+ *   of a client instance. Event messages are sent by one publisher and received
+ *   by one or more recipients that are currently subscribed to the topic
  *  associated with the event (otherwise known as one-to-many).
-* @external Event
-* @see {@link https://opendxl.github.io/opendxl-client-javascript/jsdoc/Event.html}
-*/
+ * @external Event
+ * @see {@link https://opendxl.github.io/opendxl-client-javascript/jsdoc/Event.html}
+ */
 
 /**
  * @classdesc Request messages are used when invoking a method on a remote
@@ -232,7 +232,7 @@ module.exports = function (RED) {
      * Adds an event callback to the client for the specified topic. The
      * callback will be invoked when [DxlClient]{@link external:DxlClient}
      * messages are received by the client on the specified topic.
-      * @param {String} topic - Topic to receive
+     * @param {String} topic - Topic to receive
      *   [DxlClient]{@link external:DxlClient} messages on. An empty string or
      *   null value indicates that the callback should receive messages for all
      *   topics (no filtering).
@@ -324,7 +324,7 @@ module.exports = function (RED) {
      */
     this.registerServiceAsync = function (serviceType, callbacksByTopic) {
       var serviceInfo = new ServiceRegistrationInfo(node.dxlClient,
-          serviceType)
+        serviceType)
       serviceInfo.addTopics(callbacksByTopic)
       node.dxlClient.registerServiceAsync(serviceInfo)
       return serviceInfo
@@ -357,4 +357,37 @@ module.exports = function (RED) {
   }
 
   RED.nodes.registerType('dxl-client', DxlClientNode)
+
+  RED.httpAdmin.post('/dxl-client/provision-config',
+    RED.auth.needsPermission('dxl-client.write'), function (request, response) {
+      var body = request.body
+      if (typeof body === 'object') {
+        try {
+          Config.provisionConfig(body.configDir, body.commonOrCsrFileName,
+            body.hostInfo,
+            {
+              doneCallback: function (error) {
+                if (error) {
+                  response.status(500).send(error.message)
+                } else {
+                  response.sendStatus(200)
+                }
+              }
+            })
+        } catch (err) {
+          response.status(500).send(err.message)
+        }
+      } else {
+        response.status(400).send('Request body missing')
+      }
+    }
+  )
+
+  RED.httpAdmin.get('/dxl-client/defaults',
+    function (request, response) {
+      response.status(200).send({
+        configDir: path.join(RED.settings.userDir || '', 'dxl')
+      })
+    }
+  )
 }

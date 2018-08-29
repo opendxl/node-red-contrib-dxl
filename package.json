@@ -21,7 +21,7 @@
     "node": ">=4.0.0"
   },
   "dependencies": {
-    "@opendxl/dxl-client": "^0.0.1",
+    "@opendxl/dxl-client": "^0.1.0",
     "@opendxl/dxl-bootstrap": "^0.1.0",
     "safe-buffer": "^5.1.1"
   },
@@ -36,6 +36,7 @@
     "node-red-node-test-helper": "^0.1.8",
     "rimraf": "^2.6.2",
     "should": "^13.2.1",
+    "sinon": "^4.1.4",
     "standard": "^10.0.3",
     "snazzy": "^7.0.0"
   },
