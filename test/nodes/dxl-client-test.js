@@ -1,6 +1,8 @@
 'use strict'
 
 require('should')
+var fs = require('fs')
+var path = require('path')
 var sinon = require('sinon')
 var DxlConfig = require('@opendxl/dxl-client').Config
 
@@ -14,6 +16,12 @@ describe('dxl-client node', function () {
   })
 
   afterEach(function () {
+    if (fs.existsSync.restore) {
+      fs.existsSync.restore()
+    }
+    if (DxlConfig.provisionConfig.restore) {
+      DxlConfig.provisionConfig.restore()
+    }
     nodeRedTestHelper.unload()
   })
 
@@ -110,5 +118,42 @@ describe('dxl-client node', function () {
           })
       }, done)
     })
+  })
+
+  context('provisioned files HTTP request', function () {
+    it('should return list of existing files on server', function (done) {
+      var configDir = '/the/confdir'
+      var fsExistsStub = sinon.stub(fs, 'existsSync').returns(true)
+      testHelpers.loadNodeRed(testNode, [], function () {
+        nodeRedTestHelper.request()
+          .get('/dxl-client/provisioned-files?configDir=' + configDir)
+          .expect(200, ['ca-bundle.crt', 'client.crt', 'client.csr',
+            'client.key', 'dxlclient.config']
+          )
+          .end(function (error) {
+            fsExistsStub.calledWith(configDir).should.be.true()
+            fsExistsStub.calledWith(
+              path.join(configDir, 'client.key')).should.be.true()
+            fsExistsStub.restore()
+            done(error)
+          })
+      }, done)
+    })
+
+    it('should return empty list when no files exist on server',
+      function (done) {
+        var configDir = '/the/confdir'
+        var fsExistsStub = sinon.stub(fs, 'existsSync').returns(false)
+        testHelpers.loadNodeRed(testNode, [], function () {
+          nodeRedTestHelper.request()
+            .get('/dxl-client/provisioned-files?configDir=' + configDir)
+            .expect(200, [])
+            .end(function (error) {
+              fsExistsStub.restore()
+              done(error)
+            })
+        }, done)
+      }
+    )
   })
 })

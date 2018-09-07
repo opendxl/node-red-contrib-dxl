@@ -36,6 +36,96 @@
           'port': function (value) { return !isNaN(value) }
         }
 
+        function notifyAjaxError (jqXHR, textStatus, errorThrown) {
+          var error = errorThrown
+          if (jqXHR && jqXHR.responseText) {
+            error = jqXHR.responseText
+          }
+          RED.notify(error, 'error')
+        }
+
+        var confirmProvisionDialog
+
+        function provisionConfig () {
+          $.ajax({
+            url: 'dxl-client/provision-config',
+            type: 'POST',
+            data: {
+              configDir: $('#node-provision-input-config-dir').val(),
+              commonOrCsrFileName: $('#node-provision-input-name').val(),
+              hostInfo: {
+                'hostname': $('#node-provision-input-hostname').val(),
+                'user': $('#node-provision-input-username').val(),
+                'password': $('#node-provision-input-password').val()
+              }
+            },
+            success: function (response) {
+              var configDir = $('#node-provision-input-config-dir').val()
+              RED.notify('Provisioning operation successful', 'success')
+              RED.tray.close(function () {
+                var configFile = configDir +
+                  (configDir.indexOf('\\') < 0 ? '/' : '\\') +
+                  'dxlclient.config'
+                $('#node-config-input-configFile').val(
+                  configFile).change()
+              })
+            },
+            error: notifyAjaxError
+          })
+        }
+
+        function getExistingProvisionFiles (successFunc) {
+          $.ajax({
+            url: 'dxl-client/provisioned-files',
+            type: 'GET',
+            data: {
+              configDir: $('#node-provision-input-config-dir').val()
+            },
+            success: successFunc,
+            error: notifyAjaxError
+          })
+        }
+
+        function provisionConfigOnConfirm () {
+          getExistingProvisionFiles(function (provisionedFiles) {
+            if (provisionedFiles && provisionedFiles.length) {
+              var confirmText = "<p>The following files in the '"
+              confirmText += $('#node-provision-input-config-dir').val()
+              confirmText += "' directory would be overwritten by the provisioning operation:</p><ul>"
+              provisionedFiles.forEach(function (provisionedFile) {
+                confirmText += '<li>' + provisionedFile + '</li>'
+              })
+              confirmText += '</ul><p>Are you sure you want to proceed with provisioning?</p>'
+              confirmProvisionDialog = RED.notify(confirmText,
+                {
+                  modal: true,
+                  fixed: true,
+                  buttons: [
+                    {
+                      text: 'Cancel',
+                      click: function () {
+                        confirmProvisionDialog.close()
+                        confirmProvisionDialog = null
+                      }
+                    },
+                    {
+                      text: 'Confirm provision',
+                      class: 'primary',
+                      click: function () {
+                        confirmProvisionDialog.close()
+                        confirmProvisionDialog = null
+                        provisionConfig()
+                      }
+                    }
+                  ]
+                }
+              )
+            } else {
+              provisionConfig()
+            }
+          })
+        }
+
         var configFile = $('#node-config-input-configFile').val()
         RED.tray.show({
           title: 'Provision client configuration',
@@ -50,6 +140,9 @@
               text: 'Provision',
               class: 'primary',
               click: function () {
+                if (confirmProvisionDialog) {
+                  return
+                }
                 var invalidFields = []
                 Object.keys(fieldValidators).forEach(function (element) {
                   if (!fieldValidators[element](
@@ -62,37 +155,7 @@
                   RED.notify('Invalid info: ' + invalidFields.join(', '),
                     'error')
                 } else {
-                  $.ajax({
-                    url: 'dxl-client/provision-config',
-                    type: 'POST',
-                    data: {
-                      configDir: $('#node-provision-input-config-dir').val(),
-                      commonOrCsrFileName: $('#node-provision-input-name').val(),
-                      hostInfo: {
-                        'hostname': $('#node-provision-input-hostname').val(),
-                        'user': $('#node-provision-input-username').val(),
-                        'password': $('#node-provision-input-password').val()
-                      }
-                    },
-                    success: function (response) {
-                      var configDir = $('#node-provision-input-config-dir').val()
-                      RED.notify('Provisioning operation successful', 'success')
-                      RED.tray.close(function () {
-                        var configFile = configDir +
-                          (configDir.indexOf('\\') < 0 ? '/' : '\\') +
-                          'dxlclient.config'
-                        $('#node-config-input-configFile').val(
-                          configFile).change()
-                      })
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                      var error = errorThrown
-                      if (jqXHR && jqXHR.responseText) {
-                        error = jqXHR.responseText
-                      }
-                      RED.notify(error, 'error')
-                    }
-                  })
+                  provisionConfigOnConfirm()
                 }
               }
             }

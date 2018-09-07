@@ -390,4 +390,22 @@ module.exports = function (RED) {
       })
     }
   )
+
+  RED.httpAdmin.get('/dxl-client/provisioned-files',
+    function (request, response) {
+      var existingFiles = []
+      var configDir = request.query.configDir
+      if (fs.existsSync(configDir)) {
+        var filesToCheck = [
+          'ca-bundle.crt', 'client.crt', 'client.csr',
+          'client.key', 'dxlclient.config']
+        filesToCheck.forEach(function (fileToCheck) {
+          if (fs.existsSync(path.join(configDir, fileToCheck))) {
+            existingFiles.push(fileToCheck)
+          }
+        })
+      }
+      response.status(200).send(existingFiles)
+    }
+  )
 }
