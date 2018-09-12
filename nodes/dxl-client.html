@@ -168,6 +168,10 @@
               '<input type="text" id="node-provision-input-hostname" placeholder="Hostname">' +
               '</div>').appendTo(dialogForm)
             $('<div class="form-row">' +
+              '<label for="node-provision-input-port"><i class="fa fa-globe"></i> Port</label>' +
+              '<input type="text" id="node-provision-input-port" placeholder="Port" value="8443">' +
+              '</div>').appendTo(dialogForm)
+            $('<div class="form-row">' +
               '<label for="node-provision-input-username"><i class="fa fa-user"></i> Username</label>' +
               '<input type="text" id="node-provision-input-username" placeholder="Username">' +
               '</div>').appendTo(dialogForm)
@@ -183,10 +187,6 @@
               '<label for="node-provision-input-config-dir"><i class="fa fa-file-text-o"></i> Config dir</label>' +
               '<input type="text" id="node-provision-input-config-dir" placeholder="Config dir"' +
               'value="' + configFile.replace(/[\\/]dxlclient.config/, '') + '">' +
-              '</div>').appendTo(dialogForm)
-            $('<div class="form-row">' +
-              '<label for="node-provision-input-port"><i class="fa fa-globe"></i> Port</label>' +
-              '<input type="text" id="node-provision-input-port" placeholder="Port" value="8443">' +
               '</div>').appendTo(dialogForm)
             Object.keys(fieldValidators).forEach(function (fieldName) {
               var element = $('#node-provision-input-' + fieldName)
