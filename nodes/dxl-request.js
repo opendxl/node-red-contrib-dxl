@@ -70,10 +70,14 @@ module.exports = function (RED) {
             this._client.asyncRequest(request,
               function (error, response) {
                 if (error) {
-                  if (error instanceof dxl.MessageError) {
-                    msg.dxlError = {code: error.code}
-                    msg.payload = error.detail.payload
-                    msg.dxlResponse = error.detail
+                  msg.dxlError = {code: error.code}
+                  if (error.dxlErrorResponse) {
+                    var responseMessage = error.dxlErrorResponse
+                    if (!error.code) {
+                      msg.dxlError.code = responseMessage.errorCode
+                    }
+                    msg.payload = responseMessage.payload
+                    msg.dxlResponse = responseMessage
                     msg.dxlMessage = msg.dxlResponse
                   }
                   node.error(error.message, msg)

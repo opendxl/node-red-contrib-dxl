@@ -349,6 +349,7 @@ describe('dxl service', function () {
                     'error', 'message').match(/really bad error/)
                   msg.should.have.propertyByPath(
                     'error', 'source', 'type').equal('dxl-core-request')
+                  msg.should.have.propertyByPath('dxlError', 'code').equal(95)
                   msg.should.have.propertyByPath('dxlResponse',
                     'errorCode').equal(95)
                   msg.should.have.propertyByPath('dxlResponse',
@@ -398,4 +399,45 @@ describe('dxl service', function () {
         }, done)
     })
   })
+
+  context('when a request is made to an unregistered service',
+    function () {
+      it('should generate a catchable error',
+        function (done) {
+          var testFlows = baseTestFlows.slice()
+          testFlows.push({
+            id: requestNodeId,
+            type: 'dxl-core-request',
+            topic: '/dxl-service-test/not-found',
+            returnType: 'obj',
+            client: clientNodeId,
+            wires: [[helperNodeId]],
+            z: flowTabId
+          })
+
+          var requestPayload = {}
+          testFlows.push(testHelpers.getInjectNodeConfig(requestPayload,
+            requestNodeId, 'obj'))
+
+          testHelpers.loadNodeRed(nodesToLoad, testFlows,
+            function () {
+              var helperNode = nodeRedTestHelper.getNode(helperNodeId)
+              helperNode.on('input', function (msg) {
+                testHelpers.forwardOnError(function () {
+                  msg.should.have.propertyByPath(
+                    'error', 'source', 'type').equal('dxl-core-request')
+                  msg.should.have.propertyByPath('dxlError',
+                    'code').equal(dxl.ResponseErrorCode.SERVICE_UNAVAILABLE)
+                  msg.should.have.propertyByPath('dxlResponse',
+                    'errorCode').equal(-2147483647)
+                  msg.should.have.property('dxlMessage').equal(msg.dxlResponse)
+                  done()
+                }, done)
+              })
+            }, done
+          )
+        }
+      )
+    }
+  )
 })
