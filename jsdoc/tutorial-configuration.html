@@ -32,7 +32,8 @@
 configuration created by following the steps on this page can be used in
 conjunction with the other samples in the Node-RED OpenDXL contribution package.</p>
 <p>Prior to setting up a DXL client configuration in Node-RED, make sure you have
-completed the <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/tutorial-provisioning.html">client provisioning</a>
+completed the 
+<a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/tutorial-provisioning.html">client provisioning</a>
 step.</p>
 <p>In order to connect to the DXL fabric, each of the OpenDXL nodes need to be
 associated with a <code>dxl client</code>
@@ -72,10 +73,43 @@ of the screen:</p>
 <p><img src="images/edit-config-node.png" alt="Edit Config Node"></p>
 <p>The value in the <code>Config file</code> text box determines the DXL client
 configuration file that the client node will use to determine how to connect
-to the DXL fabric. Change this value to the location of the
-<code>dxlclient.config</code> file which you generated during the
-<a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/tutorial-provisioning.html">provisioning step</a>
-and press the <code>Update</code> button to commit the change.</p>
+to the DXL fabric.</p>
+<p>If you have already provisioned the Node-RED client
+configuration, you can change this value to the location of the
+<code>dxlclient.config</code> file and press the <code>Update</code> button to commit the change.
+You can then skip the remainder of the steps in this section.</p>
+<p>If you have not yet provisioned the Node-RED client configuration, you can
+provision the configuration from the Node-RED user interface by following
+the steps below.</p>
+</li>
+<li><p>Click on the <code>Provision new configuration</code> button. This should open up a
+client provisioning window.</p>
+<p><img src="images/create-provision-config-empty.png" alt="Create Provision Config Empty"></p>
+</li>
+<li><p>Fill in values for the provisioning properties in the window.</p>
+<p>Enter the hostname or IP address of a
+provisioning server in the <code>Host</code> field and a <code>Username</code> and <code>Password</code>
+of a user authorized to perform the provisioning operation. In the <code>Name</code>
+field, enter the value which the provisioning server should store in the
+Common Name (CN) portion of the subject in the client certificate.</p>
+<p>The <code>Config dir</code> value controls the location on the Node-RED server where
+the configuration will be stored. The default value for this directory is
+a subdirectory named <code>dxl</code> under the Node-RED user directory. You may want
+to set this to a unique directory for the client configuration if you
+intend to use multiple DXL client configuration nodes in Node-RED. See
+the <a href="https://nodered.org/docs/configuration">Node-RED Configuration</a>
+documentation for more information on the Node-RED user directory.</p>
+<p><img src="images/create-provision-config-filled-in.png" alt="Create Provision Config Filled In"></p>
+</li>
+<li><p>Press the <code>Provision</code> button to complete the provisioning operation. If the
+operation succeeds, a message like the following should appear briefly:</p>
+<p><img src="images/provision-success.png" alt="Provision Success"></p>
+<p>The <code>client</code> node edit window should then reappear, with the location of the
+newly generated <code>dxlclient.config</code> file displayed for the <code>Config file</code>
+property:</p>
+<p><img src="images/edit-config-node-config-file.png" alt="Edit Config Node With Config File"></p>
+</li>
+<li><p>Press the <code>Update</code> button to store the new client settings.</p>
 </li>
 </ol>
 <h3 id="manually-creating-a-configuration-node">Manually Creating a Configuration Node</h3>
@@ -91,9 +125,23 @@ panel.</p>
 </li>
 <li><p>Click on the <code>pencil</code> icon to the right of the <code>Add new dxl-client...</code>
 dropdown entry. This should open up an edit dialog box for a new client
-configuration node. Enter the location of the DXL configuration file on your
-Node-RED server and a <code>Name</code> that Node-RED can use to associate with the
-configuration:</p>
+configuration node.</p>
+<p>The value in the <code>Config file</code> text box determines the DXL client
+configuration file that the client node will use to determine how to connect
+to the DXL fabric.</p>
+<p>If you have already provisioned the Node-RED client
+configuration, you can change this value to the location of the
+<code>dxlclient.config</code> file.</p>
+<p>If you have not yet provisioned the Node-RED client configuration, you can
+provision the configuration from the Node-RED user interface by clicking on
+the <code>Provision new configuration</code> button and filling in the provisioning
+information on the subsequent window which is displayed. For more information
+on filling out the values on the provisioning configuration window, see the
+steps in the
+<a href="#manually-creating-a-configuration-node">Manually Creating a Configuration Node</a>
+section.</p>
+<p>Once the <code>Config file</code> has been selected, enter a <code>Name</code> that Node-RED can
+associate with the configuration:</p>
 <p><img src="images/add-config-node.png" alt="Add Config Node"></p>
 </li>
 <li><p>Press the <code>Add</code> button to create the new configuration node. The

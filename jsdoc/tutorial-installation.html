@@ -44,7 +44,7 @@ package installed automatically.</p>
 UI, version 0.18.0 or newer of Node-RED should be installed.</p>
 </blockquote>
 </li>
-<li><p>OpenDXL JavaScript Client (Node.js) library installed</p>
+<li><p>OpenDXL JavaScript Client (Node.js) library installed.</p>
 <ul>
 <li><a href="https://github.com/opendxl/opendxl-client-javascript">https://github.com/opendxl/opendxl-client-javascript</a></li>
 </ul>
@@ -56,9 +56,33 @@ JavaScript Client library before installing the Node-RED OpenDXL
 contribution package.</p>
 </blockquote>
 </li>
-<li><p>The OpenDXL JavaScript Client (Node.js) prerequisites must be satisfied</p>
+<li><p>The OpenDXL JavaScript Client (Node.js) prerequisites must be satisfied.</p>
 <ul>
 <li><a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/tutorial-installation.html">https://opendxl.github.io/opendxl-client-javascript/jsdoc/tutorial-installation.html</a></li>
+</ul>
+</li>
+<li><p>If you intend to provision the Node-RED DXL client configuration from the
+Node-RED UI, as described in the
+<a href="tutorial-configuration.html">Client Configuration</a> section, you must ensure that
+an OpenSSL executable (separate from Node.js itself) is installed. The
+provisioning operation uses OpenSSL to generate private keys and certificate
+signing requests.</p>
+<p>For Windows, OpenSSL can be downloaded from the following location:</p>
+<ul>
+<li><a href="http://www.slproweb.com/products/Win32OpenSSL.html">http://www.slproweb.com/products/Win32OpenSSL.html</a></li>
+</ul>
+<p>Select the Win32 OpenSSL Light or Win64 OpenSSL Light package, depending on
+your architecture (32-bit or 64-bit).</p>
+<p>If a message occurs during setup indicating <code>...critical component is
+missing: Microsoft Visual C++ 2008 Redistributables</code>, cancel the setup
+and download one of the following packages (based on your architecture):</p>
+<ul>
+<li><p>Visual C++ 2008 Redistributables (x86), available at:</p>
+<p><a href="http://www.microsoft.com/downloads/details.aspx?familyid=9B2DA534-3E03-4391-8A4D-074B9F2BC1BF">http://www.microsoft.com/downloads/details.aspx?familyid=9B2DA534-3E03-4391-8A4D-074B9F2BC1BF</a></p>
+</li>
+<li><p>Visual C++ 2008 Redistributables (x64), available at:</p>
+<p><a href="http://www.microsoft.com/downloads/details.aspx?familyid=bd2a6171-e2d6-4230-b809-9a8d7548c1b6">http://www.microsoft.com/downloads/details.aspx?familyid=bd2a6171-e2d6-4230-b809-9a8d7548c1b6</a></p>
+</li>
 </ul>
 </li>
 <li><p>Node.js 4.0 or higher installed.</p>
@@ -121,8 +145,8 @@ directory for Node-RED.</p>
 <pre class="prettyprint source lang-sh"><code>cd ~/.node-red</code></pre><p>For Windows, run the following command:</p>
 <pre class="prettyprint source lang-sh"><code>cd %HOMEPATH%\.node-red</code></pre><p>To install the library from a local tarball for a Mac or Linux-based operating
 system, run the following command:</p>
-<pre class="prettyprint source lang-sh"><code>npm install ./lib/opendxl-node-red-contrib-dxl-0.1.1.tgz --save</code></pre><p>To install the library from a local tarball for Windows, run:</p>
-<pre class="prettyprint source lang-sh"><code>npm install .\lib\opendxl-node-red-contrib-dxl-0.1.1.tgz --save</code></pre><p>To install the library via the
+<pre class="prettyprint source lang-sh"><code>npm install ./lib/opendxl-node-red-contrib-dxl-0.1.2.tgz --save</code></pre><p>To install the library from a local tarball for Windows, run:</p>
+<pre class="prettyprint source lang-sh"><code>npm install .\lib\opendxl-node-red-contrib-dxl-0.1.2.tgz --save</code></pre><p>To install the library via the
 <a href="https://www.npmjs.com/package/@opendxl/node-red-contrib-dxl">npm package registry</a>,
 run the following command:</p>
 <pre class="prettyprint source lang-sh"><code>npm install @opendxl/node-red-contrib-dxl --save</code></pre><p>After the installation is complete, restart Node-RED and browse to your
