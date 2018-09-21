@@ -16,7 +16,7 @@ must be satisfied:
   > **Note**: In order to be able to import examples properly from the Node-RED
   > UI, version 0.18.0 or newer of Node-RED should be installed.
 
-* OpenDXL JavaScript Client (Node.js) library installed
+* OpenDXL JavaScript Client (Node.js) library installed.
   * <https://github.com/opendxl/opendxl-client-javascript>
 
   > **Note**: When you follow any of the installation approaches in the
@@ -25,8 +25,34 @@ must be satisfied:
   > JavaScript Client library before installing the Node-RED OpenDXL
   > contribution package.
 
-* The OpenDXL JavaScript Client (Node.js) prerequisites must be satisfied
+* The OpenDXL JavaScript Client (Node.js) prerequisites must be satisfied.
   * <https://opendxl.github.io/opendxl-client-javascript/jsdoc/tutorial-installation.html>
+
+* If you intend to provision the Node-RED DXL client configuration from the
+  Node-RED UI, as described in the
+  [Client Configuration]{@tutorial configuration} section, you must ensure that
+  an OpenSSL executable (separate from Node.js itself) is installed. The
+  provisioning operation uses OpenSSL to generate private keys and certificate
+  signing requests.
+
+  For Windows, OpenSSL can be downloaded from the following location:
+
+  * <http://www.slproweb.com/products/Win32OpenSSL.html>
+
+  Select the Win32 OpenSSL Light or Win64 OpenSSL Light package, depending on
+  your architecture (32-bit or 64-bit).
+
+  If a message occurs during setup indicating `...critical component is
+  missing: Microsoft Visual C++ 2008 Redistributables`, cancel the setup
+  and download one of the following packages (based on your architecture):
+
+  * Visual C++ 2008 Redistributables (x86), available at:
+
+    <http://www.microsoft.com/downloads/details.aspx?familyid=9B2DA534-3E03-4391-8A4D-074B9F2BC1BF>
+
+  * Visual C++ 2008 Redistributables (x64), available at:
+
+    <http://www.microsoft.com/downloads/details.aspx?familyid=bd2a6171-e2d6-4230-b809-9a8d7548c1b6>
 
 * Node.js 4.0 or higher installed.
 

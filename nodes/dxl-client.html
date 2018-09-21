@@ -21,6 +21,223 @@
         this.reconnectDelay = 1
         $('#node-config-input-reconnectDelay').val(this.reconnectDelay)
       }
+
+      $('#node-config-input-provision').click(function (e) {
+        e.preventDefault()
+
+        function nonEmpty (value) { return value }
+
+        var fieldValidators = {
+          'hostname': nonEmpty,
+          'username': nonEmpty,
+          'password': nonEmpty,
+          'name': nonEmpty,
+          'config-dir': nonEmpty,
+          'port': function (value) { return !isNaN(value) }
+        }
+
+        function notifyAjaxError (jqXHR, textStatus, errorThrown) {
+          var error = errorThrown
+          if (jqXHR && jqXHR.responseText) {
+            error = jqXHR.responseText
+          }
+          RED.notify(error, 'error')
+        }
+
+        var confirmProvisionDialog
+
+        function provisionConfig () {
+          $.ajax({
+            url: 'dxl-client/provision-config',
+            type: 'POST',
+            data: {
+              configDir: $('#node-provision-input-config-dir').val(),
+              commonOrCsrFileName: $('#node-provision-input-name').val(),
+              hostInfo: {
+                'hostname': $('#node-provision-input-hostname').val(),
+                'user': $('#node-provision-input-username').val(),
+                'password': $('#node-provision-input-password').val()
+              }
+            },
+            success: function (response) {
+              var configDir = $('#node-provision-input-config-dir').val()
+              RED.notify('Provisioning operation successful', 'success')
+              RED.tray.close(function () {
+                var configFile = configDir +
+                  (configDir.indexOf('\\') < 0 ? '/' : '\\') +
+                  'dxlclient.config'
+                $('#node-config-input-configFile').val(
+                  configFile).change()
+              })
+            },
+            error: notifyAjaxError
+          })
+        }
+
+        function getExistingProvisionFiles (successFunc) {
+          $.ajax({
+            url: 'dxl-client/provisioned-files',
+            type: 'GET',
+            data: {
+              configDir: $('#node-provision-input-config-dir').val()
+            },
+            success: successFunc,
+            error: notifyAjaxError
+          })
+        }
+
+        function provisionConfigOnConfirm () {
+          getExistingProvisionFiles(function (provisionedFiles) {
+            if (provisionedFiles && provisionedFiles.length) {
+              var confirmText = "<p>The following files in the '"
+              confirmText += $('#node-provision-input-config-dir').val()
+              confirmText += "' directory would be overwritten by the provisioning operation:</p><ul>"
+              provisionedFiles.forEach(function (provisionedFile) {
+                confirmText += '<li>' + provisionedFile + '</li>'
+              })
+              confirmText += '</ul><p>Are you sure you want to proceed with provisioning?</p>'
+              confirmProvisionDialog = RED.notify(confirmText,
+                {
+                  modal: true,
+                  fixed: true,
+                  buttons: [
+                    {
+                      text: 'Cancel',
+                      click: function () {
+                        confirmProvisionDialog.close()
+                        confirmProvisionDialog = null
+                      }
+                    },
+                    {
+                      text: 'Confirm provision',
+                      class: 'primary',
+                      click: function () {
+                        confirmProvisionDialog.close()
+                        confirmProvisionDialog = null
+                        provisionConfig()
+                      }
+                    }
+                  ]
+                }
+              )
+            } else {
+              provisionConfig()
+            }
+          })
+        }
+
+        var configFile = $('#node-config-input-configFile').val()
+        RED.tray.show({
+          title: 'Provision client configuration',
+          buttons: [
+            {
+              text: 'Cancel',
+              click: function () {
+                RED.tray.close()
+              }
+            },
+            {
+              text: 'Provision',
+              class: 'primary',
+              click: function () {
+                if (confirmProvisionDialog) {
+                  return
+                }
+                var invalidFields = []
+                Object.keys(fieldValidators).forEach(function (element) {
+                  if (!fieldValidators[element](
+                    $('#node-provision-input-' + element).val())) {
+                    invalidFields.push(element.charAt(0).toUpperCase() +
+                      element.substr(1).replace('-', ' '))
+                  }
+                })
+                if (invalidFields.length) {
+                  RED.notify('Invalid info: ' + invalidFields.join(', '),
+                    'error')
+                } else {
+                  provisionConfigOnConfirm()
+                }
+              }
+            }
+          ],
+          open: function (tray, done) {
+            var trayBody = tray.find('.editor-tray-body')
+            var dialogForm = $('<form id="dialog-form" class="form-horizontal"></form>').appendTo(trayBody)
+            $('<div class="form-row">' +
+              '<label for="node-provision-input-host"><i class="fa fa-globe"></i> Host</label>' +
+              '<input type="text" id="node-provision-input-hostname" placeholder="Hostname">' +
+              '</div>').appendTo(dialogForm)
+            $('<div class="form-row">' +
+              '<label for="node-provision-input-port"><i class="fa fa-globe"></i> Port</label>' +
+              '<input type="text" id="node-provision-input-port" placeholder="Port" value="8443">' +
+              '</div>').appendTo(dialogForm)
+            $('<div class="form-row">' +
+              '<label for="node-provision-input-username"><i class="fa fa-user"></i> Username</label>' +
+              '<input type="text" id="node-provision-input-username" placeholder="Username">' +
+              '</div>').appendTo(dialogForm)
+            $('<div class="form-row">' +
+              '<label for="node-provision-input-password"><i class="fa fa-lock"></i> Password</label>' +
+              '<input type="password" id="node-provision-input-password" placeholder="Password">' +
+              '</div>').appendTo(dialogForm)
+            $('<div class="form-row">' +
+              '<label for="node-provision-input-name"><i class="fa fa-tag"></i> Name</label>' +
+              '<input type="text" id="node-provision-input-name" placeholder="Certificate common name">' +
+              '</div>').appendTo(dialogForm)
+            $('<div class="form-row">' +
+              '<label for="node-provision-input-config-dir"><i class="fa fa-file-text-o"></i> Config dir</label>' +
+              '<input type="text" id="node-provision-input-config-dir" placeholder="Config dir"' +
+              'value="' + configFile.replace(/[\\/]dxlclient.config/, '') + '">' +
+              '</div>').appendTo(dialogForm)
+            Object.keys(fieldValidators).forEach(function (fieldName) {
+              var element = $('#node-provision-input-' + fieldName)
+              element.change(function () {
+                if (fieldValidators[fieldName](this.value)) {
+                  $(this).removeClass('input-error')
+                } else {
+                  $(this).addClass('input-error')
+                }
+              })
+              element.change()
+            })
+            RED.sidebar.info.set(
+              '<p>To download and provision the DXL client configuration, fill in the properties on this dialog and press the <code>Provision</code> button.</p>' +
+              '<p>For more information on DXL client provisioning, see the <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/tutorial-provisioning.html" target="_blank">provisioning documentation</a> in the OpenDXL JavaScript client SDK.</p>' +
+              '<h3>Properties</h3>' +
+              '<dl class="message-properties">' +
+              '  <dt>Host</dt>' +
+              '  <dd> Hostname where the provisioning service resides.</dd>' +
+              '  <dt>Username</dt>' +
+              '  <dd> User registered at the provisioning service.</dd>' +
+              '  <dt>Password</dt>' +
+              '  <dd> Password for the provisioning service user.</dd>' +
+              '  <dt>Name</dt>' +
+              '  <dd> Common name (CN) attribute that the provisioning service should add to the client certificate subject.</dd>' +
+              '  <dt>Config dir</dt>' +
+              '  <dd> Directory on the Node-RED server in which the files needed to connect to the DXL fabric (certificates, keys, and broker information) are stored.' +
+              '  The default value for this directory is a subdirectory named <code>dxl</code> under the Node-RED user directory.' +
+              '  You may want to set this to a unique directory for the client configuration if you intend to use multiple DXL client configuration nodes in Node-RED.' +
+              '  See the <a href="https://nodered.org/docs/configuration" target="_blank">Node-RED Configuration</a> documentation for more information on the Node-RED user directory.</dd>' +
+              '  <dt>Port</dt>' +
+              '  <dd> Port where the provisioning service resides.</dd>' +
+              '</dl>', 'Provision client configuration')
+            if (configFile) {
+              done()
+            } else {
+              $.ajax({
+                url: 'dxl-client/defaults',
+                type: 'GET',
+                success: function (response) {
+                  $('#node-provision-input-config-dir').val(
+                    response.configDir).change()
+                },
+                complete: function () {
+                  done()
+                }
+              })
+            }
+          }
+        })
+      })
     },
     oneditdelete: function () {
       var clientType = RED.nodes.getType('dxl-client')
@@ -112,7 +329,10 @@
 
 <script type="text/x-red" data-template-name="dxl-client">
     <div class="form-row node-input-client">
-        <label for="node-config-input-configFile"><i class="icon-tag"></i> Config file</label>
+        <a id="node-config-input-provision" class="editor-button">Provision new configuration</a>
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-configFile"><i class="fa fa-file-text-o"></i> Config file</label>
         <input type="text" id="node-config-input-configFile" placeholder="Config file">
     </div>
     <div class="form-row">
@@ -130,7 +350,9 @@
 </script>
 
 <script type="text/x-red" data-help-name="dxl-client">
-    <p>The minimum DXL client configuration only requires a client configuration file and associated certificate and key files that the Node-RED server can access. For more information on obtaining all of the files needed for a DXL client configuration see the <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/tutorial-provisioning.html" target="_blank">provisioning documentation</a> in the OpenDXL JavaScript client SDK.</p>
+    <p>The minimum DXL client configuration only requires a client configuration file and associated certificate and key files that the Node-RED server can access.
+    To request the necessary files from the provisioning server, press the <code>Provision new configuration</code> button.
+    For more information on DXL client provisioning, see the <a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/tutorial-provisioning.html" target="_blank">provisioning documentation</a> in the OpenDXL JavaScript client SDK.</p>
     <h3>Node Properties</h3>
     <dl class="message-properties">
         <dt>Config file</dt>
