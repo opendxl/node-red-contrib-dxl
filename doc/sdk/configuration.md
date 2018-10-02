@@ -19,24 +19,21 @@ fabrics.
 The examples in the Node-RED OpenDXL contribution package do not include their
 own `dxl client` configuration node. You can either:
 
-* Import the sample configuration included in the Node-RED OpenDXL contribution
-  package before importing any of the examples.
+* Create the client configuration node before importing any of the examples.
 * Import an example flow first and manually create a configuration node from
   within the edit dialog of one of the DXL nodes imported from the example.
   
-With the sample configuration approach, the client node will be automatically
-associated with DXL nodes imported from other example flows later on. The sample
-configuration approach, therefore, may be a bit simpler for getting flows up and
-running.
+Once the client configuration node has been created, the client node will be
+automatically associated with DXL nodes imported from other flows later on.
    
-### Importing the Sample Configuration
+### Creating the DXL Client Configuration
 
-To import the `basic-config-example`, perform the following steps:
+To create a DXL client configuration node, perform the following steps:
 
 1. In the upper-right corner of the Node-RED UI, press the `side menu` button. 
 
 1. In the menu drop-down list, select
-   `Import` &rarr; `Examples` &rarr; `dxl` &rarr; `basic-config-example`.
+   `Import` &rarr; `Examples` &rarr; `dxl` &rarr; `create-client-config`.
    
 1. To confirm that the configuration node was loaded properly, choose the
    `Configuration nodes` item under the `side menu` button. An item similar
