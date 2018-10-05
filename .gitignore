@@ -4,3 +4,8 @@ out/
 npm-debug.log
 *.tgz
 *.zip
+test/nodes/dxlclient.config
+test/nodes/client_config.cfg
+*.crt
+*.csr
+*.key
