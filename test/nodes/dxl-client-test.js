@@ -75,7 +75,7 @@ describe('dxl-client node', function () {
           password: 'mypass'
         }
       }
-      testHelpers.loadNodeRed(function(RED) {
+      testHelpers.loadNodeRed(function (RED) {
         RED.httpAdmin.use(bodyParser.json())
         testNode(RED)
       }, [], function () {
@@ -103,9 +103,9 @@ describe('dxl-client node', function () {
           options.doneCallback(new Error(errorMessage))
         }
       )
-      testHelpers.loadNodeRed(function(RED) {
-          RED.httpAdmin.use(bodyParser.json())
-          testNode(RED)
+      testHelpers.loadNodeRed(function (RED) {
+        RED.httpAdmin.use(bodyParser.json())
+        testNode(RED)
       }, [], function () {
         nodeRedTestHelper.request()
           .post('/dxl-client/provision-config')
