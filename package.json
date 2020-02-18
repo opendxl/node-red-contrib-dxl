@@ -18,7 +18,7 @@
     "README.md"
   ],
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "dependencies": {
     "@opendxl/dxl-client": "^0.1.0",
