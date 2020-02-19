@@ -5,6 +5,7 @@ var fs = require('fs')
 var path = require('path')
 var sinon = require('sinon')
 var DxlConfig = require('@opendxl/dxl-client').Config
+var bodyParser = require('body-parser')
 
 var testNode = require('../../nodes/dxl-client')
 var nodeRedTestHelper = require('node-red-node-test-helper')
@@ -74,7 +75,10 @@ describe('dxl-client node', function () {
           password: 'mypass'
         }
       }
-      testHelpers.loadNodeRed(testNode, [], function () {
+      testHelpers.loadNodeRed(function (RED) {
+        RED.httpAdmin.use(bodyParser.json())
+        testNode(RED)
+      }, [], function () {
         nodeRedTestHelper.request()
           .post('/dxl-client/provision-config')
           .send(provisionConfigParams)
@@ -99,7 +103,10 @@ describe('dxl-client node', function () {
           options.doneCallback(new Error(errorMessage))
         }
       )
-      testHelpers.loadNodeRed(testNode, [], function () {
+      testHelpers.loadNodeRed(function (RED) {
+        RED.httpAdmin.use(bodyParser.json())
+        testNode(RED)
+      }, [], function () {
         nodeRedTestHelper.request()
           .post('/dxl-client/provision-config')
           .send({
