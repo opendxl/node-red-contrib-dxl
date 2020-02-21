@@ -33,7 +33,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo -E apt-add-repository -y "ppa:ubuntu-toolchain-r/test"
-        sudo -E apt-get update
+        sudo -E apt-get update -y --allow-releaseinfo-change
         sudo -E apt-get -yq --no-install-suggests --no-install-recommends install g++-4.8
         npm install
         
