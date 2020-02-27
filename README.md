@@ -1,6 +1,6 @@
 # OpenDXL Node-RED Nodes
 [![Latest NPM Version](https://img.shields.io/npm/v/@opendxl/node-red-contrib-dxl.svg)](https://www.npmjs.com/package/@opendxl/node-red-contrib-dxl)
-[![Build Status](https://img.shields.io/travis/opendxl/node-red-contrib-dxl/master.svg)](https://travis-ci.org/opendxl/node-red-contrib-dxl)
+[![Actions Status](https://github.com/opendxl/node-red-contrib-dxl/workflows/Build/badge.svg)](https://github.com/opendxl/node-red-contrib-dxl/actions)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
