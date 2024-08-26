@@ -17,8 +17,8 @@ describe('dxl service', function () {
     nodeRedTestHelper.startServer(done)
   })
 
-  afterEach(function () {
-    nodeRedTestHelper.unload()
+  afterEach(async function () {
+    await nodeRedTestHelper.unload()
   })
 
   after(function (done) {
