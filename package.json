@@ -18,7 +18,7 @@
     "README.md"
   ],
   "engines": {
-    "node": ">=18.5"
+    "node": ">=16.0.0"
   },
   "dependencies": {
     "@opendxl/dxl-bootstrap": "^0.1.1",
