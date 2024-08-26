@@ -2,7 +2,7 @@
 
 const Buffer = require('buffer').Buffer
 const dxl = require('@opendxl/dxl-client')
-const catchNode = require('@node-red/nodes/core/common/25-catch')
+// const catchNode = require('@node-red/nodes/core/common/25-catch')
 const functionNode = require('@node-red/nodes/core/function/10-function')
 const injectNode = require('@node-red/nodes/core/common/20-inject')
 const dxlEventOutNode = require('../../../nodes/dxl-event-out')
@@ -16,27 +16,15 @@ describe('dxl event', function () {
     nodeRedTestHelper.startServer(done)
   })
 
-  beforeEach(function () {
-    // Ensure RED is defined before overriding registerType
-    if (nodeRedTestHelper.RED && nodeRedTestHelper.RED.nodes) {
-      const originalRegisterType = nodeRedTestHelper.RED.nodes.registerType
-
-      nodeRedTestHelper.RED.nodes.registerType = function (type, constructor) {
-        console.log(`Registering node type: ${type}`)
-        originalRegisterType(type, constructor)
-      }
-    }
-  })
-
-  afterEach(async function () {
-    await nodeRedTestHelper.unload()
+  afterEach(function () {
+    nodeRedTestHelper.unload()
   })
 
   after(function (done) {
     nodeRedTestHelper.stopServer(done)
   })
 
-  const nodesToLoad = [catchNode, functionNode, injectNode,
+  const nodesToLoad = [functionNode, injectNode,
     dxlClientNode, dxlEventOutNode, dxlEventInNode]
 
   const clientNodeId = 'dxl.clientId'
