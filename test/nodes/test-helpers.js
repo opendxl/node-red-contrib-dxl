@@ -35,8 +35,8 @@ module.exports = {
       resultFunction(err)
     }
   },
-  loadNodeRed: function (testNode, testFlows,
-    callbackFunction, resultFunction) {
+  loadNodeRed: function (testNode, testFlows, callbackFunction, resultFunction) {
+    nodeRedTestHelper._nodeModules = {}
     nodeRedTestHelper.load(testNode, testFlows, function () {
       module.exports.forwardOnError(callbackFunction, resultFunction)
     })

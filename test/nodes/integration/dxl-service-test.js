@@ -2,7 +2,7 @@
 
 const Buffer = require('buffer').Buffer
 const dxl = require('@opendxl/dxl-client')
-// const catchNode = require('@node-red/nodes/core/common/25-catch')
+const catchNode = require('@node-red/nodes/core/common/25-catch')
 const functionNode = require('@node-red/nodes/core/function/10-function')
 const injectNode = require('@node-red/nodes/core/common/20-inject')
 const dxlClientNode = require('../../../nodes/dxl-client')
@@ -25,8 +25,7 @@ describe('dxl service', function () {
     nodeRedTestHelper.stopServer(done)
   })
 
-  const nodesToLoad = [functionNode, injectNode,
-    dxlClientNode, dxlRequestNode, dxlResponseNode, dxlServiceNode]
+  const nodesToLoad = [catchNode, functionNode, injectNode, dxlClientNode, dxlRequestNode, dxlResponseNode, dxlServiceNode]
 
   const clientNodeId = 'dxl.clientId'
   const flowTabId = 'dxl.flowTabId'

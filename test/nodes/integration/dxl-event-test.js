@@ -2,7 +2,7 @@
 
 const Buffer = require('buffer').Buffer
 const dxl = require('@opendxl/dxl-client')
-// const catchNode = require('@node-red/nodes/core/common/25-catch')
+const catchNode = require('@node-red/nodes/core/common/25-catch')
 const functionNode = require('@node-red/nodes/core/function/10-function')
 const injectNode = require('@node-red/nodes/core/common/20-inject')
 const dxlEventOutNode = require('../../../nodes/dxl-event-out')
@@ -24,8 +24,7 @@ describe('dxl event', function () {
     nodeRedTestHelper.stopServer(done)
   })
 
-  const nodesToLoad = [functionNode, injectNode,
-    dxlClientNode, dxlEventOutNode, dxlEventInNode]
+  const nodesToLoad = [catchNode, functionNode, injectNode, dxlClientNode, dxlEventOutNode, dxlEventInNode]
 
   const clientNodeId = 'dxl.clientId'
   const eventInNodeId = 'dxl.eventInId'
