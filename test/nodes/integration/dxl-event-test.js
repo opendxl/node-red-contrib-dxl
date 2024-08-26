@@ -2,9 +2,9 @@
 
 const Buffer = require('buffer').Buffer
 const dxl = require('@opendxl/dxl-client')
-const catchNode = require('@node-red/nodes/core/core/25-catch')
-const functionNode = require('@node-red/nodes/core/core/80-function')
-const injectNode = require('@node-red/nodes/core/core/20-inject')
+const catchNode = require('@node-red/nodes/core/common/25-catch')
+const functionNode = require('@node-red/nodes/core/function/10-function')
+const injectNode = require('@node-red/nodes/core/common/20-inject')
 const dxlEventOutNode = require('../../../nodes/dxl-event-out')
 const dxlClientNode = require('../../../nodes/dxl-client')
 const dxlEventInNode = require('../../../nodes/dxl-event-in')

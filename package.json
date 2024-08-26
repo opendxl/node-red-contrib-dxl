@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@opendxl/dxl-bootstrap": "^0.1.1",
-    "@opendxl/dxl-client": "^0.1.1",
+    "@opendxl/dxl-client": "^0.1.3",
     "safe-buffer": "^5.1.1"
   },
   "devDependencies": {
