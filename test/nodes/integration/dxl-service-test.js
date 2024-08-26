@@ -15,15 +15,15 @@ const testHelpers = require('../test-helpers')
 describe('dxl service', function () {
   before(function (done) {
     // Wrap the original registerType method to add logging
-    const originalRegisterType = nodeRedTestHelper.RED.nodes.registerType;
+    const originalRegisterType = nodeRedTestHelper.RED.nodes.registerType
 
     nodeRedTestHelper.RED.nodes.registerType = function (type, constructor) {
-      console.log(`Registering node type: ${type}`);
-      originalRegisterType(type, constructor);
-    };
+      console.log(`Registering node type: ${type}`)
+      originalRegisterType(type, constructor)
+    }
 
-    nodeRedTestHelper.startServer(done);
-  });
+    nodeRedTestHelper.startServer(done)
+  })
 
   afterEach(async function () {
     await nodeRedTestHelper.unload()
