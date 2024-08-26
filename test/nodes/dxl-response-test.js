@@ -1,10 +1,10 @@
 'use strict'
 
-var should = require('should')
-var dxlClientNode = require('../../nodes/dxl-client')
-var testNode = require('../../nodes/dxl-response')
-var nodeRedTestHelper = require('node-red-node-test-helper')
-var testHelpers = require('./test-helpers')
+const should = require('should')
+const dxlClientNode = require('../../nodes/dxl-client')
+const testNode = require('../../nodes/dxl-response')
+const nodeRedTestHelper = require('node-red-node-test-helper')
+const testHelpers = require('./test-helpers')
 
 describe('dxl-core-response node', function () {
   before(function (done) {
@@ -20,10 +20,10 @@ describe('dxl-core-response node', function () {
   })
 
   it('should be loaded', function (done) {
-    var clientNodeId = 'dxl.clientId'
-    var responseNodeId = 'dxl.responseId'
+    const clientNodeId = 'dxl.clientId'
+    const responseNodeId = 'dxl.responseId'
 
-    var testFlows = [
+    const testFlows = [
       testHelpers.getClientNodeConfig(clientNodeId),
       {
         id: responseNodeId,
@@ -36,9 +36,9 @@ describe('dxl-core-response node', function () {
       [dxlClientNode, testNode],
       testFlows,
       function () {
-        var responseOutNode = nodeRedTestHelper.getNode(responseNodeId)
+        const responseOutNode = nodeRedTestHelper.getNode(responseNodeId)
         responseOutNode.should.have.property('name', 'my response')
-        var clientNode = nodeRedTestHelper.getNode(clientNodeId)
+        const clientNode = nodeRedTestHelper.getNode(clientNodeId)
         should(clientNode).not.be.null()
         done()
       }, done)

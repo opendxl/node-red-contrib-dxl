@@ -1,9 +1,9 @@
 'use strict'
 
-var dxlClientNode = require('../../nodes/dxl-client')
-var testNode = require('../../nodes/dxl-service')
-var nodeRedTestHelper = require('node-red-node-test-helper')
-var testHelpers = require('./test-helpers')
+const dxlClientNode = require('../../nodes/dxl-client')
+const testNode = require('../../nodes/dxl-service')
+const nodeRedTestHelper = require('node-red-node-test-helper')
+const testHelpers = require('./test-helpers')
 
 describe('dxl-core-service node', function () {
   before(function (done) {
@@ -19,21 +19,21 @@ describe('dxl-core-service node', function () {
   })
 
   it('should be loaded', function (done) {
-    var clientNodeId = 'dxl.clientId'
-    var serviceNodeId = 'dxl.serviceId'
+    const clientNodeId = 'dxl.clientId'
+    const serviceNodeId = 'dxl.serviceId'
 
-    var firstServiceTopicEntry = {
+    const firstServiceTopicEntry = {
       topic: '/my/first/topic',
       payloadType: 'bin'
     }
-    var secondServiceTopicEntry = {
+    const secondServiceTopicEntry = {
       topic: '/my/second/topic',
       payloadType: 'obj'
     }
 
-    var topicEntries = [firstServiceTopicEntry, secondServiceTopicEntry]
+    const topicEntries = [firstServiceTopicEntry, secondServiceTopicEntry]
 
-    var testFlows = [
+    const testFlows = [
       testHelpers.getClientNodeConfig(clientNodeId),
       {
         id: serviceNodeId,
@@ -50,10 +50,10 @@ describe('dxl-core-service node', function () {
       [dxlClientNode, testNode],
       testFlows,
       function () {
-        var serviceNode = nodeRedTestHelper.getNode(serviceNodeId)
+        const serviceNode = nodeRedTestHelper.getNode(serviceNodeId)
         serviceNode.should.have.property('name', 'my service')
         serviceNode.should.have.property('_rules', topicEntries)
-        var client = nodeRedTestHelper.getNode(clientNodeId).dxlClient
+        const client = nodeRedTestHelper.getNode(clientNodeId).dxlClient
         client.subscriptions.should.containEql(firstServiceTopicEntry.topic)
         client.subscriptions.should.containEql(secondServiceTopicEntry.topic)
         done()

@@ -1,16 +1,16 @@
 'use strict'
 
-var Buffer = require('buffer').Buffer
-var dxl = require('@opendxl/dxl-client')
-var catchNode = require('@node-red/nodes/core/core/25-catch')
-var functionNode = require('@node-red/nodes/core/core/80-function')
-var injectNode = require('@node-red/nodes/core/core/20-inject')
-var dxlClientNode = require('../../../nodes/dxl-client')
-var dxlRequestNode = require('../../../nodes/dxl-request')
-var dxlResponseNode = require('../../../nodes/dxl-response')
-var dxlServiceNode = require('../../../nodes/dxl-service')
-var nodeRedTestHelper = require('node-red-node-test-helper')
-var testHelpers = require('../test-helpers')
+const Buffer = require('buffer').Buffer
+const dxl = require('@opendxl/dxl-client')
+const catchNode = require('@node-red/nodes/core/core/25-catch')
+const functionNode = require('@node-red/nodes/core/core/80-function')
+const injectNode = require('@node-red/nodes/core/core/20-inject')
+const dxlClientNode = require('../../../nodes/dxl-client')
+const dxlRequestNode = require('../../../nodes/dxl-request')
+const dxlResponseNode = require('../../../nodes/dxl-response')
+const dxlServiceNode = require('../../../nodes/dxl-service')
+const nodeRedTestHelper = require('node-red-node-test-helper')
+const testHelpers = require('../test-helpers')
 
 describe('dxl service', function () {
   before(function (done) {
@@ -25,16 +25,16 @@ describe('dxl service', function () {
     nodeRedTestHelper.stopServer(done)
   })
 
-  var nodesToLoad = [catchNode, functionNode, injectNode,
+  const nodesToLoad = [catchNode, functionNode, injectNode,
     dxlClientNode, dxlRequestNode, dxlResponseNode, dxlServiceNode]
 
-  var clientNodeId = 'dxl.clientId'
-  var flowTabId = 'dxl.flowTabId'
-  var helperNodeId = 'dxl.helperId'
-  var requestNodeId = 'dxl.requestId'
-  var serviceNodeId = 'dxl.serviceId'
+  const clientNodeId = 'dxl.clientId'
+  const flowTabId = 'dxl.flowTabId'
+  const helperNodeId = 'dxl.helperId'
+  const requestNodeId = 'dxl.requestId'
+  const serviceNodeId = 'dxl.serviceId'
 
-  var baseTestFlows = [
+  const baseTestFlows = [
     {
       id: flowTabId,
       type: 'tab'
@@ -135,7 +135,7 @@ describe('dxl service', function () {
   ]
 
   it('should copy the dxl request into a flow msg', function (done) {
-    var testFlows = baseTestFlows.slice()
+    const testFlows = baseTestFlows.slice()
     testFlows.push({
       id: requestNodeId,
       type: 'dxl-core-request',
@@ -146,31 +146,31 @@ describe('dxl service', function () {
       z: flowTabId
     })
 
-    var requestPayload = { hello: 'how are you', fine: 'thanks' }
+    const requestPayload = { hello: 'how are you', fine: 'thanks' }
     testFlows.push(testHelpers.getInjectNodeConfig(requestPayload,
-        requestNodeId, 'obj'))
+      requestNodeId, 'obj'))
 
     testHelpers.loadNodeRed(nodesToLoad, testFlows,
-        function () {
-          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
-          helperNode.on('input', function (msg) {
-            testHelpers.forwardOnError(function () {
-              msg.should.have.property('payload', requestPayload)
-              msg.should.have.property('topic', '/dxl-service-test/no-response')
-              msg.should.have.property('dxlRequest').instanceOf(dxl.Request)
-              msg.should.have.propertyByPath('dxlRequest', 'payload').eql(
-                requestPayload)
-              msg.should.have.property('dxlMessage').equal(msg.dxlRequest)
-              msg.should.not.have.property('dxlError')
-              done()
-            }, done)
-          })
-        }, done)
+      function () {
+        const helperNode = nodeRedTestHelper.getNode(helperNodeId)
+        helperNode.on('input', function (msg) {
+          testHelpers.forwardOnError(function () {
+            msg.should.have.property('payload', requestPayload)
+            msg.should.have.property('topic', '/dxl-service-test/no-response')
+            msg.should.have.property('dxlRequest').instanceOf(dxl.Request)
+            msg.should.have.propertyByPath('dxlRequest', 'payload').eql(
+              requestPayload)
+            msg.should.have.property('dxlMessage').equal(msg.dxlRequest)
+            msg.should.not.have.property('dxlError')
+            done()
+          }, done)
+        })
+      }, done)
   })
 
   context('when payloadType set to txt', function () {
     it('should be sent properly through the DXL fabric', function (done) {
-      var testFlows = baseTestFlows.slice()
+      const testFlows = baseTestFlows.slice()
       testFlows.push({
         id: requestNodeId,
         type: 'dxl-core-request',
@@ -180,20 +180,20 @@ describe('dxl service', function () {
         wires: [[helperNodeId]]
       })
 
-      var requestPayload = 'my request payload as a string'
-      var expectedResponsePayload = 'txt is: ' + requestPayload
+      const requestPayload = 'my request payload as a string'
+      const expectedResponsePayload = 'txt is: ' + requestPayload
       testFlows.push(testHelpers.getInjectNodeConfig(requestPayload,
         requestNodeId, 'txt'))
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
+          const helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.property('payload', expectedResponsePayload)
               msg.should.have.property('dxlResponse').instanceOf(dxl.Response)
               msg.should.have.propertyByPath('dxlResponse',
-                  'payload').equal(expectedResponsePayload)
+                'payload').equal(expectedResponsePayload)
               msg.should.have.property('dxlMessage').equal(msg.dxlResponse)
               msg.should.not.have.property('dxlError')
               done()
@@ -205,7 +205,7 @@ describe('dxl service', function () {
 
   context('when payloadType set to bin', function () {
     it('should be sent properly through the DXL fabric', function (done) {
-      var testFlows = baseTestFlows.slice()
+      const testFlows = baseTestFlows.slice()
       testFlows.push({
         id: requestNodeId,
         type: 'dxl-core-request',
@@ -223,13 +223,13 @@ describe('dxl service', function () {
         wires: [[requestNodeId]]
       })
 
-      var requestPayload = Buffer.from([0x01, 0xD1, 0x9A])
+      const requestPayload = Buffer.from([0x01, 0xD1, 0x9A])
       testFlows.push(testHelpers.getInjectNodeConfig('[1,209,154]',
         'dxl.setTopicId', 'bin'))
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
+          const helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.property('payload',
@@ -243,7 +243,7 @@ describe('dxl service', function () {
 
   context('when payloadType set to obj', function () {
     it('should be sent properly through the DXL fabric', function (done) {
-      var testFlows = baseTestFlows.slice()
+      const testFlows = baseTestFlows.slice()
       testFlows.push({
         id: requestNodeId,
         type: 'dxl-core-request',
@@ -261,13 +261,13 @@ describe('dxl service', function () {
         wires: [[requestNodeId]]
       })
 
-      var requestPayload = { hello: 'how are you', fine: 'thanks' }
+      const requestPayload = { hello: 'how are you', fine: 'thanks' }
       testFlows.push(testHelpers.getInjectNodeConfig(
         JSON.stringify(requestPayload), 'dxl.setTopicId', 'obj'))
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
+          const helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.property('payload', {
@@ -284,7 +284,7 @@ describe('dxl service', function () {
 
   context('when request payload is malformed', function () {
     it('should send an error response through the DXL fabric', function (done) {
-      var testFlows = baseTestFlows.slice()
+      const testFlows = baseTestFlows.slice()
       testFlows.push({
         id: requestNodeId,
         type: 'dxl-core-request',
@@ -295,13 +295,13 @@ describe('dxl service', function () {
         z: flowTabId
       })
 
-      var requestPayload = 'malformed json'
+      const requestPayload = 'malformed json'
       testFlows.push(testHelpers.getInjectNodeConfig(requestPayload,
         requestNodeId, 'txt'))
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
+          const helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.propertyByPath(
@@ -322,7 +322,7 @@ describe('dxl service', function () {
     function () {
       it('should send an error response through the DXL fabric',
         function (done) {
-          var testFlows = baseTestFlows.slice()
+          const testFlows = baseTestFlows.slice()
           testFlows.push({
             id: requestNodeId,
             type: 'dxl-core-request',
@@ -333,7 +333,7 @@ describe('dxl service', function () {
             z: flowTabId
           })
 
-          var requestPayload = {
+          const requestPayload = {
             errorMessage: 'really bad error',
             errorCode: 95
           }
@@ -342,7 +342,7 @@ describe('dxl service', function () {
 
           testHelpers.loadNodeRed(nodesToLoad, testFlows,
             function () {
-              var helperNode = nodeRedTestHelper.getNode(helperNodeId)
+              const helperNode = nodeRedTestHelper.getNode(helperNodeId)
               helperNode.on('input', function (msg) {
                 testHelpers.forwardOnError(function () {
                   msg.should.have.propertyByPath(
@@ -367,7 +367,7 @@ describe('dxl service', function () {
 
   context('when request cannot decode a response', function () {
     it('should generate a catchable error', function (done) {
-      var testFlows = baseTestFlows.slice()
+      const testFlows = baseTestFlows.slice()
       testFlows.push({
         id: requestNodeId,
         type: 'dxl-core-request',
@@ -378,13 +378,13 @@ describe('dxl service', function () {
         z: flowTabId
       })
 
-      var requestPayload = 'not a json string'
+      const requestPayload = 'not a json string'
       testFlows.push(testHelpers.getInjectNodeConfig(requestPayload,
         requestNodeId, 'txt'))
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
+          const helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.propertyByPath(
@@ -404,7 +404,7 @@ describe('dxl service', function () {
     function () {
       it('should generate a catchable error',
         function (done) {
-          var testFlows = baseTestFlows.slice()
+          const testFlows = baseTestFlows.slice()
           testFlows.push({
             id: requestNodeId,
             type: 'dxl-core-request',
@@ -415,13 +415,13 @@ describe('dxl service', function () {
             z: flowTabId
           })
 
-          var requestPayload = {}
+          const requestPayload = {}
           testFlows.push(testHelpers.getInjectNodeConfig(requestPayload,
             requestNodeId, 'obj'))
 
           testHelpers.loadNodeRed(nodesToLoad, testFlows,
             function () {
-              var helperNode = nodeRedTestHelper.getNode(helperNodeId)
+              const helperNode = nodeRedTestHelper.getNode(helperNodeId)
               helperNode.on('input', function (msg) {
                 testHelpers.forwardOnError(function () {
                   msg.should.have.propertyByPath(

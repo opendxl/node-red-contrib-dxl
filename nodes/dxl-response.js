@@ -6,7 +6,7 @@
 
 'use strict'
 
-var dxl = require('@opendxl/dxl-client')
+const dxl = require('@opendxl/dxl-client')
 
 module.exports = function (RED) {
   /**
@@ -30,7 +30,7 @@ module.exports = function (RED) {
      */
     this._client = RED.nodes.getNode(nodeConfig.client)
 
-    var node = this
+    const node = this
 
     this.status({
       fill: 'red',
@@ -41,16 +41,16 @@ module.exports = function (RED) {
     if (this._client) {
       this._client.registerUserNode(this)
       this.on('input', function (msg) {
-        if (msg.hasOwnProperty('dxlRequest')) {
+        if (Object.prototype.hasOwnProperty.call(msg, 'dxlRequest')) {
           if (typeof msg.payload === 'undefined') {
             msg.payload = ''
           }
-          var response
-          if (msg.hasOwnProperty('error') &&
-            msg.error.hasOwnProperty('message')) {
-            var errorMessage = msg.error.message
-            var errorCode = 0
-            if (msg.dxlError && msg.dxlError.hasOwnProperty('code')) {
+          let response
+          if (Object.prototype.hasOwnProperty.call(msg, 'error') &&
+              Object.prototype.hasOwnProperty.call(msg.error, 'message')) {
+            const errorMessage = msg.error.message
+            let errorCode = 0
+            if (msg.dxlError && Object.prototype.hasOwnProperty.call(msg.dxlError, 'code')) {
               errorCode = msg.dxlError.code
             }
             response = new dxl.ErrorResponse(msg.dxlRequest, errorCode,

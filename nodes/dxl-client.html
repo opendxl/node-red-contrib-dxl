@@ -2,10 +2,10 @@
   RED.nodes.registerType('dxl-client', {
     category: 'config',
     defaults: {
-      configFile: {value: '', required: true},
-      name: {value: ''},
-      keepAliveInterval: {value: 1800, validate: RED.validators.number()},
-      reconnectDelay: {value: 1, validate: RED.validators.number()}
+      configFile: { value: '', required: true },
+      name: { value: '' },
+      keepAliveInterval: { value: 1800, validate: RED.validators.number() },
+      reconnectDelay: { value: 1, validate: RED.validators.number() }
     },
     color: '#b3d2e3',
     icon: 'opendxl.png',
@@ -27,24 +27,24 @@
 
         function nonEmpty (value) { return value }
 
-        var fieldValidators = {
-          'hostname': nonEmpty,
-          'username': nonEmpty,
-          'password': nonEmpty,
-          'name': nonEmpty,
+        const fieldValidators = {
+          hostname: nonEmpty,
+          username: nonEmpty,
+          password: nonEmpty,
+          name: nonEmpty,
           'config-dir': nonEmpty,
-          'port': function (value) { return !isNaN(value) }
+          port: function (value) { return !isNaN(value) }
         }
 
         function notifyAjaxError (jqXHR, textStatus, errorThrown) {
-          var error = errorThrown
+          let error = errorThrown
           if (jqXHR && jqXHR.responseText) {
             error = jqXHR.responseText
           }
           RED.notify(error, 'error')
         }
 
-        var confirmProvisionDialog
+        let confirmProvisionDialog
 
         function provisionConfig () {
           $.ajax({
@@ -54,17 +54,17 @@
               configDir: $('#node-provision-input-config-dir').val(),
               commonOrCsrFileName: $('#node-provision-input-name').val(),
               hostInfo: {
-                'hostname': $('#node-provision-input-hostname').val(),
-                'user': $('#node-provision-input-username').val(),
-                'password': $('#node-provision-input-password').val(),
-                'port': $('#node-provision-input-port').val()
+                hostname: $('#node-provision-input-hostname').val(),
+                user: $('#node-provision-input-username').val(),
+                password: $('#node-provision-input-password').val(),
+                port: $('#node-provision-input-port').val()
               }
             },
             success: function (response) {
-              var configDir = $('#node-provision-input-config-dir').val()
+              const configDir = $('#node-provision-input-config-dir').val()
               RED.notify('Provisioning operation successful', 'success')
               RED.tray.close(function () {
-                var configFile = configDir +
+                const configFile = configDir +
                   (configDir.indexOf('\\') < 0 ? '/' : '\\') +
                   'dxlclient.config'
                 $('#node-config-input-configFile').val(
@@ -90,7 +90,7 @@
         function provisionConfigOnConfirm () {
           getExistingProvisionFiles(function (provisionedFiles) {
             if (provisionedFiles && provisionedFiles.length) {
-              var confirmText = "<p>The following files in the '"
+              let confirmText = "<p>The following files in the '"
               confirmText += $('#node-provision-input-config-dir').val()
               confirmText += "' directory would be overwritten by the provisioning operation:</p><ul>"
               provisionedFiles.forEach(function (provisionedFile) {
@@ -127,7 +127,7 @@
           })
         }
 
-        var configFile = $('#node-config-input-configFile').val()
+        const configFile = $('#node-config-input-configFile').val()
         RED.tray.show({
           title: 'Provision client configuration',
           buttons: [
@@ -144,7 +144,7 @@
                 if (confirmProvisionDialog) {
                   return
                 }
-                var invalidFields = []
+                const invalidFields = []
                 Object.keys(fieldValidators).forEach(function (element) {
                   if (!fieldValidators[element](
                     $('#node-provision-input-' + element).val())) {
@@ -162,8 +162,8 @@
             }
           ],
           open: function (tray, done) {
-            var trayBody = tray.find('.editor-tray-body')
-            var dialogForm = $('<form id="dialog-form" class="form-horizontal"></form>').appendTo(trayBody)
+            const trayBody = tray.find('.editor-tray-body')
+            const dialogForm = $('<form id="dialog-form" class="form-horizontal"></form>').appendTo(trayBody)
             $('<div class="form-row">' +
               '<label for="node-provision-input-host"><i class="fa fa-globe"></i> Host</label>' +
               '<input type="text" id="node-provision-input-hostname" placeholder="Hostname">' +
@@ -190,7 +190,7 @@
               'value="' + configFile.replace(/[\\/]dxlclient.config/, '') + '">' +
               '</div>').appendTo(dialogForm)
             Object.keys(fieldValidators).forEach(function (fieldName) {
-              var element = $('#node-provision-input-' + fieldName)
+              const element = $('#node-provision-input-' + fieldName)
               element.change(function () {
                 if (fieldValidators[fieldName](this.value)) {
                   $(this).removeClass('input-error')
@@ -241,10 +241,10 @@
       })
     },
     oneditdelete: function () {
-      var clientType = RED.nodes.getType('dxl-client')
+      const clientType = RED.nodes.getType('dxl-client')
       if (clientType) {
-        var clientIds = clientType._getClientIds()
-        var curIdPos = clientIds.indexOf(this.id)
+        const clientIds = clientType._getClientIds()
+        const curIdPos = clientIds.indexOf(this.id)
         if (curIdPos < 0) {
           if (clientIds.length === 1) {
             clientType._updateNodeClientIds(clientIds[0])
@@ -255,9 +255,9 @@
       }
     },
     onpaletteadd: function () {
-      var that = this
+      const that = this
       this._getClientIds = function () {
-        var clientIds = []
+        const clientIds = []
         RED.nodes.eachConfig(function (node) {
           if (node.id && (node.type === 'dxl-client')) {
             clientIds.push(node.id)
@@ -266,12 +266,12 @@
         return clientIds
       }
       this._getClientKeys = function (node) {
-        var clientKeys = []
+        const clientKeys = []
         if (node.type) {
-          var nodeType = RED.nodes.getType(node.type)
+          const nodeType = RED.nodes.getType(node.type)
           if (nodeType && nodeType.defaults) {
             Object.keys(nodeType.defaults).forEach(function (key) {
-              var item = nodeType.defaults[key]
+              const item = nodeType.defaults[key]
               if (typeof item === 'object' && item.type === 'dxl-client') {
                 clientKeys.push(key)
               }
@@ -280,8 +280,7 @@
         }
         return clientKeys
       }
-      this._setNodeClientId = function (node, clientKeys, clientId,
-                                        revalidate) {
+      this._setNodeClientId = function (node, clientKeys, clientId, revalidate) {
         clientKeys.forEach(function (key) {
           if (node[key] !== clientId) {
             node[key] = clientId
@@ -296,21 +295,21 @@
       }
       this._updateNodeClientIds = function (clientId) {
         RED.nodes.eachNode(function (node) {
-          var clientKeys = that._getClientKeys(node)
+          const clientKeys = that._getClientKeys(node)
           if (clientKeys.length > 0) {
             that._setNodeClientId(node, clientKeys, clientId, true)
           }
         })
       }
       this._onAddNode = function (node) {
-        var clientIds
+        let clientIds
         if (node.type === 'dxl-client') {
           clientIds = that._getClientIds()
           if (clientIds.length === 1) {
             that._updateNodeClientIds(clientIds[0])
           }
         } else {
-          var clientKeys = that._getClientKeys(node)
+          const clientKeys = that._getClientKeys(node)
           if (clientKeys.length > 0) {
             clientIds = that._getClientIds()
             if (clientIds.length === 1) {

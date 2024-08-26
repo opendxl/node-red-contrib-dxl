@@ -6,7 +6,7 @@
 
 'use strict'
 
-var MessageUtils = require('../lib/message-utils')
+const MessageUtils = require('../lib/message-utils')
 
 module.exports = function (RED) {
   /**
@@ -58,7 +58,7 @@ module.exports = function (RED) {
      */
     this._client = RED.nodes.getNode(nodeConfig.client)
 
-    var node = this
+    const node = this
 
     this.status({
       fill: 'red',
@@ -68,9 +68,9 @@ module.exports = function (RED) {
 
     if (this._client) {
       if (this._serviceType) {
-        var valid = true
-        for (var i = 0; i < this._rules.length; i += 1) {
-          var rule = this._rules[i]
+        let valid = true
+        for (let i = 0; i < this._rules.length; i += 1) {
+          const rule = this._rules[i]
           if (!rule.topic) {
             this.error('Missing topic name for rule ' + (i + 1))
             valid = false
@@ -83,15 +83,17 @@ module.exports = function (RED) {
         if (valid) {
           this._client.registerUserNode(this)
 
-          var callbacksByTopic = {}
+          const callbacksByTopic = {}
           this._rules.forEach(function (rule, counter) {
             callbacksByTopic[rule.topic] = function (request) {
-              var msg = {topic: request.destinationTopic,
+              const msg = {
+                topic: request.destinationTopic,
                 dxlRequest: request,
-                dxlMessage: request}
-              var canConvert = true
-              var outputMessages = []
-              for (var j = 0; j < node._rules.length; j += 1) {
+                dxlMessage: request
+              }
+              let canConvert = true
+              const outputMessages = []
+              for (let j = 0; j < node._rules.length; j += 1) {
                 if (j === counter) {
                   try {
                     request.payload = MessageUtils.decodePayload(request,
@@ -116,7 +118,7 @@ module.exports = function (RED) {
             }
           })
 
-          var serviceInfo = this._client.registerServiceAsync(this._serviceType,
+          const serviceInfo = this._client.registerServiceAsync(this._serviceType,
             callbacksByTopic)
           this.on('close', function (done) {
             node._client.unregisterServiceAsync(serviceInfo)

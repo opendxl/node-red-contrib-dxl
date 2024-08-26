@@ -1,10 +1,10 @@
 'use strict'
 
-var should = require('should')
-var dxlClientNode = require('../../nodes/dxl-client')
-var testNode = require('../../nodes/dxl-event-out')
-var nodeRedTestHelper = require('node-red-node-test-helper')
-var testHelpers = require('./test-helpers')
+const should = require('should')
+const dxlClientNode = require('../../nodes/dxl-client')
+const testNode = require('../../nodes/dxl-event-out')
+const nodeRedTestHelper = require('node-red-node-test-helper')
+const testHelpers = require('./test-helpers')
 
 describe('dxl-core-event out node', function () {
   before(function (done) {
@@ -20,11 +20,11 @@ describe('dxl-core-event out node', function () {
   })
 
   it('should be loaded', function (done) {
-    var clientNodeId = 'dxl.clientId'
-    var eventOutNodeId = 'dxl.eventOutId'
-    var eventTopic = '/my/sample/topic'
+    const clientNodeId = 'dxl.clientId'
+    const eventOutNodeId = 'dxl.eventOutId'
+    const eventTopic = '/my/sample/topic'
 
-    var testFlows = [
+    const testFlows = [
       testHelpers.getClientNodeConfig(clientNodeId),
       {
         id: eventOutNodeId,
@@ -39,9 +39,9 @@ describe('dxl-core-event out node', function () {
       [dxlClientNode, testNode],
       testFlows,
       function () {
-        var eventOutNode = nodeRedTestHelper.getNode(eventOutNodeId)
+        const eventOutNode = nodeRedTestHelper.getNode(eventOutNodeId)
         eventOutNode.should.have.property('name', 'my event out')
-        var clientNode = nodeRedTestHelper.getNode(clientNodeId)
+        const clientNode = nodeRedTestHelper.getNode(clientNodeId)
         should(clientNode).not.be.null()
         done()
       }, done)

@@ -2,12 +2,12 @@
 
 'use strict'
 
-var fs = require('fs')
-var os = require('os')
-var path = require('path')
-var program = require('commander')
+const fs = require('fs')
+const os = require('os')
+const path = require('path')
+const program = require('commander')
 
-var inputFilePath = path.join(os.homedir(), '.node-red',
+let inputFilePath = path.join(os.homedir(), '.node-red',
   'flows_' + os.hostname() + '.json')
 
 program
@@ -27,8 +27,8 @@ if (!fs.existsSync(inputFilePath)) {
   process.exit(1)
 }
 
-var inputNodes = JSON.parse(fs.readFileSync(inputFilePath))
-var outputNodes = []
+const inputNodes = JSON.parse(fs.readFileSync(inputFilePath))
+const outputNodes = []
 
 inputNodes.forEach(function (node) {
   if (node.type !== 'dxl-client') {
@@ -39,7 +39,7 @@ inputNodes.forEach(function (node) {
   }
 })
 
-var outputJson = JSON.stringify(outputNodes, null, 4) + '\n'
+const outputJson = JSON.stringify(outputNodes, null, 4) + '\n'
 if (program.outputFile) {
   fs.writeFileSync(program.outputFile, outputJson)
   console.log('Wrote modified file to: ' + program.outputFile)

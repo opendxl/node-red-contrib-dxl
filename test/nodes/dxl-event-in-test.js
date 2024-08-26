@@ -1,9 +1,9 @@
 'use strict'
 
-var dxlClientNode = require('../../nodes/dxl-client')
-var testNode = require('../../nodes/dxl-event-in')
-var nodeRedTestHelper = require('node-red-node-test-helper')
-var testHelpers = require('./test-helpers')
+const dxlClientNode = require('../../nodes/dxl-client')
+const testNode = require('../../nodes/dxl-event-in')
+const nodeRedTestHelper = require('node-red-node-test-helper')
+const testHelpers = require('./test-helpers')
 
 describe('dxl-core-event in node', function () {
   before(function (done) {
@@ -19,11 +19,11 @@ describe('dxl-core-event in node', function () {
   })
 
   it('should be loaded', function (done) {
-    var clientNodeId = 'dxl.ClientId'
-    var eventInNodeId = 'dxl.eventInId'
-    var eventTopic = '/my/sample/topic'
+    const clientNodeId = 'dxl.ClientId'
+    const eventInNodeId = 'dxl.eventInId'
+    const eventTopic = '/my/sample/topic'
 
-    var testFlows = [
+    const testFlows = [
       testHelpers.getClientNodeConfig(clientNodeId),
       {
         id: eventInNodeId,
@@ -38,10 +38,10 @@ describe('dxl-core-event in node', function () {
       [dxlClientNode, testNode],
       testFlows,
       function () {
-        var eventInNode = nodeRedTestHelper.getNode(eventInNodeId)
+        const eventInNode = nodeRedTestHelper.getNode(eventInNodeId)
         eventInNode.should.have.property('name', 'my event in')
         eventInNode.should.have.property('_payloadType', 'obj')
-        var client = nodeRedTestHelper.getNode(clientNodeId).dxlClient
+        const client = nodeRedTestHelper.getNode(clientNodeId).dxlClient
         client.subscriptions.should.containEql(eventTopic)
         done()
       }, done)

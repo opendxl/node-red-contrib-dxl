@@ -6,7 +6,7 @@
 
 'use strict'
 
-var MessageUtils = require('../lib/message-utils')
+const MessageUtils = require('../lib/message-utils')
 
 module.exports = function (RED) {
   /**
@@ -46,7 +46,7 @@ module.exports = function (RED) {
      */
     this._client = RED.nodes.getNode(nodeConfig.client)
 
-    var node = this
+    const node = this
 
     this.status({
       fill: 'red',
@@ -57,10 +57,12 @@ module.exports = function (RED) {
     if (this._client) {
       if (nodeConfig.topic) {
         this._client.registerUserNode(this)
-        var eventCallback = function (event) {
-          var msg = {topic: event.destinationTopic,
+        const eventCallback = function (event) {
+          const msg = {
+            topic: event.destinationTopic,
             dxlEvent: event,
-            dxlMessage: event}
+            dxlMessage: event
+          }
           try {
             event.payload = MessageUtils.decodePayload(event, node._payloadType)
             msg.payload = event.payload

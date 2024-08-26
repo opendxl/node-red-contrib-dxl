@@ -5,16 +5,16 @@
 
 'use strict'
 
-var fs = require('fs')
-var path = require('path')
+const fs = require('fs')
+const path = require('path')
 
-var dxl = require('@opendxl/dxl-client')
-var Client = dxl.Client
-var Config = dxl.Config
-var ServiceRegistrationInfo = dxl.ServiceRegistrationInfo
-var NodeUtils = require('../lib/node-utils')
+const dxl = require('@opendxl/dxl-client')
+const Client = dxl.Client
+const Config = dxl.Config
+const ServiceRegistrationInfo = dxl.ServiceRegistrationInfo
+const NodeUtils = require('../lib/node-utils')
 
-var DEFAULT_CONFIG_FILE_NAME = 'dxlclient.config'
+const DEFAULT_CONFIG_FILE_NAME = 'dxlclient.config'
 
 /**
  * @classdesc Responsible for all communication with the
@@ -81,16 +81,16 @@ module.exports = function (RED) {
   function DxlClientNode (nodeConfig) {
     RED.nodes.createNode(this, nodeConfig)
 
-    var configFile = nodeConfig.configFile
+    let configFile = nodeConfig.configFile
     if (fs.statSync(configFile).isDirectory()) {
-      var configFileWithDefault = path.join(configFile,
+      const configFileWithDefault = path.join(configFile,
         DEFAULT_CONFIG_FILE_NAME)
       if (fs.existsSync(configFileWithDefault)) {
         configFile = configFileWithDefault
       }
     }
 
-    var clientConfig = Config.createDxlConfigFromFile(configFile)
+    const clientConfig = Config.createDxlConfigFromFile(configFile)
     clientConfig.keepAliveInterval = NodeUtils.valueToNumber(
       nodeConfig.keepAliveInterval, 1800)
     clientConfig.reconnectDelay = NodeUtils.valueToNumber(
@@ -131,7 +131,7 @@ module.exports = function (RED) {
      */
     this._users = {}
 
-    var node = this
+    const node = this
 
     /**
      * Attempts to connect the client to the DXL fabric.
@@ -147,8 +147,8 @@ module.exports = function (RED) {
         node.dxlClient.on('connect', function () {
           node._connecting = false
           node.connected = true
-          for (var id in node._users) {
-            if (node._users.hasOwnProperty(id)) {
+          for (const id in node._users) {
+            if (Object.prototype.hasOwnProperty.call(node._users, id)) {
               node._users[id].status({
                 fill: 'green',
                 shape: 'dot',
@@ -158,8 +158,8 @@ module.exports = function (RED) {
           }
         })
         node.dxlClient.on('reconnect', function () {
-          for (var id in node._users) {
-            if (node._users.hasOwnProperty(id)) {
+          for (const id in node._users) {
+            if (Object.prototype.hasOwnProperty.call(node._users, id)) {
               node._users[id].status({
                 fill: 'yellow',
                 shape: 'ring',
@@ -172,8 +172,8 @@ module.exports = function (RED) {
         node.dxlClient.on('close', function () {
           if (node.connected) {
             node.connected = false
-            for (var id in node._users) {
-              if (node._users.hasOwnProperty(id)) {
+            for (const id in node._users) {
+              if (Object.prototype.hasOwnProperty.call(node._users, id)) {
                 node._users[id].status({
                   fill: 'red',
                   shape: 'ring',
@@ -323,7 +323,7 @@ module.exports = function (RED) {
      *   when the service should be unregistered.
      */
     this.registerServiceAsync = function (serviceType, callbacksByTopic) {
-      var serviceInfo = new ServiceRegistrationInfo(node.dxlClient,
+      const serviceInfo = new ServiceRegistrationInfo(node.dxlClient,
         serviceType)
       serviceInfo.addTopics(callbacksByTopic)
       node.dxlClient.registerServiceAsync(serviceInfo)
@@ -360,7 +360,7 @@ module.exports = function (RED) {
 
   RED.httpAdmin.post('/dxl-client/provision-config',
     RED.auth.needsPermission('dxl-client.write'), function (request, response) {
-      var body = request.body
+      const body = request.body
       if (typeof body === 'object') {
         try {
           Config.provisionConfig(body.configDir, body.commonOrCsrFileName,
@@ -393,10 +393,10 @@ module.exports = function (RED) {
 
   RED.httpAdmin.get('/dxl-client/provisioned-files',
     function (request, response) {
-      var existingFiles = []
-      var configDir = request.query.configDir
+      const existingFiles = []
+      const configDir = request.query.configDir
       if (fs.existsSync(configDir)) {
-        var filesToCheck = [
+        const filesToCheck = [
           'ca-bundle.crt', 'client.crt', 'client.csr',
           'client.key', 'dxlclient.config']
         filesToCheck.forEach(function (fileToCheck) {

@@ -6,8 +6,8 @@
 
 'use strict'
 
-var dxl = require('@opendxl/dxl-client')
-var NodeUtils = require('..').NodeUtils
+const dxl = require('@opendxl/dxl-client')
+const NodeUtils = require('..').NodeUtils
 
 module.exports = function (RED) {
   /**
@@ -32,7 +32,7 @@ module.exports = function (RED) {
      */
     this._client = RED.nodes.getNode(nodeConfig.client)
 
-    var node = this
+    const node = this
 
     this.status({
       fill: 'red',
@@ -43,9 +43,9 @@ module.exports = function (RED) {
     if (this._client) {
       this._client.registerUserNode(this)
       this.on('input', function (msg) {
-        var topic = NodeUtils.defaultIfEmpty(nodeConfig.topic, msg.dxlTopic)
+        const topic = NodeUtils.defaultIfEmpty(nodeConfig.topic, msg.dxlTopic)
         if (topic) {
-          var event = new dxl.Event(topic)
+          const event = new dxl.Event(topic)
           event.payload = msg.payload
           if (this._client.connected) {
             this._client.sendEvent(event)
