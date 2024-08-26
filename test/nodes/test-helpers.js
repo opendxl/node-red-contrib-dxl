@@ -36,7 +36,7 @@ module.exports = {
     }
   },
   loadNodeRed: function (testNode, testFlows, callbackFunction, resultFunction) {
-    nodeRedTestHelper._nodeModules = {}
+    nodeRedTestHelper._nodeModules = {} // bug fix for unit tests.. fixes catch already loaded
     nodeRedTestHelper.load(testNode, testFlows, function () {
       module.exports.forwardOnError(callbackFunction, resultFunction)
     })
