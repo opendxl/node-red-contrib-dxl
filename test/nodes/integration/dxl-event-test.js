@@ -1,15 +1,15 @@
 'use strict'
 
-var Buffer = require('buffer').Buffer
-var dxl = require('@opendxl/dxl-client')
-var catchNode = require('@node-red/nodes/core/core/25-catch')
-var functionNode = require('@node-red/nodes/core/core/80-function')
-var injectNode = require('@node-red/nodes/core/core/20-inject')
-var dxlEventOutNode = require('../../../nodes/dxl-event-out')
-var dxlClientNode = require('../../../nodes/dxl-client')
-var dxlEventInNode = require('../../../nodes/dxl-event-in')
-var nodeRedTestHelper = require('node-red-node-test-helper')
-var testHelpers = require('../test-helpers')
+const Buffer = require('buffer').Buffer
+const dxl = require('@opendxl/dxl-client')
+const catchNode = require('@node-red/nodes/core/common/25-catch')
+const functionNode = require('@node-red/nodes/core/function/10-function')
+const injectNode = require('@node-red/nodes/core/common/20-inject')
+const dxlEventOutNode = require('../../../nodes/dxl-event-out')
+const dxlClientNode = require('../../../nodes/dxl-client')
+const dxlEventInNode = require('../../../nodes/dxl-event-in')
+const nodeRedTestHelper = require('node-red-node-test-helper')
+const testHelpers = require('../test-helpers')
 
 describe('dxl event', function () {
   before(function (done) {
@@ -24,18 +24,17 @@ describe('dxl event', function () {
     nodeRedTestHelper.stopServer(done)
   })
 
-  var nodesToLoad = [catchNode, functionNode, injectNode,
-    dxlClientNode, dxlEventOutNode, dxlEventInNode]
+  const nodesToLoad = [catchNode, functionNode, injectNode, dxlClientNode, dxlEventOutNode, dxlEventInNode]
 
-  var clientNodeId = 'dxl.clientId'
-  var eventInNodeId = 'dxl.eventInId'
-  var eventOutNodeId = 'dxl.eventOutId'
-  var flowTabId = 'dxl.flowTabId'
-  var helperNodeId = 'dxl.helperId'
+  const clientNodeId = 'dxl.clientId'
+  const eventInNodeId = 'dxl.eventInId'
+  const eventOutNodeId = 'dxl.eventOutId'
+  const flowTabId = 'dxl.flowTabId'
+  const helperNodeId = 'dxl.helperId'
 
-  var eventTopic = '/dxl-event-test'
+  const eventTopic = '/dxl-event-test'
 
-  var baseTestFlows = [
+  const baseTestFlows = [
     {
       id: flowTabId,
       type: 'tab'
@@ -56,7 +55,7 @@ describe('dxl event', function () {
 
   context('when payloadType set to txt', function () {
     it('should be sent properly through the DXL fabric', function (done) {
-      var testFlows = baseTestFlows.slice()
+      const testFlows = baseTestFlows.slice()
 
       testFlows.push({
         id: eventOutNodeId,
@@ -74,13 +73,13 @@ describe('dxl event', function () {
         wires: [[helperNodeId]]
       })
 
-      var expectedEventPayload = 'event payload as a string'
+      const expectedEventPayload = 'event payload as a string'
       testFlows.push(testHelpers.getInjectNodeConfig(expectedEventPayload,
         eventOutNodeId, 'txt'))
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
+          const helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.property('payload', expectedEventPayload)
@@ -100,7 +99,7 @@ describe('dxl event', function () {
 
   context('when payloadType set to bin', function () {
     it('should be sent properly through the DXL fabric', function (done) {
-      var testFlows = baseTestFlows.slice()
+      const testFlows = baseTestFlows.slice()
 
       testFlows.push({
         id: eventOutNodeId,
@@ -123,16 +122,16 @@ describe('dxl event', function () {
         func: 'msg.dxlTopic = "' + eventTopic + '"; return msg;',
         type: 'function',
         outputs: 1,
-        wires: [[ eventOutNodeId ]]
+        wires: [[eventOutNodeId]]
       })
 
-      var expectedEventPayload = Buffer.from([0x01, 0xD1, 0x9A])
+      const expectedEventPayload = Buffer.from([0x01, 0xD1, 0x9A])
       testFlows.push(testHelpers.getInjectNodeConfig('[1,209,154]',
         'dxl.setTopicId', 'bin'))
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
+          const helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.property('payload', expectedEventPayload)
@@ -145,7 +144,7 @@ describe('dxl event', function () {
 
   context('when payloadType set to obj', function () {
     it('should be sent properly through the DXL fabric', function (done) {
-      var testFlows = baseTestFlows.slice()
+      const testFlows = baseTestFlows.slice()
 
       testFlows.push({
         id: eventOutNodeId,
@@ -168,16 +167,16 @@ describe('dxl event', function () {
         func: 'msg.dxlTopic = "/should/be/overridden"; return msg;',
         type: 'function',
         outputs: 1,
-        wires: [[ eventOutNodeId ]]
+        wires: [[eventOutNodeId]]
       })
 
-      var expectedEventPayload = {hello: 'how are you', fine: 'thanks'}
+      const expectedEventPayload = { hello: 'how are you', fine: 'thanks' }
       testFlows.push(testHelpers.getInjectNodeConfig(
         JSON.stringify(expectedEventPayload), 'dxl.setTopicId', 'obj'))
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
+          const helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.property('payload', expectedEventPayload)
@@ -190,7 +189,7 @@ describe('dxl event', function () {
 
   context('when event payload is malformed', function () {
     it('should generate a catchable error', function (done) {
-      var testFlows = baseTestFlows.slice()
+      const testFlows = baseTestFlows.slice()
 
       testFlows.push({
         id: eventOutNodeId,
@@ -209,13 +208,13 @@ describe('dxl event', function () {
         z: flowTabId
       })
 
-      var eventPayload = 'malformed json'
+      const eventPayload = 'malformed json'
       testFlows.push(testHelpers.getInjectNodeConfig(eventPayload,
         eventOutNodeId, 'txt'))
 
       testHelpers.loadNodeRed(nodesToLoad, testFlows,
         function () {
-          var helperNode = nodeRedTestHelper.getNode(helperNodeId)
+          const helperNode = nodeRedTestHelper.getNode(helperNodeId)
           helperNode.on('input', function (msg) {
             testHelpers.forwardOnError(function () {
               msg.should.have.propertyByPath(

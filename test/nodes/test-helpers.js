@@ -1,20 +1,20 @@
 'use strict'
 
-var fs = require('fs')
-var os = require('os')
-var path = require('path')
+const fs = require('fs')
+const os = require('os')
+const path = require('path')
 
-var nodeRedTestHelper = require('node-red-node-test-helper')
+const nodeRedTestHelper = require('node-red-node-test-helper')
 
-var CLIENT_CONFIG_FILE = 'client_config.cfg'
+const CLIENT_CONFIG_FILE = 'client_config.cfg'
 
 module.exports = {
   getTestClientConfigFile: function () {
-    var configDirs = [ __dirname, os.homedir() ]
-    var configFile = null
+    const configDirs = [__dirname, os.homedir()]
+    let configFile = null
 
     configDirs.forEach(function (configDir) {
-      var candidateConfigFile = path.join(configDir, CLIENT_CONFIG_FILE)
+      const candidateConfigFile = path.join(configDir, CLIENT_CONFIG_FILE)
       if (fs.existsSync(candidateConfigFile)) {
         configFile = candidateConfigFile
       }
@@ -35,8 +35,8 @@ module.exports = {
       resultFunction(err)
     }
   },
-  loadNodeRed: function (testNode, testFlows,
-                         callbackFunction, resultFunction) {
+  loadNodeRed: function (testNode, testFlows, callbackFunction, resultFunction) {
+    nodeRedTestHelper._nodeModules = {} // bug fix for unit tests.. fixes catch already loaded
     nodeRedTestHelper.load(testNode, testFlows, function () {
       module.exports.forwardOnError(callbackFunction, resultFunction)
     })
@@ -55,15 +55,15 @@ module.exports = {
     return {
       id: (1 + Math.random() * 4294967295).toString(16),
       type: 'inject',
-      payload: payload,
-      payloadType: payloadType,
+      payload,
+      payloadType,
       once: true,
       wires: [wires]
     }
   },
   getClientNodeConfig: function (id) {
     return {
-      id: id,
+      id,
       configFile: module.exports.getTestClientConfigFile(),
       name: 'client',
       type: 'dxl-client'

@@ -1,15 +1,15 @@
 'use strict'
 
 require('should')
-var fs = require('fs')
-var path = require('path')
-var sinon = require('sinon')
-var DxlConfig = require('@opendxl/dxl-client').Config
-var bodyParser = require('body-parser')
+const fs = require('fs')
+const path = require('path')
+const sinon = require('sinon')
+const DxlConfig = require('@opendxl/dxl-client').Config
+const bodyParser = require('body-parser')
 
-var testNode = require('../../nodes/dxl-client')
-var nodeRedTestHelper = require('node-red-node-test-helper')
-var testHelpers = require('./test-helpers')
+const testNode = require('../../nodes/dxl-client')
+const nodeRedTestHelper = require('node-red-node-test-helper')
+const testHelpers = require('./test-helpers')
 
 describe('dxl-client node', function () {
   before(function (done) {
@@ -31,7 +31,7 @@ describe('dxl-client node', function () {
   })
 
   it('should be loaded', function (done) {
-    var testFlows = [
+    const testFlows = [
       {
         configFile: testHelpers.getTestClientConfigFile(),
         id: 'dxl.clientId',
@@ -42,9 +42,9 @@ describe('dxl-client node', function () {
       }
     ]
     testHelpers.loadNodeRed(testNode, testFlows, function () {
-      var clientNode = nodeRedTestHelper.getNode('dxl.clientId')
+      const clientNode = nodeRedTestHelper.getNode('dxl.clientId')
       clientNode.should.have.property('name', 'client')
-      var clientConfig = clientNode.dxlClient.config
+      const clientConfig = clientNode.dxlClient.config
       clientConfig.keepAliveInterval.should.be.equal(123)
       clientConfig.reconnectDelay.should.be.equal(16)
       done()
@@ -54,19 +54,19 @@ describe('dxl-client node', function () {
   it('should return defaults via HTTP request', function (done) {
     testHelpers.loadNodeRed(testNode, [], function () {
       nodeRedTestHelper.request().get(
-        '/dxl-client/defaults').expect(200, {configDir: 'dxl'}).end(done)
+        '/dxl-client/defaults').expect(200, { configDir: 'dxl' }).end(done)
     }, done)
   })
 
   context('provision config HTTP request', function () {
     it('should return 200 for success', function (done) {
-      var provisionConfigStub = sinon.stub(
+      const provisionConfigStub = sinon.stub(
         DxlConfig, 'provisionConfig').callsFake(
         function (configDir, commonOrCsrFileName, hostInfo, options) {
           options.doneCallback()
         }
       )
-      var provisionConfigParams = {
+      const provisionConfigParams = {
         configDir: '/the/confdir',
         commonOrCsrFileName: 'client',
         hostInfo: {
@@ -96,8 +96,8 @@ describe('dxl-client node', function () {
     })
 
     it('should return error for failure', function (done) {
-      var errorMessage = 'Bad provision result'
-      var provisionConfigStub = sinon.stub(
+      const errorMessage = 'Bad provision result'
+      const provisionConfigStub = sinon.stub(
         DxlConfig, 'provisionConfig').callsFake(
         function (configDir, commonOrCsrFileName, hostInfo, options) {
           options.doneCallback(new Error(errorMessage))
@@ -129,8 +129,8 @@ describe('dxl-client node', function () {
 
   context('provisioned files HTTP request', function () {
     it('should return list of existing files on server', function (done) {
-      var configDir = '/the/confdir'
-      var fsExistsStub = sinon.stub(fs, 'existsSync').returns(true)
+      const configDir = '/the/confdir'
+      const fsExistsStub = sinon.stub(fs, 'existsSync').returns(true)
       testHelpers.loadNodeRed(testNode, [], function () {
         nodeRedTestHelper.request()
           .get('/dxl-client/provisioned-files?configDir=' + configDir)
@@ -149,8 +149,8 @@ describe('dxl-client node', function () {
 
     it('should return empty list when no files exist on server',
       function (done) {
-        var configDir = '/the/confdir'
-        var fsExistsStub = sinon.stub(fs, 'existsSync').returns(false)
+        const configDir = '/the/confdir'
+        const fsExistsStub = sinon.stub(fs, 'existsSync').returns(false)
         testHelpers.loadNodeRed(testNode, [], function () {
           nodeRedTestHelper.request()
             .get('/dxl-client/provisioned-files?configDir=' + configDir)

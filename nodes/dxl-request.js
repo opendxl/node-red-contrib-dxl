@@ -6,9 +6,9 @@
 
 'use strict'
 
-var dxl = require('@opendxl/dxl-client')
-var MessageUtils = require('../lib/message-utils')
-var NodeUtils = require('..').NodeUtils
+const dxl = require('@opendxl/dxl-client')
+const MessageUtils = require('../lib/message-utils')
+const NodeUtils = require('..').NodeUtils
 
 module.exports = function (RED) {
   /**
@@ -50,7 +50,7 @@ module.exports = function (RED) {
      */
     this._client = RED.nodes.getNode(nodeConfig.client)
 
-    var node = this
+    const node = this
 
     this.status({
       fill: 'red',
@@ -61,18 +61,18 @@ module.exports = function (RED) {
     if (this._client) {
       this._client.registerUserNode(this)
       this.on('input', function (msg) {
-        var topic = NodeUtils.defaultIfEmpty(nodeConfig.topic,
+        const topic = NodeUtils.defaultIfEmpty(nodeConfig.topic,
           NodeUtils.extractProperty(msg, 'dxlTopic'))
         if (topic) {
-          var request = new dxl.Request(topic)
+          const request = new dxl.Request(topic)
           request.payload = msg.payload
           if (node._client.connected) {
             this._client.asyncRequest(request,
               function (error, response) {
                 if (error) {
-                  msg.dxlError = {code: error.code}
+                  msg.dxlError = { code: error.code }
                   if (error.dxlErrorResponse) {
-                    var responseMessage = error.dxlErrorResponse
+                    const responseMessage = error.dxlErrorResponse
                     if (!error.code) {
                       msg.dxlError.code = responseMessage.errorCode
                     }

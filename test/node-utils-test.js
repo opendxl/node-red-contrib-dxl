@@ -1,7 +1,7 @@
 'use strict'
 
 require('should')
-var NodeUtils = require('..').NodeUtils
+const NodeUtils = require('..').NodeUtils
 
 describe('NodeUtils', function () {
   context('.valueToNumber', function () {
@@ -28,7 +28,7 @@ describe('NodeUtils', function () {
     it('should return NaN if the value cannot be converted', function () {
       NodeUtils.valueToNumber('bogus').should.be.NaN()
       NodeUtils.valueToNumber('42bogus').should.be.NaN()
-      NodeUtils.valueToNumber({test: 42}).should.be.NaN()
+      NodeUtils.valueToNumber({ test: 42 }).should.be.NaN()
     })
   })
   context('.defaultIfEmpty', function () {
@@ -71,16 +71,16 @@ describe('NodeUtils', function () {
   context('.extractProperty', function () {
     it('should remove a property from an object and return its value',
       function () {
-        var obj = {prop1: 'val1', prop2: 'val2', prop3: 'val3'}
+        const obj = { prop1: 'val1', prop2: 'val2', prop3: 'val3' }
         NodeUtils.extractProperty(obj, 'prop2').should.equal('val2')
-        obj.should.eql({prop1: 'val1', prop3: 'val3'})
+        obj.should.eql({ prop1: 'val1', prop3: 'val3' })
       })
   })
   context('.removeProperties', function () {
     it('should remove properties from an object', function () {
-      var obj = {prop1: 'val1', prop2: 'val2', prop3: 'val3'}
+      const obj = { prop1: 'val1', prop2: 'val2', prop3: 'val3' }
       NodeUtils.removeProperties(obj, ['prop1', 'prop3'])
-      obj.should.eql({prop2: 'val2'})
+      obj.should.eql({ prop2: 'val2' })
     })
   })
 })
