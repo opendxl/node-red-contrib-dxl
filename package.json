@@ -18,7 +18,7 @@
     "README.md"
   ],
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=16.0.0"
   },
   "dependencies": {
     "@opendxl/dxl-bootstrap": "^0.1.1",
@@ -32,7 +32,7 @@
     "jsdoc": "^4.0.3",
     "jshint": "^2.9.5",
     "mocha": "^10.7.3",
-    "node-red": "^4.0.2",
+    "node-red": "^3.1.11",
     "node-red-node-test-helper": "^0.3.4",
     "rimraf": "^4.4.1",
     "should": "^13.2.1",
