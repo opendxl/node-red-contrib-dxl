@@ -18,7 +18,7 @@
     "README.md"
   ],
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "dependencies": {
     "@opendxl/dxl-bootstrap": "^0.1.1",
@@ -34,7 +34,7 @@
     "mocha": "^10.7.3",
     "node-red": "^4.0.2",
     "node-red-node-test-helper": "^0.3.4",
-    "rimraf": "^6.0.1",
+    "rimraf": "^4.4.1",
     "should": "^13.2.1",
     "sinon": "^18.0.0",
     "snazzy": "^7.0.0",
@@ -58,7 +58,7 @@
   },
   "scripts": {
     "remove-config-node": "scripts/remove-config-node.js",
-    "predist": "npm install && rimraf *.tgz",
+    "predist": "npm install && rimraf --glob *.tgz",
     "dist": "npm pack && npm run doc && node scripts/dist.js",
     "test": "mocha --recursive --exit",
     "lint": "npm run lint:jshint && npm run lint:standard",
